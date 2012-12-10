@@ -29,4 +29,5 @@ exports.getCurrentUserID = function(){
 
 exports.setCurrentUserID = function(_currentUserID){
 	currentUserID = _currentUserID;
+	globals.setString('currentUID',_currentUserID);
 }

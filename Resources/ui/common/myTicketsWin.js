@@ -1,6 +1,6 @@
 function myticket (){
 	
-var myticketWin = Titanium.UI.createWindow({
+var myticketWin = Titanium.UI.createView({
     backgroundColor: 'white',
     title: 'Settings',
     barColor: '#05e177',

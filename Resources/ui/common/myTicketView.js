@@ -1,18 +1,23 @@
-function myticketView  (win,user_id){
+function myticketView (user_id){
 	
-	       var data = []; //empty data array
-   //declare the http client object
-   var xhr = Titanium.Network.createHTTPClient();
-   var tblRecipes = Titanium.UI.createTableView({
-     height: 366,
-     width: 320,
-     top: 0,
-left: 0,
-     rowHeight: 70
-   });
-   win.add(tblRecipes);
-   //this method will process the remote data
-   xhr.onload = function() {
+	var data = []; //empty data array
+	//declare the http client object
+	var xhr = Titanium.Network.createHTTPClient();
+   
+	var tblRecipes = Titanium.UI.createTableView({
+    	top: 0,
+		left: 0,
+     	rowHeight: 70
+   	});
+   
+   	var thisView = Ti.UI.createView({
+   		backgroundColor: 'transparent'
+   	});
+   	
+   	win.add(tblRecipes);
+   	
+   	//this method will process the remote data
+   	xhr.onload = function() {
    	var json = this.responseText;
     Ti.API.info('RAW RESPONSE: '+json); 
     var response = JSON.parse(json)
@@ -21,7 +26,7 @@ left: 0,
      //var items = xml.documentElement.getElementsByTagName("item");
      //loop each item in the xml
      for (var i = 0; i < response.length; i++) {//create a table row
-var row = Titanium.UI.createTableViewRow({
+	var row = Titanium.UI.createTableViewRow({
   hasChild: true,
   className: 'recipe-row'
 });

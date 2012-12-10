@@ -47,15 +47,10 @@ function mainMenu (win,view)  {
     				new mytickets();
 					Ti.App.fireEvent('closeMenu');
 					break;	
-	
-	
-	case 'settings':
-	var settingsWin = require('ui/common/settingsWin');
-	 new settingsWin(win,view);
-	 Ti.App.fireEvent('closeMenu');
-	//newTicket.open();
-	
-	break;	
+				case 'settings':
+					Ti.App.fireEvent('GLOBALEVENT',{func: 'settings'});
+					//newTicket.open();
+					break;	
 		
 		
 	} // switch ends

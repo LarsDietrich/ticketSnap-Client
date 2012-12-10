@@ -32,28 +32,28 @@ function ApplicationWindow() {
 	
 	var myTixWin = Titanium.UI.createWindow({
 	    backgroundColor: 'white',
-	    title: 'My Tickets',
+	    title: 'tickeTSnap',
 	    color:'dark grey',
 	    barColor: 'blue',
 	    left: 0,
 		zIndex: 10
 	});
 
- 	var view = Ti.UI.createView({
-		 backgroundImage:'images/light_toast_@2X.png',
-		 width: Ti.Platform.displayCaps.platformWidth,
-		 height:Ti.Platform.displayCaps.platformHeight,	
-	});
+ 	// var view = Ti.UI.createView({
+		 // backgroundImage:'images/light_toast_@2X.png',
+		 // width: Ti.Platform.displayCaps.platformWidth,
+		 // height:Ti.Platform.displayCaps.platformHeight,	
+	// });
+// 	
+	// myTixWin.add(view);
 	
-	myTixWin.add(view);
-	
-	var lbl = Ti.UI.createLabel({
-		text:'Currently no ticket available',
-		top:200,
-		color:'dark grey'
-		
-	});
-	view.add(lbl);
+	// var lbl = Ti.UI.createLabel({
+		// text:'Currently no ticket available',
+		// top:200,
+		// color:'dark grey'
+// 		
+	// });
+	// view.add(lbl);
 	
 	var leftMenu	= Ti.UI.createWindow({
 		backgroundColor: 'red',
@@ -134,7 +134,6 @@ function ApplicationWindow() {
 			//leftMenu.close();
 	    	win.animate(animateRight);
 			isToggled = false;
-			
 		}
 	});
 	
