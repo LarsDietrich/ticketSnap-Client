@@ -3,7 +3,7 @@ function register (){
 var registerWin = Titanium.UI.createWindow({
     backgroundColor: 'white',
     title: 'Settings',
-     color:'dark grey',
+     //color:'dark grey',
 	 barColor: 'blue',
     left: 0,
 	zIndex:1,
@@ -20,11 +20,11 @@ var view = Ti.UI.createScrollView({
 });
 
 var navBtn = Ti.UI.createButton({
-	title: 'c',
+	title: 'Done',
 	left: 10,
 	width:10,
 	//height: 30,
-	image:'images/btn-back@2x.png',
+	//image:'images/btn-back@2x.png',
 	color:'#6d0a0c',
 	top: 10,
 	//opacity:0,
@@ -43,7 +43,7 @@ var navBtn = Ti.UI.createButton({
     view.add(fname);
     
      var lname = Ti.UI.createTextField({
-        hintText: 'lastname',
+        hintText: 'Lastname',
         top:90,
         width:200,
         height: 40,
@@ -77,7 +77,7 @@ var email = Ti.UI.createTextField({
     view.add(password);
     
      var c_password = Ti.UI.createTextField({
-        hintText: 'conform Password',
+        hintText: 'Confirm Password',
         top:260,
         width:200,
         height: 40,
@@ -87,7 +87,7 @@ var email = Ti.UI.createTextField({
     view.add(c_password);
 
     var button = Ti.UI.createButton({
-        title: 'Login User',
+        title: 'Sign Up!',
         top: 310,
         height: 40,
     });
@@ -112,7 +112,7 @@ var email = Ti.UI.createTextField({
  	    	
  	    	 if(response.message == true){
  	    	 	
-               alert('you are successfully Registered Login Now ');
+               alert('You are successfully Registered Login Now ');
             	registerWin.close();
             	var loginWin = require('ui/common/loginWin');
 	            new loginWin(registerWin);
@@ -120,7 +120,7 @@ var email = Ti.UI.createTextField({
             	
             } else if(response.message == 'registered'){
             	
-            	alert('you are already registered');
+            	alert('You are already registered');
             	
             }else{
             	
@@ -137,7 +137,7 @@ var email = Ti.UI.createTextField({
  		
  		
  		
- 	}else{alert('please the fill the form correctly');}
+ 	}else{alert('Please the fill the form correctly');}
  	
  	
     });     

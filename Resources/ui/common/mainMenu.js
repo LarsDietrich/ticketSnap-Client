@@ -3,8 +3,15 @@ var globals = require('/lib/AppProperties');
 var loggedIn = globals.isLoggedIn();
 
 
-function mainMenu (win,view)  {
- 
+function mainMenu ()  {
+ var leftMenu	= Ti.UI.createWindow({
+		backgroundColor: 'red',
+		top:   0,
+		left:  0,
+		width: globals.screenWidth*.50,
+		zIndex: 1
+	});
+	
 	var leftdata = [
 		{title:'My Tickets', hasChild:true,id:'myticket',backgroundImage:'images/btn-settings.png',
 		color:'#fff',},
@@ -26,6 +33,9 @@ function mainMenu (win,view)  {
 		 backgroundImage:'images/grain.png',
 		  });
 	
+	leftMenu.add(tableView);
+    //leftMenu.open();
+	
 	tableView.addEventListener('click', function(e)
 	{
 		if (e.rowData.id)
@@ -33,7 +43,7 @@ function mainMenu (win,view)  {
 			var id = e.rowData.id;
 			// fire global event here for controller
 			//
-		    var mytickets = require('ui/common/myTicketsWin');
+		    //var mytickets = require('ui/common/myTicketsWin');
 		    Ti.App.fireEvent('closeMenu');
 			    //Ti.App.fireEvent('capture');
 			
@@ -44,8 +54,8 @@ function mainMenu (win,view)  {
 		    		Ti.App.fireEvent('GLOBALEVENT', {func: 'newTicket'});
 					break;	
 				case 'myticket':
-    				new mytickets();
-					Ti.App.fireEvent('closeMenu');
+    				//new mytickets();
+					Ti.App.fireEvent('GLOBALEVENT', {func: 'myTickets'});
 					break;	
 				case 'settings':
 					Ti.App.fireEvent('GLOBALEVENT',{func: 'settings'});
@@ -57,7 +67,7 @@ function mainMenu (win,view)  {
 	
 	}
 });
-	return tableView;
+	return leftMenu;
 };
 
 module.exports = mainMenu;

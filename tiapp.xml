@@ -10,7 +10,7 @@
     </deployment-targets>
     <sdk-version>2.1.4.GA</sdk-version>
     <id>com.xpertogo.mytickets</id>
-    <name>My Tickets</name>
+    <name>tickeTSnap</name>
     <version>1.0</version>
     <publisher>admin</publisher>
     <url>http://</url>

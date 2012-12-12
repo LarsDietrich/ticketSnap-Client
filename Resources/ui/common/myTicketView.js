@@ -14,7 +14,7 @@ function myticketView (user_id){
    		backgroundColor: 'transparent'
    	});
    	
-   	win.add(tblRecipes);
+   	//win.add(tblRecipes);
    	
    	//this method will process the remote data
    	xhr.onload = function() {
