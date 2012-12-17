@@ -1,5 +1,4 @@
 var globals = require('/lib/AppProperties');
-//var uname = globals.getCurrentUserName();
 
 function logInView(args){
 	
