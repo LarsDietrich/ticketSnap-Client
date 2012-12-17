@@ -1,81 +1,45 @@
 var globals = require('/lib/AppProperties');
 var loggedIn = globals.isLoggedIn();
-var loginButton=null;
 
 function ApplicationWindow(params) {
 
-	var thisWin = Titanium.UI.createWindow({
-	    backgroundColor: 'white',
-	    title: params.title,
-	    color:'dark grey',
-	    barColor: 'blue',
-	    left: 0,
-		zIndex: 10
+	params = params || {};
+	
+	//animations to apply to left menu open and closing
+	var animateLeft	= Ti.UI.createAnimation({
+		right: globals.screenWidth*(-.80),
+		curve: Ti.UI.iOS.ANIMATION_CURVE_EASE_OUT,
+		duration: 500
 	});
 	
-	var menuBtn = Ti.UI.createButton({
-		backgroundImage: '/images/menuTr.png',
-		width: 40,
+	var animateRight = Ti.UI.createAnimation({
+		right: globals.screenWidth,
+		curve: Ti.UI.iOS.ANIMATION_CURVE_EASE_OUT,
+		duration: 500
+	});
+	
+	// isToggled checks to see whether loginScreen is open(true) or closed
+	var isToggled = false;
+
+	var thisWin = Titanium.UI.createWindow({
+	    backgroundImage:'images/otis_redding.png',
+	    titleImage: '/images/TICKETSNAP_bar_tr.png',
+	    barColor: '#202020'
+	});
+	
+	var loginButton = Ti.UI.createButton({
+		backgroundImage: '/images/user.png',
+		width: 32,
 		height: 30,
 		backgroundColor: 'transparent'
 	});
 	
-	loginButton = Ti.UI.createButton({
-		title:globals.isLoggedIn() ? 'Logout':'Login', //this will correctly label the button according to login status
-		right: 10,
-		top: 5,
-		color:'#494a4a'	
-	});
-	
-	function handleLogin(){
-		if(globals.isLoggedIn()){
-	 		Ti.App.fireEvent('GLOBALEVENT',{func: 'fbLogout'});
-    		// TODO:call Activity Indicator here so that it waits for logout before changing loginButton.title
-     		loginButton.title = 'Login';
-     		globals.setLoggedIn(false); 
-     		Ti.App.fireEvent('updateLoginBtn',{loggedIn:false});
-     		
-		} 
-		else{
-			 loginButton.enabled=false;
-			menuBtn.enabled=false;
-			var loginWin = require('ui/common/loginWin');
-			new loginWin(thisWin, function(e){
-				 loginButton.enabled=true;
-				menuBtn.enabled=true;
-				if(globals.isLoggedIn())
-				{
-					loginButton.title='logout';
-					Ti.App.fireEvent('updateLoginBtn',{loggedIn:true});
-				}
-			});
-		}
-	}
-	
-	 loginButton.addEventListener('click',function(){		
-		handleLogin();	  		   
-	});
-thisWin.setLeftNavButton(menuBtn);
-	thisWin.setRightNavButton( loginButton);
-	
-	menuBtn.addEventListener('click',function(e){
+	loginButton.addEventListener('click',function(){		
 		
-		Ti.App.fireEvent('GLOBALEVENT',{func: 'toggleMenu'});
+		Ti.App.fireEvent('GLOBALEVENT',{func: 'toggleMenu'});	  		   
 	});
-	
-	Ti.App.addEventListener('loginFirst', function(e){
-		handleLogin();
-	});
-	
-	Ti.App.addEventListener('updateLoginBtn', function(e){
-		if(globals.isLoggedIn()){
-			loginButton.title='Logout';
-		}
-		else
-		{
-			loginButton.title='Login';
-		}
-	});
+
+	thisWin.setRightNavButton(loginButton);
 	
 	return thisWin;
 };

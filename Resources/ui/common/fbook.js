@@ -1,6 +1,8 @@
 var globals = require('/lib/AppProperties');
 
-function facebookLogin(win, callback){
+function facebookLogin(args){
+	
+	args = args || {};
 	
 	/*globals Titanium, Ti, alert, JSON */
 	
@@ -110,10 +112,12 @@ function facebookLogin(win, callback){
 	var fbutton = Titanium.Facebook.createLoginButton({
 			      style:Ti.Facebook.BUTTON_STYLE_WIDE,
 			      //bottom:30,
-			       top:240,
+			       top: args.top,
+			       height: args.height,
+			       width: 210
 	});
 	
-	win.add(fbutton);
+	return fbutton;
 
 }; //end function facebookLogin
 

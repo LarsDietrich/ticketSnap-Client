@@ -1,33 +1,42 @@
 var globals = require('/lib/AppProperties');  // reference to global vars
-var _newTicketWin = require('ui/common/newTicketsWin');  // load newTicketWindow
+var screenWidth = globals.screenWidth;
+var _newTicketWin = require('ui/common/newTicketsWin');  // load newTicketWindow. App will start with this screen.
 var newTicketWin = null;
-//var _myTicketsView = require('/ui/common/myTicketView');  // load view inside of myTickets Window
-var _myTixWin = require('/ui/common/myTicketsWin');  //load my tickets window. This is also the main window of the app.
+// var _appTabGroup = require('/ui/common/ApplicationTabGroup'); // load appTabGroup
+var appTabGroup = null; //tabGroup for app
+var _myTixWin = require('/ui/common/myTicketsWin');  //load my tickets window.
 var myTixWin = null;
-var _settingsWin = require('ui/common/settingsWin');
-var settingsWin = null;
-// var _appNavgroup = require('/ui/common/appNavGroup');
-// var appNavgroup;
-// navGroup will control the navigation of the windows in the app.
-var navGroup=null;
+var _loginWin = require('/ui/common/loginWin'); // load login screen
+var loginWin = null;
+var HighlightTab = require('ui/common/HighlightTab');
+var _alertsWin = require('/ui/common/SettingsWin');
+var alertsWin = null;
 
-//main window of the application that contains navgroup
-var mainWin = null;
+// create alerts screen
 
-//animations to apply to left menu open and closing
+//animations to apply to right menu open and closing
 var animateLeft	= Ti.UI.createAnimation({
-	left: globals.screenWidth*.50,
+	right: 275,
+	left: -275,
 	curve: Ti.UI.iOS.ANIMATION_CURVE_EASE_OUT,
 	duration: 500
 });
+
+animateLeft.addEventListener('start', function(e){
+});
 	
 var animateRight = Ti.UI.createAnimation({
+	right: 0,
 	left: 0,
 	curve: Ti.UI.iOS.ANIMATION_CURVE_EASE_OUT,
 	duration: 500
 });
 
-// isToggled checks to see whether menu is open(true) or closed
+animateRight.addEventListener('start', function(e){
+	
+});
+
+// isToggled checks to see whether loginScreen is open(true) or closed
 var isToggled = false;
 
 // currentWindow keeps track of when settings is in front and remove it from memory
@@ -56,39 +65,69 @@ function fbLogout(){
 
 function startApp(){
 	
+	// instantiate the windows
 	myTixWin = new _myTixWin();
+	myTixWin.zIndex = 10;
 	
-	mainWin = Titanium.UI.createWindow({
-		left: 0,
+	alertsWin = new _alertsWin();
+	alertsWin.zIndex = 10;
+	
+	loginWin = new _loginWin(/*here pass in callback function to loggedIn screen*/);
+	loginWin.zIndex=1;
+	
+	if(globals.isLoggedIn()){
+		var _loggedInView = require('/ui/common/loggedInView');
+		var loggedInView = new _loggedInView();
+		loginWin.add(loggedInView);
+	}
+	else{
+		var _loginView = require('/ui/common/logInView');
+		var loginView = new _loginView();
+		loginWin.add(loginView);
+	}
+	
+	loginWin.open();
+	
+	appTabGroup = Ti.UI.createTabGroup({
 		zIndex: 10,
-		barColor: 'blue',
+		top: 0
 	});
 	
-	var _mainMenu = require('/ui/common/mainMenu');
-	mainMenu = new _mainMenu();
-	mainMenu.open();
-	
-	navGroup = Titanium.UI.iPhone.createNavigationGroup({
-   		window: myTixWin,
-   		left: 0,
-   		width: Ti.Platform.displayCaps.platformWidth
+	var alertsTab = Ti.UI.createTab({
+		icon: '/images/40-inbox.png',
+		window: alertsWin,
+		title: 'Alerts'
 	});
 	
-	// = _appNavgroup.getAppNavGroup(myTixWin);
-	mainWin.add(navGroup);
-	mainWin.open();
-	//var _tixView = require('/ui/common/myTicketsView')
+	var myTixTab = Ti.UI.createTab({
+		icon: '/images/KS_nav_ui.png',
+		window: myTixWin,
+		title: 'My Tickets'
+	});
+	
+	HighlightTab.setHighlightTab({
+		tabgroup: appTabGroup,
+		icon: 'images/btn-camera.png'
+	});
+	
+	appTabGroup.addTab(alertsTab);
+	appTabGroup.addTab(Ti.UI.createTab({backgroundImage : 'images/camTab.png'}));
+	appTabGroup.addTab(myTixTab);
+	appTabGroup.setActiveTab(myTixTab);
+	
+	appTabGroup.open();
+	
 };
 
 function toggleMenu(){
 	if( !isToggled ){
-		//mainMenu.open();
-	    mainWin.animate(animateLeft);
-		isToggled = true;
+		
+	    appTabGroup.animate(animateLeft);
+	    isToggled = true;
+	
 	} else
 	{
-		//mainMenu.close();
-	    mainWin.animate(animateRight);
+	    appTabGroup.animate(animateRight); 
 		isToggled = false;
 	}
 }
@@ -96,15 +135,15 @@ function toggleMenu(){
 function openSettings(){
 	if(settingsWin==null)
 	{
-		settingsWin = new _settingsWin();//(myTixWin,view);
+		settingsWin = new _settingsWin();
 		navGroup.open(settingsWin);
 	}
-	// Ti.App.fireEvent('closeMenu');
+
 	closeMenu();
 };
 
 function loadMyTickets(){
-	if(settingsWin)//(settingsWin.visible || settingsWin != null)
+	if(settingsWin)
 	{
 		navGroup.close(settingsWin);
 		settingsWin=null;
@@ -113,21 +152,57 @@ function loadMyTickets(){
 }
 
 function closeMenu(){
-	//myTixWin.closeMenu();
-	mainWin.animate(animateRight);
+	
+	appTabGroup.animate(animateleft);
 	isToggled = false;
 }
 
-//function to set all LoginBtns to correctStatus
-// function setLoginBtnStatus(isLoggedIn){
-// 	
-	// myTixWin.setLoginBtnState(isLoggedIn);
-	// if(settingsWin)
-	// {
-		// settingsWin.setLoginBtnState(isLoggedIn);
-	// }
-// 	
-// }
+function openCamScreen(){
+	alert('Cam Button Pressed!');
+	callback();
+}
+
+function handleLogin(args){
+	if(globals.isLoggedIn()){
+		fbLogout();
+		globals.setLoggedIn(false);
+		// for users not loggedIn to FB call logout function here which will reset all screens with Data.
+		var _loginView = require('/ui/common/logInView');
+		var loginView = new _loginView();
+		for(var i=0; i<loginWin.getChildren.length;i++){
+	    	loginWin.remove(loginWin.children[i]);
+	    }
+		loginWin.add(loginView);
+	}
+	else
+	{ 
+		var net = require('lib/network');
+   	
+   		net.login('login',args.email,args.pwd,function(response){
+   	
+	       	if(response.loggedIn == true){
+	       		
+	       		globals.setCurrentUserID(response.uid);
+	       		globals.setLoggedIn(response.loggedIn);
+	       		globals.setCurrentUserName(response.name);
+	       		alert("Welcome " + response.name);
+	       		loginView = null;	
+	       		var _loggedInView = require('/ui/common/loggedInView');
+	       		var loggedInView = new _loggedInView();
+	       		for(var i=0; i<loginWin.getChildren.length;i++){
+	       			loginWin.remove(loginWin.children[i]);
+	       		}
+	       		loginWin.add(loggedInView);
+	       		toggleMenu();
+	       	}
+	       	
+	       	else  
+				{  
+		     		alert(response.message);  
+				} 
+		});
+	}
+}
 
 Ti.App.addEventListener('GLOBALEVENT', function(e){
 	switch(e.func)
@@ -153,9 +228,12 @@ Ti.App.addEventListener('GLOBALEVENT', function(e){
 		case 'myTickets':
 			loadMyTickets();
 			break;
-		// case 'loginBtnStatus':
-			// setLoginBtnStatus(e.loggedIn);
-			// break;
+		case 'openCamScreen':
+			openCamScreen();
+			break;
+		case 'handleLogin':
+			handleLogin({email: e.email, pwd: e.pwd});
+			break;
 		default:
 			break;
 	}

@@ -2,17 +2,17 @@ function register (){
 	
 var registerWin = Titanium.UI.createWindow({
     backgroundColor: 'white',
-    title: 'Settings',
+    //title: 'Settings',
      //color:'dark grey',
-	 barColor: 'blue',
-    left: 0,
-	zIndex:1,
+	 //barColor: 'blue',
+    //left: 0,
+	//zIndex:1,
 	//barImage:'images/btn-settings.png',
 });
 
 var view = Ti.UI.createScrollView({
 	scrollType:'horizontal',
-	 backgroundImage:'images/light_toast_@2X.png',
+	 backgroundImage:'images/otis_redding.png',
 	 width: Ti.Platform.displayCaps.platformWidth,
 	 height:Ti.Platform.displayCaps.platformHeight,
 	 
