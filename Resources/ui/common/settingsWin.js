@@ -1,40 +1,25 @@
 function settings (){
 
 var _settingsWin = require('/ui/handheld/ApplicationWindow');
-var settingsWin = new _settingsWin({title: 'Settings'});
+var settingsWin = new _settingsWin();
+settingsWin.title='Settings';
 
 var view2 = Ti.UI.createView({
-	 backgroundImage:'images/light_toast_@2X.png',
-	 width: Ti.Platform.displayCaps.platformWidth,
-	 height:Ti.Platform.displayCaps.platformHeight,
-	
+	 backgroundImage:'images/otis_redding.png',	
 });
 
 settingsWin.add(view2);
-
-// var navBtn = Ti.UI.createButton({
-	// title: 'c',
-	// left: 10,
-	// width:10,
-	// //height: 30,
-	// image:'images/btn-back@2x.png',
-	// color:'#6d0a0c',
-	// top: 10,
-	// //opacity:0,
-// });
-
-     
 		
-		 var registerButton = Ti.UI.createButton({
-			title:'Register',
-			//color:'white',
-			top:90,
-			height:Ti.UI.SIZE,
-			 color:'#494a4a',
-			width:200,
-			//image:'images/btn-settings.png',
-			//enabled:false,
-			});	
+var registerButton = Ti.UI.createButton({
+	title:'Register',
+	//color:'white',
+	top:90,
+	height:Ti.UI.SIZE,
+	 color:'#494a4a',
+	width:200,
+	//image:'images/btn-settings.png',
+	//enabled:false,
+	});	
 
  registerButton.addEventListener('click',function(){
 	   	
