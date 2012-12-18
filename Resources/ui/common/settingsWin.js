@@ -2,7 +2,7 @@ function settings (){
 
 var _settingsWin = require('/ui/handheld/ApplicationWindow');
 var settingsWin = new _settingsWin();
-settingsWin.title='Settings';
+settingsWin.title='Settings';	
 
 var view2 = Ti.UI.createView({
 	 backgroundImage:'images/otis_redding.png',	

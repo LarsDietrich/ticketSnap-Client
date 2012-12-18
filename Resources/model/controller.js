@@ -9,9 +9,9 @@ var myTixWin = null;
 var _loginWin = require('/ui/common/loginWin'); // load login screen
 var loginWin = null;
 var HighlightTab = require('ui/common/HighlightTab');
-var _alertsWin = require('/ui/common/SettingsWin');
+var _alertsWin = require('/ui/common/settingsWin');
 var alertsWin = null;
-
+// var _settingsWin = require('/ui/common/settingsWin');
 // create alerts screen
 
 //animations to apply to right menu open and closing
@@ -30,7 +30,7 @@ var animateRight = Ti.UI.createAnimation({
 	left: 0,
 	curve: Ti.UI.iOS.ANIMATION_CURVE_EASE_OUT,
 	duration: 500
-});
+})	;
 
 animateRight.addEventListener('start', function(e){
 	
@@ -42,20 +42,20 @@ var isToggled = false;
 // currentWindow keeps track of when settings is in front and remove it from memory
 var currentWindow=null;
 
-function newTicket(){
-	
-	// if(globals.isLoggedIn()){
-	if(settingsWin)//(settingsWin.visible || settingsWin != null)
-	{
-		navGroup.close(settingsWin);
-		settingsWin=null;	
-	}
-	closeMenu();
- 	newTicketWin = new _newTicketWin();
-	// }else{
-		// Ti.App.fireEvent('loginFirst');	
-	// }
-}
+// function newTicket(){
+// 	
+	// // if(globals.isLoggedIn()){
+	// // if(settingsWin)//(settingsWin.visible || settingsWin != null)
+	// // {
+		// // navGroup.close(settingsWin);
+		// // settingsWin=null;	
+	// // }
+	// // closeMenu();
+ 	// // newTicketWin = new _newTicketWin();
+	// // }else{
+		// // Ti.App.fireEvent('loginFirst');	
+	// // }
+// }
 
 function fbLogout(){
 	Titanium.Facebook.logout();
@@ -132,24 +132,24 @@ function toggleMenu(){
 	}
 }
 
-function openSettings(){
-	if(settingsWin==null)
-	{
-		settingsWin = new _settingsWin();
-		navGroup.open(settingsWin);
-	}
+// function openSettings(){
+	// // if(settingsWin==null)
+	// // {
+		// // settingsWin = new _settingsWin();
+		// // navGroup.open(settingsWin);
+	// // }
+// // 
+	// // closeMenu();
+// };
 
-	closeMenu();
-};
-
-function loadMyTickets(){
-	if(settingsWin)
-	{
-		navGroup.close(settingsWin);
-		settingsWin=null;
-	}
-	closeMenu();
-}
+// function loadMyTickets(){
+	// // if(settingsWin)
+	// // {
+		// // navGroup.close(settingsWin);
+		// // settingsWin=null;
+	// // }
+	// // closeMenu();
+// };
 
 function closeMenu(){
 	
@@ -205,7 +205,7 @@ function handleLogin(args){
 				} 
 		});
 	}
-}
+};
 
 Ti.App.addEventListener('GLOBALEVENT', function(e){
 	switch(e.func)
@@ -240,6 +240,6 @@ Ti.App.addEventListener('GLOBALEVENT', function(e){
 		default:
 			break;
 	}
-})
+});
 
 exports.startApp = startApp;
