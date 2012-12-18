@@ -4,14 +4,19 @@ function logInView(args){
 	
 	args = args || {};
 	
-	var scrollView = Ti.UI.createScrollView({
-		horizontalBounce: false,
-		verticalBounce: true,
+	var thisView = Ti.UI.createView({
 		backgroundImage: '/images/solid.png',
-		layout: 'vertical',
-		height: Ti.UI.FILL
 	});
 	
+	var scrollView = Ti.UI.createScrollView({
+		horizontalBounce: false,
+		verticalBounce: false,
+		backgroundImage: '/images/solid.png',
+		layout: 'vertical',
+		//height: globals.screenHeight,
+	});
+	
+	thisView.add(scrollView);
 	scrollView.add(Ti.UI.createImageView({
 		image: '/images/TICKETSNAP_bar_tr.png',
 		top: 35
@@ -110,7 +115,7 @@ function logInView(args){
 		//registerWin.open({animated: true});
 	});
 	
-	return scrollView;
+	return thisView;
 }
 
 module.exports = logInView;

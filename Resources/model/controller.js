@@ -167,10 +167,12 @@ function handleLogin(args){
 		fbLogout();
 		globals.setLoggedIn(false);
 		// for users not loggedIn to FB call logout function here which will reset all screens with Data.
+		loggedInView=null;
 		var _loginView = require('/ui/common/logInView');
 		var loginView = new _loginView();
-		for(var i=0; i<loginWin.getChildren.length;i++){
+		for(var i=0; i<loginWin.getChildren().length;i++){
 	    	loginWin.remove(loginWin.children[i]);
+	    	loginWin.children[i]=null;
 	    }
 		loginWin.add(loginView);
 	}
@@ -189,8 +191,9 @@ function handleLogin(args){
 	       		loginView = null;	
 	       		var _loggedInView = require('/ui/common/loggedInView');
 	       		var loggedInView = new _loggedInView();
-	       		for(var i=0; i<loginWin.getChildren.length;i++){
+	       		for(var i=0; i<loginWin.getChildren().length;i++){
 	       			loginWin.remove(loginWin.children[i]);
+	       			loginWin.children[i]=null;
 	       		}
 	       		loginWin.add(loggedInView);
 	       		toggleMenu();
