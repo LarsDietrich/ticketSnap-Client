@@ -1,8 +1,9 @@
 var globals = Ti.App.Properties;
 
 var loggedIn = globals.getBool('loggedIn');
-var currentUserID = null;
-var currentUserName = null;
+var currentUserID = globals.getString('currentUID');
+var currentUserName = globals.getString('currentUserName');
+//var currentUserName = null;
 
 //Constants. These will never change because they are not in function.
 exports.screenHeight = Ti.Platform.displayCaps.platformHeight;
@@ -30,7 +31,7 @@ exports.getCurrentUserID = function(){
 
 exports.setCurrentUserID = function(_currentUserID){
 	currentUserID = _currentUserID;
-	globals.setString('currentUID',_currentUserID);
+	globals.setString('currentUID',String(_currentUserID));
 }
 
 exports.setCurrentUserName = function(_currentUserName){
