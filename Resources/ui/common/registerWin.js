@@ -129,9 +129,7 @@ var email = Ti.UI.createTextField({
         
  	    	
  	    }); 
-            
-               
-            			
+    		
  			
  		}else{alert('Sorry your password does not match Try Again!');}
  		

@@ -9,8 +9,9 @@ var myTixWin = null;
 var _loginWin = require('/ui/common/loginWin'); // load login screen
 var loginWin = null;
 var HighlightTab = require('ui/common/HighlightTab');
-var _alertsWin = require('/ui/common/settingsWin');
+var _alertsWin   = require('/ui/common/settingsWin');
 var alertsWin = null;
+
 // var _settingsWin = require('/ui/common/settingsWin');
 // create alerts screen
 
@@ -72,6 +73,10 @@ function startApp(){
 	alertsWin = new _alertsWin();
 	alertsWin.zIndex = 10;
 	
+	newTicketWin = new _newTicketWin();
+	newTicketWin.zIndex = 10;
+	
+	
 	loginWin = new _loginWin(/*here pass in callback function to loggedIn screen*/);
 	loginWin.zIndex=1;
 	
@@ -81,6 +86,7 @@ function startApp(){
 		loginWin.add(loggedInView);
 	}
 	else{
+		
 		var _loginView = require('/ui/common/logInView');
 		var loginView = new _loginView();
 		loginWin.add(loginView);
@@ -111,7 +117,7 @@ function startApp(){
 	});
 	
 	appTabGroup.addTab(alertsTab);
-	appTabGroup.addTab(Ti.UI.createTab({backgroundImage : 'images/camTab.png'}));
+	appTabGroup.addTab(Ti.UI.createTab({backgroundImage : 'images/camTab.png',window:newTicketWin,title:'New Ticket'}));
 	appTabGroup.addTab(myTixTab);
 	appTabGroup.setActiveTab(myTixTab);
 	
@@ -159,7 +165,7 @@ function closeMenu(){
 
 function openCamScreen(){
 	alert('Cam Button Pressed!');
-	callback();
+	//callback();
 }
 
 function handleLogin(args){

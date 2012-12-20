@@ -20,8 +20,8 @@ function newTicketWin (){
 
 	// function ticket_fnc (image,imgname){
 	
-		var thisWin = new require('/ui/handheld/ApplicationWindow');
-		
+		var _win = require('/ui/handheld/ApplicationWindow');
+		var thisWin = new _win();
 		thisWin.zIndex=10;
 	
 		var thisView = Ti.UI.createView({
@@ -36,7 +36,7 @@ function newTicketWin (){
 			top: 10
 		}));
 		
-		var camBtn = Ti.UI.imageView({
+		var camBtn = Ti.UI.createImageView({
 			image: '/images/screenCam.png',
 			backgroundColor: 'transparent',
 			width: globals.screenWidth*.7,

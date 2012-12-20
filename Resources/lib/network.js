@@ -1,4 +1,5 @@
-var loginUrl = "http://www.limonscene.com/myticket_login.php"; 
+var loginUrl = "http://www.goticketsnap.xpertogo.com/myticket_login.php"; 
+
 exports.userRegistration = function (_case,_fname,_lname,_email,_pwd,callback){
 	  
 	  
@@ -83,7 +84,7 @@ exports.sendticket = function(_sender_id,_ticketimage){
 		    return response.result;
 		} // end onload
 		
-			loginRequest.open("POST","http://www.limonscene.com/mt_insert_ticket.php");
+			loginRequest.open("POST","http://www.goticketsnap.xpertogo.com/mt_insert_ticket.php");
 			
 			var params = {  
    				sender_id:_sender_id,
@@ -108,7 +109,7 @@ exports.sendticket = function(_sender_id,_ticketimage){
 		    
 		} // end onload
 		
-			loginRequest.open("POST","http://www.limonscene.com/mt_sendmsg.php");
+			loginRequest.open("POST","http://www.goticketsnap.xpertogo.com/mt_sendmail.php");
 			
 			var params = {  
    				sender_id:_sender_id,
@@ -124,12 +125,66 @@ exports.sendticket = function(_sender_id,_ticketimage){
    	};
   
 	
-	
-	
-	
+
 	
 
+exports.mytickets = function(_user_id,_req,callback){
+			
+    var loginRequest = Titanium.Network.createHTTPClient();
+		loginRequest.onload = function()  
+		{  
+	var json = this.responseText;
+		    Ti.API.info('RAW RESPONSE: '+json); 
+		    var response = JSON.parse(json);
+		     Ti.API.info('RESPONSE:  '+response);  
+		    callback(response);
+		   
+		    
+		    
+		    
+		} // end onload
+		
+		
+			loginRequest.open("POST",'http://www.goticketsnap.xpertogo.com/ticketView.php');
+			
+			var params = {  
+   				user_id: _user_id,  
+        	    request:_req,  
+    		};
+    		
+    		loginRequest.send(params);
 
+   	};
+   	
+   	exports.msgs = function(_imgname,_user_id,_req,callback){
+			
+    var loginRequest = Titanium.Network.createHTTPClient();
+		loginRequest.onload = function()  
+		{  
+			
+	var  json = this.responseText;
+		    Ti.API.info('RAW RESPONSE MSG : '+json); 
+		  var response = JSON.parse(json);
+		    Ti.API.info('RESPONSE MSG:  '+response);  
+		    callback(response);  
+		    
+		} // end onload
+		
+		
+			loginRequest.open("POST",'http://www.goticketsnap.xpertogo.com/ticketView.php');
+			
+			var params = {  
+				imgname:_imgname,
+   				user_id: _user_id,  
+        	    request:_req,  
+    		};
+    		
+    		loginRequest.send(params);
+
+   	};
+  
+
+  
 
 
 
