@@ -83,6 +83,8 @@ var registerButton = Ti.UI.createButton({
     // settingsWin.animate({view:view2, transition:Ti.UI.iPhone.AnimationStyle.CURL_DOWN});
 	    // settingsWin.add(view2); 
         //settingsWin.open({modal:true});
+        
+        
     return settingsWin;
 };
 

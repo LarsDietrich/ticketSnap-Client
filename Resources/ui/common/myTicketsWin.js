@@ -13,8 +13,8 @@ var thisWin = new _win();
 	thisWin.zIndex=10;
 	thisWin.title='My Tickets';
 //<<<<<<< HEAD
-	alert(user_id);
- var view = new _view(2);
+	//alert(user_id);
+ var view = new _view(user_id);
      thisWin.add(view);	
 	
 	

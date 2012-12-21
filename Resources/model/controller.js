@@ -113,11 +113,12 @@ function startApp(){
 	
 	HighlightTab.setHighlightTab({
 		tabgroup: appTabGroup,
+		//window:newTicketWin,title:'New Ticket',
 		icon: 'images/btn-camera.png'
 	});
 	
 	appTabGroup.addTab(alertsTab);
-	appTabGroup.addTab(Ti.UI.createTab({backgroundImage : 'images/camTab.png',window:newTicketWin,title:'New Ticket'}));
+	appTabGroup.addTab(Ti.UI.createTab({backgroundImage : 'images/camTab.png',}));
 	appTabGroup.addTab(myTixTab);
 	appTabGroup.setActiveTab(myTixTab);
 	
@@ -163,8 +164,9 @@ function closeMenu(){
 	isToggled = false;
 }
 
-function openCamScreen(){
+function openCamScreen(currentTab){
 	alert('Cam Button Pressed!');
+	newTicketWin.open({modal:true});
 	//callback();
 }
 
@@ -238,7 +240,7 @@ Ti.App.addEventListener('GLOBALEVENT', function(e){
 			loadMyTickets();
 			break;
 		case 'openCamScreen':
-			openCamScreen();
+			openCamScreen(Titanium.UI.currentTab);
 			break;
 		case 'handleLogin':
 			handleLogin({email: e.email, pwd: e.pwd});

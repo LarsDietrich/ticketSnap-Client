@@ -8,6 +8,7 @@ var view2 = Ti.UI.createView({
 	 backgroundImage:'images/otis_redding.png',
 	// color:'red',	
 });
+/*
 var titleLabel = Titanium.UI.createLabel({
   text:'   Open Tickets (swipe to see more)',
   font: {fontSize: 16, fontWeight: 'bold',color:'#494a4a',},
@@ -34,12 +35,12 @@ var tktNo = Titanium.UI.createLabel({
 });
 
 view2.add(tktNo);
-
+*/
 var sbmit = Titanium.UI.createLabel({
   text:'  Submitted > In-proccess > Resolution',
   font: {fontSize: 16, fontWeight: 'bold',color:'#494a4a',},
   left:10,
-  top:54,
+  top:10,
   height: 25,
   width:'95%',
   borderWidth: 2,
@@ -48,7 +49,7 @@ var sbmit = Titanium.UI.createLabel({
 });
 
 view2.add(sbmit);
-
+/*
 var await = Titanium.UI.createLabel({
   text:'Submitted:Awating attorny review',
   font: {fontSize: 16, fontWeight: 'bold',color:'#494a4a',},
@@ -61,12 +62,12 @@ var await = Titanium.UI.createLabel({
 });
 
 view2.add(await);
-
+*/
      var coverFlowView = Titanium.UI.iOS.createCoverFlowView({
            backgroundColor:'#000',
            backgroundImage:'images/1.png',
-           height:260,
-           bottom:0,
+           height:325,
+           top:40,
            images:[],
         
 		});
