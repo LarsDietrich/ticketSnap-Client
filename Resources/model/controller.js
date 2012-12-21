@@ -58,8 +58,9 @@ var currentWindow=null;
 	// // }
 // }
 
-function fbLogout(){
+function logout(){
 	Titanium.Facebook.logout();
+	globals.setCurrentUserID(null);
 	alert("Logged out!");
 	// TODO: put this function in fbook.js for consistency
 };
@@ -172,7 +173,7 @@ function openCamScreen(currentTab){
 
 function handleLogin(args){
 	if(globals.isLoggedIn()){
-		fbLogout();
+		logout();
 		globals.setLoggedIn(false);
 		// for users not loggedIn to FB call logout function here which will reset all screens with Data.
 		loggedInView=null;
@@ -218,8 +219,8 @@ function handleLogin(args){
 Ti.App.addEventListener('GLOBALEVENT', function(e){
 	switch(e.func)
 	{
-		case 'fbLogout':
-			fbLogout();
+		case 'logout':
+			logout();
 			break;
 		case 'newTicket':
 			newTicket();
