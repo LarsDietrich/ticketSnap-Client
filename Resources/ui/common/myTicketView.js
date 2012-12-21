@@ -4,43 +4,16 @@ var net = require('/lib/network'); //////<<<<<<<---- need to set the right url
 function myticketView (user_id){
 
 var view2 = Ti.UI.createView({
-	
-	 backgroundImage:'images/otis_redding.png',
+	backgroundImage:'images/otis_redding.png',
 	// color:'red',	
 });
-/*
-var titleLabel = Titanium.UI.createLabel({
-  text:'   Open Tickets (swipe to see more)',
-  font: {fontSize: 16, fontWeight: 'bold',color:'#494a4a',},
-  left:15,
-  top:0,
-  height: 25,
-  width:'90%',
-  //borderBottom:'2',
-  //borderWidth: 2,
-  //borderColor: 'black',
-  
-});
-view2.add(titleLabel);
 
-var tktNo = Titanium.UI.createLabel({
-  text:'Tickets No.1     HC120239',
-  font: {fontSize: 16, fontWeight: 'bold',color:'#494a4a',},
-  left:50,
-  top:27,
-  height: 25,
-  width:'100%',
-  //borderWidth: 2,
-  
-});
 
-view2.add(tktNo);
-*/
-var sbmit = Titanium.UI.createLabel({
-  text:'  Submitted > In-proccess > Resolution',
+var sbmit = Titanium.UI.createImageView({
+  image:'images/sbt.png', 
   font: {fontSize: 16, fontWeight: 'bold',color:'#494a4a',},
-  left:10,
-  top:10,
+  //left:10,
+  top:7,
   height: 25,
   width:'95%',
   borderWidth: 2,
@@ -49,20 +22,7 @@ var sbmit = Titanium.UI.createLabel({
 });
 
 view2.add(sbmit);
-/*
-var await = Titanium.UI.createLabel({
-  text:'Submitted:Awating attorny review',
-  font: {fontSize: 16, fontWeight: 'bold',color:'#494a4a',},
-  left:25,
-  top:76,
-  height: 25,
-  width:'100%',
-  
-  
-});
 
-view2.add(await);
-*/
      var coverFlowView = Titanium.UI.iOS.createCoverFlowView({
            backgroundColor:'#000',
            backgroundImage:'images/1.png',
@@ -71,7 +31,7 @@ view2.add(await);
            images:[],
         
 		});
-   view2.add(coverFlowView);
+  
  // this is the function to get tickets
  
     net.mytickets(user_id,'tickets',function(_data){
@@ -82,24 +42,35 @@ view2.add(await);
         var images = [];
         for (var c = 0; c < _data.length; c++){
         	// Ti.API.info ('image:'+_data[c].image+'\nsender_id:'+_data[c].sender_id+'\nstatus:'+_data[c].status);
-          images[c] = {image:_data[c].image,width:225, height:240,id:_data[c].sender_id,imgname:_data[c].imgname,status:_data[c].status};// width:225, height:275
+          images[c] = {image:_data[c].image,width:225, height:275,id:_data[c].sender_id,imgname:_data[c].imgname,status:_data[c].status};// width:225, height:275
         }
         
         coverFlowView.images = images;
     });
   
+  // change image if submitted or in process
+   coverFlowView .addEventListener('change',function(e) {
+   
+   	var state = coverFlowView.images[e.index].status;
+   		//alert(state);
+   	sbmit.image = (state == 1)?'images/inprocess.png':'images/sbt.png';
+   	
+   }); //change image if submitted or in process ends 
+   
+   
+   
     // click listener - when image is clicked
     coverFlowView .addEventListener('click',function(e) {
-    // the window to place the image in
-   //  Titanium.API.info("image clicked: "+e.index+', selected is '+coverFlowView.selected); 
      
 var imgWindow = Ti.UI.createWindow({ 
     modal: true,
-    title:'SMS VIEW',
+    title:'Ticket Detail',
     barColor: '#050505',
     color:'#494a4a',
     backgroundColor: '#050505' 
 });
+
+
 
 var scrollView = Ti.UI.createScrollView({
 	contentWidth:320,
@@ -110,6 +81,8 @@ var scrollView = Ti.UI.createScrollView({
     layout: 'vertical',
 
 });  
+
+
  
 //alert('id:'+coverFlowView.images[e.index].id+'status :'+coverFlowView.images[e.index].status+'imagename :'+coverFlowView.images[e.index].imgname); 
 
@@ -120,8 +93,11 @@ var imgView = Titanium.UI.createImageView({
     zIndex :10,
     right  :10,
     height:230
-}); 
+});
+ 
 scrollView.add(imgView);
+
+
 
 var detailView = Titanium.UI.createView({
     backgroundColor:'white',
@@ -136,18 +112,13 @@ var detailView = Titanium.UI.createView({
 var imgname = coverFlowView.images[e.index].imgname; 
 net.msgs (imgname,user_id,'msg',function(array_resp){
 	
-	 //var top = 0;
-           //  var top = 0;
+	
             if(array_resp.length > 0) {
  
                 var answers = [];
                 for(var i = 0; i < array_resp.length; i++) {
                     //top += 120;
                     var type = array_resp[i].type;
-                    
-                  //answers = [{title :(type=='msg')?array_resp[i].Message:array_resp[i].reply,
-                         //    backgroundImage:'images/chat.png',
-                    // title:semofertas}];
                     
                     //create a table row
 				var row = Titanium.UI.createTableViewRow({
@@ -156,6 +127,8 @@ net.msgs (imgname,user_id,'msg',function(array_resp){
 				  //hasChild: true,
 				  className: 'recipe-row'
 				});
+
+
 				
 				//title label
 				var titleLabel = Titanium.UI.createLabel({
@@ -166,7 +139,10 @@ net.msgs (imgname,user_id,'msg',function(array_resp){
 				  height: 20,
 				  width: 210
 				});
+				
 				row.add(titleLabel);
+				
+				
 				
 				//description label
 				var descriptionLabel = Titanium.UI.createLabel({
@@ -179,23 +155,18 @@ net.msgs (imgname,user_id,'msg',function(array_resp){
 				  width: 250
 				});
 				
+				
+				
 				if(descriptionLabel.text == '') {
 				  descriptionLabel.text = 'No description is available.';
 				}
 				  row.add(descriptionLabel);
 				  //add our little icon to the left of the row
-				/*  var iconImage = Titanium.UI.createImageView({
-				    image: 'images/foodicon.jpg',
-				    width: 50,
-				    height: 50,
-				    left: 10,
-				top: 10 });
-				  row.add(iconImage);*/
-				  //add the table row to our data[] object
-				  
 				  answers.push(row);
 				       
                 }
+                
+                
                 
                 var viewanswer = Titanium.UI.createTableView({
                             data:answers,
@@ -225,30 +196,27 @@ net.msgs (imgname,user_id,'msg',function(array_resp){
 	
 });
 
+			
+			// Create a button to close the modal window
+			var close_modal = Titanium.UI.createButton({title:'Close'});
+			imgWindow.rightNavButton = close_modal;
+			
+			// Handle close_modal event
+			close_modal.addEventListener('click', function() {
+			    imgWindow.close();
+			});
+			// Add the views to the window and open it
+			
+			
+			scrollView.add(detailView);
+			imgWindow.add(scrollView);
+			imgWindow.open();
+			
+			});
 
-// Create a button to close the modal window
-var close_modal = Titanium.UI.createButton({title:'Close'});
-imgWindow.rightNavButton = close_modal;
-
-// Handle close_modal event
-close_modal.addEventListener('click', function() {
-    imgWindow.close();
-});
-// Add the views to the window and open it
-
-
-//detailView.add(lbl);
-scrollView.add(detailView);
-//scrollView.add(detailView);
-
-imgWindow.add(scrollView);
-imgWindow.open();
-
-});
-
-// get tickets end here
-
-	return view2
+			// get tickets end here
+			 view2.add(coverFlowView);
+				return view2
 	
 };
 module.exports = myticketView;
