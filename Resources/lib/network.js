@@ -74,6 +74,8 @@ exports.login = function(_case,_email,_password,callback){
 exports.sendticket = function(_sender_id,_ticketimage){
 			
     var loginRequest = Titanium.Network.createHTTPClient();
+        loginRequest.setRequestHeader("enctype", "multipart/form-data");
+        loginRequest.setRequestHeader("Content-Type", "image/png");
 		loginRequest.onload = function()  
 		{  
 	    var json = this.responseText;

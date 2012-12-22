@@ -102,14 +102,35 @@ function startApp(){
 	var alertsTab = Ti.UI.createTab({
 		icon: '/images/40-inbox.png',
 		window: alertsWin,
-		title: 'Alerts'
+		title: 'Alerts',
+		badge:5,
 	});
+	alertsWin.containingTab = alertsTab;
+	
+alertsTab.addEventListener('focus',function(){
+	
+	//alert('good');
+ alertsTab.badge=0;
+	
+});	
 	
 	var myTixTab = Ti.UI.createTab({
 		icon: '/images/KS_nav_ui.png',
 		window: myTixWin,
-		title: 'My Tickets'
+		title: 'My Tickets',
+		
 	});
+	
+/*	
+	￼// Sets the app's icon badge to 23 Ti.UI.iPhone.appBadge = 23;
+var tabGroup = Titanium.UI.createTabGroup(); var win1 = Titanium.UI.createWindow({
+title:'Window 1',
+backgroundColor:'#fff' });
+// Set the badge for this tab to 10 var tab1 = Titanium.UI.createTab({
+icon:'KS_nav_views.png', title:'Tab 1', window:win1,
+badge:10
+});
+	*/
 	
 	HighlightTab.setHighlightTab({
 		tabgroup: appTabGroup,
@@ -121,6 +142,7 @@ function startApp(){
 	appTabGroup.addTab(Ti.UI.createTab({backgroundImage : 'images/camTab.png',}));
 	appTabGroup.addTab(myTixTab);
 	appTabGroup.setActiveTab(myTixTab);
+	
 	
 	appTabGroup.open();
 	
@@ -165,8 +187,11 @@ function closeMenu(){
 }
 
 function openCamScreen(currentTab){
+	
 	alert('Cam Button Pressed!');
+	
 	newTicketWin.open({modal:true});
+	
 	//callback();
 }
 
@@ -240,7 +265,7 @@ Ti.App.addEventListener('GLOBALEVENT', function(e){
 			loadMyTickets();
 			break;
 		case 'openCamScreen':
-			openCamScreen(Titanium.UI.currentTab);
+			openCamScreen(Titanium.UI.ActiveTab);
 			break;
 		case 'handleLogin':
 			handleLogin({email: e.email, pwd: e.pwd});
