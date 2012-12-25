@@ -71,8 +71,9 @@ function newTicketWin (){
 	 	
 	 	thisView.add(cancelBtn);
 	 	
+	 
 	 	
-	 	
+	 
 	 	
 	 	// this below code starts working after pressing camera 
 	 var afterPressView = Ti.UI.createView({
@@ -178,6 +179,7 @@ var close_modal = Titanium.UI.createButton({title:'Close'});
 
 
 // here goes the entire code to take pic
+
 	 	camBtn.addEventListener('click',function(){
 	 		
 	 	 if(Ti.Media.isCameraSupported){
@@ -340,16 +342,20 @@ close_modal.addEventListener('click', function() {
 });
 
 	 	
-	 	thisWin.add(thisView); //first view
-	 	
 	 	cancelBtn.addEventListener('click',function(){
 	 		
 	 		thisWin.close();
-	 		thisWin =null;
+	 		thisWin = null;
 	 	});
 		
+	 	
+	 	thisWin.add(thisView); //first view
+	 	
 		
          return thisWin;
         };
+	 	
+	 	
+	 	
 
 module.exports  = newTicketWin;

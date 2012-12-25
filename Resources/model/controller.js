@@ -108,11 +108,17 @@ function startApp(){
 	});
 	alertsWin.containingTab = alertsTab;
 	
-alertsTab.addEventListener('focus',function(){
+alertsTab.addEventListener('focus',function(e){
 	
 	//alert('good');
- alertsTab.badge=0;
-	
+	//setInterval(function(e){
+  
+  //alertsTab.badge +=1;
+		
+		
+	///},1000);
+	//alertsTab.badge.hide();
+ 	
 });	
 	
 	var myTixTab = Ti.UI.createTab({
