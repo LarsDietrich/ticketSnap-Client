@@ -4,7 +4,7 @@ var net = require('/lib/network'); //////<<<<<<<---- need to set the right url
 function myticketView (user_id){
 
 var view2 = Ti.UI.createView({
-	backgroundImage:'images/otis_redding.png',
+	backgroundImage:'images/black-wood-bg.png',
 	// color:'red',	
 });
 
@@ -24,8 +24,8 @@ var sbmit = Titanium.UI.createImageView({
 view2.add(sbmit);
 
      var coverFlowView = Titanium.UI.iOS.createCoverFlowView({
-           backgroundColor:'#000',
-           backgroundImage:'images/1.png',
+           //backgroundColor:'#000',
+           backgroundColor:'transparent',
            height:325,
            top:40,
            images:[],

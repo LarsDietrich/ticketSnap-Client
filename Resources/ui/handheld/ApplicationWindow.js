@@ -22,7 +22,7 @@ function ApplicationWindow(params) {
 	var isToggled = false;
 
 	var thisWin = Titanium.UI.createWindow({
-	    backgroundImage:'images/otis_redding.png',
+	    backgroundImage:'images/greyWood.png',
 	    titleImage: '/images/TICKETSNAP_bar_tr.png',
 	    barColor: '#202020'
 	});

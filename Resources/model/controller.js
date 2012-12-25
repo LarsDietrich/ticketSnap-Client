@@ -9,7 +9,7 @@ var myTixWin = null;
 var _loginWin = require('/ui/common/loginWin'); // load login screen
 var loginWin = null;
 var HighlightTab = require('ui/common/HighlightTab');
-var _alertsWin   = require('/ui/common/settingsWin');
+var _alertsWin   = require('/ui/common/alertsWin');
 var alertsWin = null;
 
 // var _settingsWin = require('/ui/common/settingsWin');
@@ -79,7 +79,7 @@ function startApp(){
 	
 	
 	loginWin = new _loginWin(/*here pass in callback function to loggedIn screen*/);
-	loginWin.zIndex=1;
+	//loginWin.zIndex=1;
 	
 	if(globals.isLoggedIn()){
 		var _loggedInView = require('/ui/common/loggedInView');
@@ -144,14 +144,12 @@ badge:10
 	appTabGroup.addTab(myTixTab);
 	appTabGroup.setActiveTab(myTixTab);
 	
-	
 	appTabGroup.open();
-	
 };
 
 function toggleMenu(){
 	if( !isToggled ){
-		
+		//openLoginWin();
 	    appTabGroup.animate(animateLeft);
 	    isToggled = true;
 	
@@ -253,9 +251,9 @@ Ti.App.addEventListener('GLOBALEVENT', function(e){
 		case 'loadARScreen':
 			loadARScreen(e.DATA);
 			break;
-		case 'settings':
-			openSettings();
-			break;
+		// case 'settings':
+			// openSettings();
+			// break;
 		case 'closeMenu':
 			closeMenu();
 			break;

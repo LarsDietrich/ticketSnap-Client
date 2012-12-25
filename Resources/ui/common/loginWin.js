@@ -8,7 +8,7 @@ function loginWin(callback){
 	
 	var thisWin = new _thisWin();
 
-	thisWin.zIndex=1;
+	thisWin.zIndex=0;
 	thisWin.top=1;
 	thisWin.left=45;
 	thisWin.width=275;

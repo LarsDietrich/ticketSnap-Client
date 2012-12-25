@@ -5,13 +5,13 @@ function logInView(args){
 	args = args || {};
 	
 	var thisView = Ti.UI.createView({
-		backgroundImage: '/images/solid.png',
+		backgroundImage: '/images/grey_background.png',
 	});
 	
 	var scrollView = Ti.UI.createScrollView({
 		horizontalBounce: false,
 		verticalBounce: false,
-		backgroundImage: '/images/solid.png',
+		backgroundImage: '/images/grey_background.png',
 		layout: 'vertical',
 		//height: globals.screenHeight,
 	});

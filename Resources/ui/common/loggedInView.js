@@ -7,7 +7,7 @@ function loggedInView(args){
 	var scrollView = Ti.UI.createScrollView({
 		horizontalBounce: false,
 		verticalBounce: true,
-		backgroundImage: '/images/solid.png',
+		backgroundImage: '/images/grey_background.png',
 		layout: 'vertical'
 	});
 	
