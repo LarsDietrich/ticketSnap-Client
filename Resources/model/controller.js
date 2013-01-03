@@ -5,6 +5,8 @@ var newTicketWin = null;
 var newTixTab = null;
 // var _appTabGroup = require('/ui/common/ApplicationTabGroup'); // load appTabGroup
 var appTabGroup = null; //tabGroup for app
+var _myTixView = require('/ui/common/myTicketView');
+var myTixView = null;
 var _myTixWin = require('/ui/common/myTicketsWin');  //load my tickets window.
 var myTixWin = null;
 var _loginWin = require('/ui/common/loginWin'); // load login screen
@@ -71,7 +73,9 @@ function logout(){
 function startApp(){
 	
 	// instantiate the windows
+	myTixView = new _myTixView(globals.getCurrentUserID());
 	myTixWin = new _myTixWin();
+	myTixWin.add(myTixView.getView());
 	myTixWin.zIndex = 10;
 	
 	alertsWin = new _alertsWin();
@@ -227,6 +231,7 @@ function handleLogin(args){
 	    	loginWin.children[i]=null;
 	    }
 		loginWin.add(loginView);
+		myTixView.refreshCF(null);
 	}
 	else
 	{ 
@@ -239,7 +244,7 @@ function handleLogin(args){
 	       		globals.setCurrentUserID(response.uid);
 	       		globals.setLoggedIn(response.loggedIn);
 	       		globals.setCurrentUserName(response.name);
-	       		alert("Welcome " + response.name);
+	       		
 	       		loginView = null;	
 	       		var _loggedInView = require('/ui/common/loggedInView');
 	       		var loggedInView = new _loggedInView();
@@ -248,7 +253,9 @@ function handleLogin(args){
 	       			loginWin.children[i]=null;
 	       		}
 	       		loginWin.add(loggedInView);
+	       		myTixView.refreshCF(response.uid);
 	       		toggleMenu();
+	       		alert("Welcome " + response.name);
 	       	}
 	       	
 	       	else  

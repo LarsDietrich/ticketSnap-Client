@@ -3,7 +3,7 @@ var loggedIn = globals.isLoggedIn();
 
 var user_id  = globals.getCurrentUserID();
 var _win  = require('/ui/handheld/ApplicationWindow');
-var _view = require('/ui/common/myTicketView');
+//var _view = require('/ui/common/myTicketView');
 
 
 
@@ -14,8 +14,8 @@ var thisWin = new _win();
 	thisWin.title='My Tickets';
 //<<<<<<< HEAD
 	//alert(user_id);
- var view = new _view(user_id);
-     thisWin.add(view);	
+ // var view = new _view(user_id);
+     // thisWin.add(view);	
 	
 	
     return thisWin;

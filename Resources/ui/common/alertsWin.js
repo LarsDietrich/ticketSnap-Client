@@ -1,16 +1,18 @@
 function alerts (){
 
-var _alertsWin = require('/ui/handheld/ApplicationWindow');
-var alertsWin = new _alertsWin();
-alertsWin.title='Alerts';	
-alertsWin.zIndex=10;
+var  _alertsWin   = require('/ui/handheld/ApplicationWindow');
+var  alertsWin    = new _alertsWin();
+     alertsWin.title  = 'alerts';	
 
 var view2 = Ti.UI.createView({
-	 backgroundImage:'images/greyWood.png',	
+	 backgroundImage:'images/otis_redding.png',	
 });
 
 // populate 
+<<<<<<< HEAD
 // populate 
+=======
+>>>>>>> made app login dynamic and added dynamic status view for each ticket
 var data = []; //empty data array
    //declare the http client object
   
@@ -23,7 +25,11 @@ var data = []; //empty data array
    });
 
    
+<<<<<<< HEAD
    ///settingsWin.containingTab.open();
+=======
+   ///alertsWin.containingTab.open();
+>>>>>>> made app login dynamic and added dynamic status view for each ticket
 
    
    //Terminating in response to SpringBoard's termination.
@@ -140,7 +146,11 @@ var takePic = Ti.UI.createButton({
   // alert(e.row.children[1].height); 
   // e.Height = 200;
    /* 
+<<<<<<< HEAD
     var detailWin = new _settingsWin();
+=======
+    var detailWin = new _alertsWin();
+>>>>>>> made app login dynamic and added dynamic status view for each ticket
         detailWin.title = 'Action Alert';
 	    
 	    var dView = Ti.UI.createView({
@@ -164,7 +174,11 @@ var     titleLabel = Titanium.UI.createLabel({
 
       dView.add(titleLabel);
       
+<<<<<<< HEAD
 settingsWin.containingTab.open(detailWin);  	*/
+=======
+alertsWin.containingTab.open(detailWin);  	*/
+>>>>>>> made app login dynamic and added dynamic status view for each ticket
 
   
 
@@ -192,7 +206,7 @@ var registerButton = Ti.UI.createButton({
 	height:Ti.UI.SIZE,
 	 color:'#494a4a',
 	width:200,
-	//image:'images/btn-settings.png',
+	//image:'images/btn-alerts.png',
 	//enabled:false,
 	});	
 
@@ -209,7 +223,7 @@ var registerButton = Ti.UI.createButton({
 			top:140,
 			height:Ti.UI.SIZE,
 			width:200,
-			//image:'images/btn-settings.png',
+			//image:'images/btn-alerts.png',
 			});
 		
 		 var Edit_pwd_Button = Ti.UI.createButton({
@@ -219,7 +233,7 @@ var registerButton = Ti.UI.createButton({
 			top:190,
 			height:Ti.UI.SIZE,
 			width:200,
-			//image:'images/btn-settings.png',
+			//image:'images/btn-alerts.png',
 			//enabled:false,
 			});
 				
@@ -238,8 +252,8 @@ var registerButton = Ti.UI.createButton({
 		
 	// closebutton.addEventListener('click',function()
 	// {
-		// settingsWin.animate({view:view,transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
-		// settingsWin.title ='My Tickets'
+		// alertsWin.animate({view:view,transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
+		// alertsWin.title ='My Tickets'
 	// });
 	// view2.add(closebutton);
 	
@@ -248,16 +262,16 @@ var registerButton = Ti.UI.createButton({
 		// image tacking code ends here
 		
 /*
-    settingsWin.setLeftNavButton(navBtn);
+    alertsWin.setLeftNavButton(navBtn);
     navBtn.addEventListener('click',function(){
-	settingsWin.close();
-	settingsWin=null;
+	alertsWin.close();
+	alertsWin=null;
 	
     });
     */
-    // settingsWin.animate({view:view2, transition:Ti.UI.iPhone.AnimationStyle.CURL_DOWN});
-	    // settingsWin.add(view2); 
-        //settingsWin.open({modal:true});
+    // alertsWin.animate({view:view2, transition:Ti.UI.iPhone.AnimationStyle.CURL_DOWN});
+	    // alertsWin.add(view2); 
+        //alertsWin.open({modal:true});
         
         
     return alertsWin;

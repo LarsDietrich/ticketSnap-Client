@@ -1,14 +1,17 @@
-function settings (){
+function alerts (){
 
-var  _settingsWin   = require('/ui/handheld/ApplicationWindow');
-var  settingsWin    = new _settingsWin();
-     settingsWin.title  = 'Settings';	
+var _alertsWin = require('/ui/handheld/ApplicationWindow');
+var alertsWin = new _alertsWin();
+alertsWin.title='Alerts';	
+alertsWin.zIndex=10;
 
 var view2 = Ti.UI.createView({
-	 backgroundImage:'images/otis_redding.png',	
+	 backgroundImage:'images/greyWood.png',	
 });
 
 // populate 
+
+
 var data = []; //empty data array
    //declare the http client object
   
@@ -17,128 +20,17 @@ var data = []; //empty data array
      width: 320,
      top: 0,
      left: 0,
-    // rowHeight: 70,
+     rowHeight: 70,
    });
 
    
    ///settingsWin.containingTab.open();
-
    
-   //Terminating in response to SpringBoard's termination.
-  view2.add(tblRecipes);
-  
-     //loop each item in the xml
-     for (var i = 0; i < 5; i++) {//create a table row
-     	
-var row = Titanium.UI.createTableViewRow({
-   // hasChild: true,
-    className: 'recipe-row'
-});
-
-//title label
-var titleLabel = Titanium.UI.createLabel({
-  text:'2012/22    Ticket No.1  (On Hold)' ,
-  font: {fontSize: 14, fontWeight: 'bold'},
-  left: 70,
-  top: 5,
-  height: 20,
-  width: 280,
-});
-
-row.add(titleLabel);
-
-//description label
-var descriptionLabel = Titanium.UI.createLabel({
-  text:'Join the very first European Titanium Mobile Development Conference, that is entirely community-organized. Weve got a city - the beautiful Valencia in Spain, and a venue - the amazing Astoria Palace hotel, right in the heart of this historic quarter.',
-  font: {fontSize: 10, fontWeight: 'normal'},
-  left:20,
-  top: 25,
-  height:20,
-  width: 280,
-  //bottom:30,
-});
-
-if(descriptionLabel.text == '') {
-  descriptionLabel.text = 'No description is available.';
-}
-  row.add(descriptionLabel);
-  
-var takePic = Ti.UI.createButton({
-			backgroundColor:'black',
-			left:20,	
-			color:'#6d0a0c',
-		    bottom:5,
-			opacity:1,
-			title: 'Take Pic', });
-			
-			
-   row.add(takePic);
-   
- takePic.addEventListener('click',function(){
- 	
- 	
- Ti.App.fireEvent('GLOBALEVENT',{func: 'openCamScreen'});
- 	
- });  
-  
-  var CallAtrn = Ti.UI.createButton({
-  	
-			backgroundColor:'black',
-			right:20,
-			color:'#6d0a0c',
-			bottom:5,
-			opacity:1,
-			title: 'Call Atty', });
-			
-	 row.add(CallAtrn);
-	    
-	    takePic.hide();
-	    CallAtrn.hide();
-			
-  //add our little icon to the left of the row
- /* var iconImage = Titanium.UI.createImageView({
-    image: 'images/screenCam.png',
-    width: 50,
-    height: 50,
-    left: 10,
-    top: 10 });
-  row.add(iconImage);*/
-  
-  //add the table row to our data[] object
-  data.push(row);
-}//finally, set the data property of the tableView to our
-     //data[] object
-     tblRecipes.data = data;
-//};
-
-
- var isViewed = false;  
  tblRecipes.addEventListener('click',function(e){
  	
- 	if(!isViewed){
-   //_data = e.rowData;
-   isViewed = true;
-   e.row.children[1].font    = {fontSize: 16, fontWeight: 'normal'};
-   e.row.children[1].height  = 'auto';
-   e.row.children[1].bottom  = 60;
-   e.row.children[2].show();
-   e.row.children[3].show();
-  }else{
-  	
-   isViewed = false;
-   e.row.children[1].font     = {fontSize: 10, fontWeight: 'normal'};
-   e.row.children[1].height   = 20;
-   e.row.children[1].bottom   = 0;
-   e.row.children[2].hide();
-   e.row.children[3].hide();
-  	
-  	
-  }
-   
-  // alert(e.row.children[1].height); 
-  // e.Height = 200;
-   /* 
-    var detailWin = new _settingsWin();
+   //_data = e.rowData; 
+    
+    var detailWin = new _alertsWin();
         detailWin.title = 'Action Alert';
 	    
 	    var dView = Ti.UI.createView({
@@ -162,26 +54,67 @@ var     titleLabel = Titanium.UI.createLabel({
 
       dView.add(titleLabel);
       
-settingsWin.containingTab.open(detailWin);  	*/
-
-  
+alertsWin.containingTab.open(detailWin);  	
 
  });  
  
+   
+   //Terminating in response to SpringBoard's termination.
+  view2.add(tblRecipes);
+  
+     //loop each item in the xml
+     for (var i = 0; i < 5; i++) {//create a table row
+     	
+var row = Titanium.UI.createTableViewRow({
+    hasChild: true,
+    className: 'recipe-row'
+});
+
+//title label
+var titleLabel = Titanium.UI.createLabel({
+  text:'2012/22 Ticket No.1(On Hold)' ,
+  font: {fontSize: 14, fontWeight: 'bold'},
+  left: 70,
+  top: 5,
+  height: 20,
+  width: 210
+});
+
+row.add(titleLabel);
+
+//description label
+var descriptionLabel = Titanium.UI.createLabel({
+  text:'Join the very first European Titanium Mobile Development Conference, that is entirely community-organized. Weve got a city - the beautiful Valencia in Spain, and a venue - the amazing Astoria Palace hotel, right in the heart of this historic quarter.',
+  font: {fontSize: 10, fontWeight: 'normal'},
+  left: 70,
+  top: 25,
+  height: 40,
+  width: 200
+});
+
+if(descriptionLabel.text == '') {
+  descriptionLabel.text = 'No description is available.';
+}
+  row.add(descriptionLabel);
+  
+  //add our little icon to the left of the row
+  var iconImage = Titanium.UI.createImageView({
+    image: 'images/screenCam.png',
+    width: 50,
+    height: 50,
+    left: 10,
+    top: 10 });
+  row.add(iconImage);
+  
+  //add the table row to our data[] object
+  data.push(row);
+}//finally, set the data property of the tableView to our
+     //data[] object
+     tblRecipes.data = data;
+//};
 
 
-
-
-
-
-
-
-
-
-
-
-
-settingsWin.add(view2);
+alertsWin.add(view2);
 /*		
 var registerButton = Ti.UI.createButton({
 	title:'Register',
@@ -258,7 +191,7 @@ var registerButton = Ti.UI.createButton({
         //settingsWin.open({modal:true});
         
         
-    return settingsWin;
+    return alertsWin;
 };
 
-module.exports  = settings;
+module.exports  = alerts;

@@ -133,30 +133,24 @@ exports.sendticket = function(_sender_id,_ticketimage){
 exports.mytickets = function(_user_id,_req,callback){
 			
     var loginRequest = Titanium.Network.createHTTPClient();
-		loginRequest.onload = function()  
-		{  
-	var json = this.responseText;
-		    Ti.API.info('RAW RESPONSE: '+json); 
-		    var response = JSON.parse(json);
-		     Ti.API.info('RESPONSE:  '+response);  
-		    callback(response);
-		   
-		    
-		    
-		    
-		} // end onload
+	loginRequest.onload = function()  
+	{  
+		var json = this.responseText;
+		Ti.API.info('RAW RESPONSE: '+json); 
+		var response = JSON.parse(json);
+		Ti.API.info('RESPONSE:  '+response);  
+		callback(response);   
+	} // end onload
 		
-		
-			loginRequest.open("POST",'http://www.goticketsnap.xpertogo.com/ticketView.php');
+	loginRequest.open("POST",'http://www.goticketsnap.xpertogo.com/ticketView.php');
 			
-			var params = {  
-   				user_id: _user_id,  
-        	    request:_req,  
-    		};
+	var params = {  
+		user_id: _user_id,  
+	    request:_req,  
+	};
     		
-    		loginRequest.send(params);
-
-   	};
+    loginRequest.send(params);
+};
    	
    	exports.msgs = function(_imgname,_user_id,_req,callback){
 			

@@ -1,13 +1,23 @@
 
 var net = require('/lib/network'); //////<<<<<<<---- need to set the right url
 
+var coverFlowView = Titanium.UI.iOS.createCoverFlowView({
+           //backgroundColor:'blue',
+           backgroundColor:'transparent',
+           height:300,
+           top:65,
+           images:[],
+        
+		});
+
 function myticketView (user_id){
 
-var view2 = Ti.UI.createView({
-	backgroundImage:'images/black-wood-bg.png',
+    this.view2 = Ti.UI.createView({
+	backgroundImage:'transparent',
 	// color:'red',	
 });
 
+<<<<<<< HEAD
 /*
 var sbmit = Titanium.UI.createImageView({
   image:'images/sbt.png', 
@@ -50,16 +60,75 @@ view2.add(sbmit);*/
     });
   //#############################################################// 
   
+=======
+var sbmitView = Ti.UI.createView({
+	top:0,
+	height: 65,
+	backgroundColor: 'transparent'
+});
+
+var sbmitBG = Ti.UI.createView({
+	backgroundImage: '/images/processBarBG.png',
+	height: 50,
+	width: 300,
+	backgroundLeftCap: 10,
+	backgroundTopCap: 10,
+	zIndex: 1
+});
+
+var sbmitFillView = Ti.UI.createView({
+	left: 4,
+	backgroundColor: '#3dd11e',
+	width: 100,
+	top: 4,
+	bottom: 4,
+	//height: '98%',
+	zIndex: 2
+})
+
+var sbmitLabel = Ti.UI.createLabel({
+	text: 'SUBMITTED > IN PROCESS > RESOLUTION',
+	font: {fontSize: 14},
+	
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+	wordWrap: false,
+	zIndex: 3
+});
+
+
+
+// var sbmit = Titanium.UI.createImageView({
+  // image:'images/sbt.png', 
+  // font: {fontSize: 16, fontWeight: 'bold',color:'#494a4a',},
+  // //left:10,
+  // top:7,
+  // height: 25,
+  // width:'95%',
+  // borderWidth: 2,
+  // borderColor:'black'
+// });
+sbmitBG.add(sbmitFillView);
+sbmitBG.add(sbmitLabel);
+sbmitView.add(sbmitBG);
+this.view2.add(sbmitView);
+
+ populateCF(user_id);
+>>>>>>> made app login dynamic and added dynamic status view for each ticket
   // change image if submitted or in process
  /*  coverFlowView .addEventListener('change',function(e) {
    
    	var state = coverFlowView.images[e.index].status;
    		//alert(state);
-   	sbmit.image = (state == 1)?'images/inprocess.png':'images/sbt.png';
+   	 (state == 1)?sbmitFillView.width=200 :sbmitFillView.width=100;
    	
    }); //change image if submitted or in process ends 
+<<<<<<< HEAD
    */
    //#############################################################// 
+=======
+   
+  
+>>>>>>> made app login dynamic and added dynamic status view for each ticket
    
     // click listener - when image is clicked
     coverFlowView .addEventListener('click',function(e) {
@@ -218,9 +287,50 @@ net.msgs (imgname,user_id,'msg',function(array_resp){
 			});
 
 			// get tickets end here
-			 view2.add(coverFlowView);
-				return view2
+			 this.view2.add(coverFlowView);
+			//return this.view2;
 	
 };
+
+// this is the function to get tickets
+ function populateCF(uid){
+    var images = [];
+    //coverFlowView.selected=0;
+    coverFlowView.images = images;
+    
+    if(uid==null)
+    {
+    	images = [{image:'/images/cross-out-hi.png',width:225, height:275}];
+    	coverFlowView.images = images;
+    	coverFlowView.selected = images.length-1;
+    	coverFlowView.selected=0;
+    }
+    else
+    {
+    	
+	    net.mytickets(uid,'tickets',function(_data){
+	    	if (_data.length === 0){
+	            return;
+	        }
+	        
+	        for (var c = 0; c < _data.length; c++){
+	        	// Ti.API.info ('image:'+_data[c].image+'\nsender_id:'+_data[c].sender_id+'\nstatus:'+_data[c].status);
+	          images[c] = {image:_data[c].image,width:225, height:275,id:_data[c].sender_id,imgname:_data[c].imgname,status:_data[c].status};// width:225, height:275
+	        }
+	        coverFlowView.images = images;
+	        //coverFlowView.selected = images.length-1;
+	        coverFlowView.selected = 0;
+	    });
+	 }   
+ }
+  
+  myticketView.prototype.getView = function(){
+  	return this.view2;
+  }
+  
+myticketView.prototype.refreshCF = function(_user_id){
+	populateCF(_user_id);
+};
+
 module.exports = myticketView;
 
