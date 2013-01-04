@@ -17,7 +17,6 @@ function myticketView (user_id){
 	// color:'red',	
 });
 
-<<<<<<< HEAD
 /*
 var sbmit = Titanium.UI.createImageView({
   image:'images/sbt.png', 
@@ -60,7 +59,7 @@ view2.add(sbmit);*/
     });
   //#############################################################// 
   
-=======
+
 var sbmitView = Ti.UI.createView({
 	top:0,
 	height: 65,
@@ -113,7 +112,7 @@ sbmitView.add(sbmitBG);
 this.view2.add(sbmitView);
 
  populateCF(user_id);
->>>>>>> made app login dynamic and added dynamic status view for each ticket
+
   // change image if submitted or in process
  /*  coverFlowView .addEventListener('change',function(e) {
    
@@ -125,10 +124,7 @@ this.view2.add(sbmitView);
 <<<<<<< HEAD
    */
    //#############################################################// 
-=======
-   
-  
->>>>>>> made app login dynamic and added dynamic status view for each ticket
+
    
     // click listener - when image is clicked
     coverFlowView .addEventListener('click',function(e) {

@@ -8,11 +8,6 @@ var view2 = Ti.UI.createView({
 	 backgroundImage:'images/otis_redding.png',	
 });
 
-// populate 
-<<<<<<< HEAD
-// populate 
-=======
->>>>>>> made app login dynamic and added dynamic status view for each ticket
 var data = []; //empty data array
    //declare the http client object
   
@@ -23,14 +18,6 @@ var data = []; //empty data array
      left: 0,
     // rowHeight: 70,
    });
-
-   
-<<<<<<< HEAD
-   ///settingsWin.containingTab.open();
-=======
-   ///alertsWin.containingTab.open();
->>>>>>> made app login dynamic and added dynamic status view for each ticket
-
    
    //Terminating in response to SpringBoard's termination.
   view2.add(tblRecipes);
@@ -176,11 +163,8 @@ var     titleLabel = Titanium.UI.createLabel({
       
 <<<<<<< HEAD
 settingsWin.containingTab.open(detailWin);  	*/
-=======
-alertsWin.containingTab.open(detailWin);  	*/
->>>>>>> made app login dynamic and added dynamic status view for each ticket
 
-  
+alertsWin.containingTab.open(detailWin);  	
 
  });  
  
