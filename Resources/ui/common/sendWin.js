@@ -1,6 +1,12 @@
-var globalVars = Ti.App.Properties;
+var globals = require('lib/AppProperties');
+var loggedIn = globals.isLoggedIn();
+var user_id = globals.getCurrentUserID();
 
-function send (_image,_msg,imgname){
+var net = require('lib/network');
+
+function send (_imgname){
+
+alert(_imgname);
 
 var sendWin = Titanium.UI.createWindow({
     backgroundColor: 'white',
@@ -11,151 +17,180 @@ var sendWin = Titanium.UI.createWindow({
 });
 
 var view = Ti.UI.createScrollView({
-	 backgroundImage:'images/bg@2x.png',
+	backgroundImage:'images/otis_redding.png',
+	//backgroundColor:'black',
 	 width: Ti.Platform.displayCaps.platformWidth,
 	 height:(Ti.Platform.displayCaps.platformHeight-40),
-     scrollType:'horizontal'
+     scrollType:'horizontal',
+     layout:'vertical',
+     contentHeight : 'auto',
+     scrolshowVerticalScrollIndicator:true,
+     bottom:40,
+      scrollsToTop:true,
+    
 });
-
-var bottomView = Ti.UI.createView({
-	 backgroundImage:'images/btn-settings.png',
-	 width: Ti.Platform.displayCaps.platformWidth,
-	 height:40,
-	 bottom:0,
+   //view.scrollTo(0, 200);
+   
+  //#############################################################//  
+   //here i start to populate the Scroll view by  msgs sent earlier
+    var answers = [];
+    
+  
+    var top = 60;               
+    net.msgs (_imgname,user_id,'All',function(array_resp){
 	
-});
-
-var navBtn = Ti.UI.createButton({
-	title: 'c',
-	left: 10,
-	width:10,
-	//height: 30,
-	image:'images/btn-back@2x.png',
-	color:'#6d0a0c',
-	top: 10,
-	//opacity:0,
-});
+            if(array_resp.length > 0) {
  
-    sendWin.setLeftNavButton(navBtn);
-    navBtn.addEventListener('click',function(){
-	sendWin.close();
+             
+                for(var i = 0; i < array_resp.length; i++) {
+                   
+                    var type = array_resp[i].type;
+        
+				//description label
+			
+				
+			var     descriptionLabel = Titanium.UI.createLabel({
+				    text:(type == 'msg')?'\n\n'+array_resp[i].Message+'\n\n'+array_resp[i].date_time :array_resp[i].Reply+'\n\n'+array_resp[i].date_time+'\n\n',
+				    font: {fontSize: 12, fontWeight: 'normal'},
+				    //textAlign:Ti.UI.TEXT_ALIGNMENT_CENTER,
+				    left:(type == 'msg')?65:5,
+				    
+				    backgroundImage:(type == 'msg')?'images/chat.png':'images/GrayBalloonRight.png',
+				    top: top,
+				    height:Ti.UI.SIZE,
+				    width: 250
+				});
+				
+				
+				if(descriptionLabel.text == '') {
+				  descriptionLabel.text = 'No description is available.';
+				}
+				   top = top + descriptionLabel.height + 40; 
+				   view.add(descriptionLabel);
+				    
+                }
+                
+               // view.contentHeight = top + 70;
+            }
+            
+           
 	
-    });
-	  
-// this sets the background color of the master UIView (when there are no windows/tab groups on it)
-   //Titanium.UI.setBackgroundColor('#000');
-   //this variable will hold our image data blob from the device's gallery
-   
-var selectedImage = null;
-     
-var imageThumbnail = Titanium.UI.createImageView({
-    width: Ti.Platform.displayCaps.platformWidth,
-    height:200,
-    left:0,
-    image:_image,
-    //top:15,
-    top:20,
-    backgroundColor: '#000',
-    borderSize: 10,
-    borderColor: '#fff'
-   });
-   
-view.add(imageThumbnail);
-
-
-var buttonSelectImage = Titanium.UI.createButton({
-    // width:  100,
-    height:  35,
-     //top: 220,
-     left: 10,
-     borderRadius:5,
-     backgroundColor:'black',
-     title: 'Choose'
-    });
-  
- /* buttonSelectImage.addEventListener('click',function(e){
-     //obtain an image from the gallery
-     Titanium.Media.openPhotoGallery({
-      success:function(event)
-       {
-         selectedImage = event.media;
-         
-         // set image view
-         Ti.API.debug('Our type was: '+event.mediaType);
-         if(event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO)
-         {
-           imageThumbnail.image = selectedImage;
-         }
-       },
-           cancel:function()
-           {
-               //user cancelled the action from within
-               //the photo gallery
-           }
-}); });
-*/
-   //bottomView.add(buttonSelectImage);
-   
- var txtTitle = Titanium.UI.createTextField({
-       width: 250,
-       height: 35,
-       left:0,
-       bottom:180,
-       value: 'Message title...',
-       borderStyle: 2,
-       backgroundColor: '#fff'
-   });
-   view.add(txtTitle);
-   
-var txtMessage = Titanium.UI.createTextArea({
-    width:Ti.Platform.displayCaps.platformWidth,
-    height:120,
-    left:0,bottom:55,
-    value: 'Message text...',
-    font: {fontSize: 15},
-    borderStyle: 2,
-    backgroundColor: '#fff'
-});
-view.add(txtMessage);
-
-
-var buttonEmail = Titanium.UI.createButton({
-    //width:100,
-     height:  35,
-    top:5,
-    //bottom:0,
-     borderRadius:5,
-     backgroundColor:'black',
-    left:'45%',
-    title: 'Send',
-    //enabled:false,
-});
-buttonEmail.addEventListener('click', function(e){
-	var sub  = txtTitle.value;
-	var desc = txtMessage.value;
-	if(sub!='' && desc !=''){
-	 var net = require('lib/network');
-	 var sender_id = globalVars.getDouble('userid');
-	  net.sendemail(sub,desc,'hbm_b@yahoo.com',sender_id,imgname);
-  
-} 
 });
 
-var msgView = require('ui/common/msgView');
-    new msgView (sendWin,_msg);
+//#############################################################// 
+
+var flexSpace = Titanium.UI.createButton({
+	systemButton:Titanium.UI.iPhone.SystemButton.FLEXIBLE_SPACE
+});
 
 
 
-bottomView.add(buttonEmail);
-	   
-	sendWin.add(view);
-	sendWin.add(bottomView); 
-    sendWin.open({modal:true});
-    //return win;
+var camera = Titanium.UI.createButton({
+	backgroundImage:'images/camera.png',
+	height:33,
+	width:33
+});
+
+camera.addEventListener('click', function()
+{
+	Titanium.UI.createAlertDialog({title:'Toolbar',message:'You clicked camera!'}).show();
+});
+
+var send = Titanium.UI.createButton({
+	backgroundImage:'/images/send.png',
+	backgroundSelectedImage:'images/send_selected.png',
+	width:67,
+	height:32
+});
+
+/*
+send.addEventListener('click', function()
+{
+	Titanium.UI.createAlertDialog({title:'Toolbar',message:'You clicked send!'}).show();
+});*/
+//var toolbar;
 
 
-
+var tf = Titanium.UI.createTextArea({
+	height:32,
+	backgroundImage:'images/inputfield.png',
+	width:200,
+	font:{fontSize:13},
+	borderRadius:15,
+	color:'#777',
+	paddingLeft:10,
+	borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,	
+	//keyboardToolbar:toolbar,
 	
+});
+
+
+  var  toolbar = Titanium.UI.iOS.createToolbar({
+	
+    items:[flexSpace,camera,flexSpace,tf,flexSpace, send,flexSpace],
+    bottom:5,
+    
+    //zIndex:,
+    borderTop:true,
+    borderBottom:true,
+    
+});
+
+
+//#############################################################// 
+
+//tf.addEventListener("focus", function() { view.scrollTo(0, 210);});
+
+send.addEventListener("click",  function() {
+	
+	 if(tf.value != ''){
+	
+  // net.sendemail(tf.value,'hbm_b@yahoo.com',user_id,_imgname);
+   // alert(_imgname);	 	
+  
+					
+				
+				//description label
+				
+				var Label = Titanium.UI.createLabel({
+				  text:'\n\n'+tf.value+'\n\n',
+				  font: {fontSize: 12, fontWeight: 'normal'},
+				  right:5,
+				  backgroundImage:'images/chat.png',
+				  top:top,
+				  height:Ti.UI.SIZE,
+				  width: 250
+				});
+				
+				
+				
+				 
+				view.add(Label);
+				top = top + Label.height + 40;
+	 }
+	 });
+
+//#############################################################// 
+
+
+var close_modal = Titanium.UI.createButton({title:'Close'});
+			sendWin.rightNavButton = close_modal;
+			
+			// Handle close_modal event
+			close_modal.addEventListener('click', function() {
+			    sendWin.close();
+			});
+			
+			// Add the views to the window and open it
+//#############################################################// 	
+
+
+
+sendWin.add(view);
+sendWin.add(toolbar);
+
+sendWin.open({modal:true});
+ 	
 };
 module.exports  = send;
 

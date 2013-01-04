@@ -72,6 +72,15 @@ function logInView(args){
     });
     
     loginBG.add(password);
+    
+    var actInd = Titanium.UI.createActivityIndicator({
+	top:5, 
+	height:50,
+	width:10,
+	style:Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN
+});
+    
+    
 
     var button = Ti.UI.createButton({
         title: 'Login User',
@@ -94,6 +103,16 @@ function logInView(args){
     
     button.addEventListener('click', function(){
 	// here will be login work
+	
+	actInd.style = Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN;
+	actInd.font = {fontFamily:'Helvetica Neue', fontSize:15,fontWeight:'bold'};
+	actInd.color = 'black';
+	actInd.message = 'Loading...';
+	actInd.width = 210;
+	actInd.show();
+	
+	
+	
 	var email = user_email.value;
 	var pwd  =  password.value;	
 		

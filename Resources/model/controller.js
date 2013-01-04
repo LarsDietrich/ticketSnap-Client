@@ -2,6 +2,7 @@ var globals = require('/lib/AppProperties');  // reference to global vars
 var screenWidth = globals.screenWidth;
 var _newTicketWin = require('ui/common/newTicketsWin');  // load newTicketWindow. App will start with this screen.
 var newTicketWin = null;
+var newTixTab = null;
 // var _appTabGroup = require('/ui/common/ApplicationTabGroup'); // load appTabGroup
 var appTabGroup = null; //tabGroup for app
 var _myTixWin = require('/ui/common/myTicketsWin');  //load my tickets window.
@@ -65,6 +66,8 @@ function logout(){
 	// TODO: put this function in fbook.js for consistency
 };
 
+
+
 function startApp(){
 	
 	// instantiate the windows
@@ -76,6 +79,7 @@ function startApp(){
 	
 	newTicketWin = new _newTicketWin();
 	newTicketWin.zIndex = 10;
+	
 	
 	
 	loginWin = new _loginWin(/*here pass in callback function to loggedIn screen*/);
@@ -108,7 +112,7 @@ function startApp(){
 	});
 	alertsWin.containingTab = alertsTab;
 	
-alertsTab.addEventListener('focus',function(e){
+//alertsTab.addEventListener('focus',function(e){
 	
 	//alert('good');
 	//setInterval(function(e){
@@ -119,12 +123,19 @@ alertsTab.addEventListener('focus',function(e){
 	///},1000);
 	//alertsTab.badge.hide();
  	
-});	
+//});	
 	
 	var myTixTab = Ti.UI.createTab({
 		icon: '/images/KS_nav_ui.png',
 		window: myTixWin,
 		title: 'My Tickets',
+		
+	});
+	
+	   newTixTab = Ti.UI.createTab({
+		//icon: '/images/KS_nav_ui.png',
+		window: newTicketWin,
+		//title: '',
 		
 	});
 	
@@ -151,6 +162,9 @@ badge:10
 	appTabGroup.setActiveTab(myTixTab);
 	
 	appTabGroup.open();
+	
+	openCamScreen();
+	
 };
 
 function toggleMenu(){
@@ -195,7 +209,7 @@ function openCamScreen(currentTab){
 	
 	alert('Cam Button Pressed!');
 	
-	newTicketWin.open({modal:true});
+	newTicketWin.open({modal:false});
 	
 	//callback();
 }
@@ -270,7 +284,7 @@ Ti.App.addEventListener('GLOBALEVENT', function(e){
 			loadMyTickets();
 			break;
 		case 'openCamScreen':
-			openCamScreen(Titanium.UI.ActiveTab);
+			openCamScreen(newTixTab);
 			break;
 		case 'handleLogin':
 			handleLogin({email: e.email, pwd: e.pwd});

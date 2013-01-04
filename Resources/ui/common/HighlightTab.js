@@ -39,6 +39,7 @@ exports.setHighlightTab = function(_params) {
 	/*
 	 * React to the Click-Event of the new added View
 	 */
+	//Ti.App.fireEvent('GLOBALEVENT',{func: 'openCamScreen'});
 	view.addEventListener("click", function() {
 		
 		// 
@@ -51,4 +52,7 @@ exports.setHighlightTab = function(_params) {
 		Ti.App.fireEvent('GLOBALEVENT',{func: 'openCamScreen'});
 
 	});
+	
+ 
+	
 }

@@ -1,7 +1,11 @@
-var globals = require('/lib/AppProperties');
-var loggedIn = globals.isLoggedIn();
+var globals    = require('/lib/AppProperties');
+var loggedIn   = globals.isLoggedIn();
 var _sender_id = globals.getCurrentUserID();
-
+var ticketID;
+var net = require ('lib/network');
+//var imgView ;
+  
+ //#############################################################// 
 // random function starts
 function randNum (){        				
 	
@@ -24,16 +28,22 @@ function randNum (){
 	
 };// random ends
 
+//#############################################################// 
 
+
+//#############################################################// 
 function newTicketWin (){
 
 	// function ticket_fnc (image,imgname){
+	//#############################################################// 
 	
 		var _win = require('/ui/handheld/ApplicationWindow');
 		var thisWin = new _win();
 		    thisWin.zIndex=10;
+		    
+	//#############################################################// 
 	
-		var thisView = Ti.UI.createView({
+	/*	var thisView = Ti.UI.createView({
 			 backgroundImage:'images/otis_redding.png',
 			 layout: 'vertical'	
 		});
@@ -71,17 +81,17 @@ function newTicketWin (){
 	 	
 	 	thisView.add(cancelBtn);
 	 	
-	 
+	 */
 	 	
 	 
-	 	
+//#############################################################// 
 	 	// this below code starts working after pressing camera 
 	 var afterPressView = Ti.UI.createView({
 			 backgroundImage:'images/otis_redding.png',
 			 layout: 'vertical'	
 		});	
 	
-	 var imgView = Titanium.UI.createImageView({
+	var   imgView = Titanium.UI.createImageView({
 	     //image:image,
 		 top:10,
 		 width:300,
@@ -130,9 +140,9 @@ var toolbar = Titanium.UI.iOS.createToolbar({
     afterPressView.add(toolbar);
 
 
-
+//#############################################################// 
 // this code work after submit ticket
-       
+  
    var afterSubmitView = Ti.UI.createView({
 			 backgroundImage:'images/otis_redding.png',
 			 layout: 'vertical'	
@@ -170,19 +180,64 @@ var toolbar = Titanium.UI.iOS.createToolbar({
 				});   
 
 afterSubmitView.add(forsbt);
+
+  var sendmsg = Ti.UI.createButton({
+			backgroundColor:'black',
+			left:20,
+			style:Titanium.UI.iPhone.SystemButtonStyle.BORDERED,	
+			//image:'images/btn-back@2x.png',
+			color:'#6d0a0c',
+			bottom:5,
+			opacity:1,
+			title: 'Message',
+		});
+	 	
+	 	var closeWin = Ti.UI.createButton({
+			backgroundColor:'black',
+			right:20,
+			//image:'images/btn-back@2x.png',
+			style:Titanium.UI.iPhone.SystemButtonStyle.DONE,		
+			color:'#6d0a0c',
+			bottom: 5,
+			opacity:1,
+			title: 'Close'
+		});
+		
+
+		
+var tbar = Titanium.UI.iOS.createToolbar({
+	items:[sendmsg,flexSpace,closeWin],
+	bottom:0,
+	borderTop:false,
+	borderBottom:false,
+	translucent : true,
+	barColor :'#000',
+	//barColor:'#336699'
+});
+afterSubmitView.add(tbar);
+
+//#############################################################// 
+
+
 // after submit ticket code ends here 
 
 
 	 	// Create a button to close the modal window
-var close_modal = Titanium.UI.createButton({title:'Close'});
-      //thisWin.leftNavButton = close_modal;
+//var close_modal = Titanium.UI.createButton({title:'Close'});
+     // thisWin.leftNavButton = close_modal;
 
 
+	
+//#############################################################// 
 // here goes the entire code to take pic
 
-	 	camBtn.addEventListener('click',function(){
+  // here is camera function called
+  var randomInt = randNum(); // this will generate random name for tickets	
+	thisWin.addEventListener('open',function(){
 	 		
-	 	 if(Ti.Media.isCameraSupported){
+  
+	
+		 if(Ti.Media.isCameraSupported){
 		 Ti.Media.showCamera({
 	    	 success:function(event){
 				var image = event.media;
@@ -190,13 +245,7 @@ var close_modal = Titanium.UI.createButton({title:'Close'});
 				
 				// save for future
 				// // function is called here
-				
-			
-		for(var i=0; i<thisWin.getChildren().length;i++){
-	    	thisWin.remove(thisWin.children[i]);
-	    	thisWin.children[i]=null;
-	    }
-	    
+	
 	     thisWin.add(afterPressView);
 		
 				 
@@ -207,26 +256,36 @@ submit.addEventListener('click',function(){
 	    	thisWin.children[i]=null;
 	    }
 	    
-	     thisWin.add(afterSubmitView);
-		             
-                   thisWin.leftNavButton = close_modal;
+	           thisWin.add(afterSubmitView);
+		      // thisWin.leftNavButton = close_modal;
         
-         var randomInt = randNum();	
+       
 				
-		 var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
+			var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
 				f.write(image);
 				
-		 var net = require('lib/network');
-		 var result = net.sendticket(_sender_id,f.read());
-			    
- 					
+		       // var net = require('lib/network');
+			    var result = net.sendticket(_sender_id,f.read());
+
+			 
 // 				
 				}); 
-// 		        		
+// 		        			
 			        //db.addPhoto(_bounty.id,f.nativePath);
 			         //sendButton.enabled = true;
 			},
-	         cancel:function(){},
+	         cancel:function(){
+	         	
+	         	
+	         		for(var i=0; i<thisWin.getChildren().length;i++){
+	    	thisWin.remove(thisWin.children[i]);
+	    	thisWin.children[i]=null;
+	    }
+	    
+                thisWin.close();
+                
+                
+	         },
 	         error:function(){
 	         var a = Ti.UI.createAlertDialogue({title:'camera Error'});
 	          if(error.code==Ti.Media.NO_CAMERA){
@@ -249,14 +308,9 @@ submit.addEventListener('click',function(){
 			 success:function(event){
 // 		
 			   var image = event.media;
-				imgView.image=image;
-				
-		for(var i=0; i<thisWin.getChildren().length;i++){
-	    	thisWin.remove(thisWin.children[i]);
-	    	thisWin.children[i]=null;
-	    }
-	    
-	     thisWin.add(afterPressView);
+				imgView.image = image;
+			
+	    thisWin.add(afterPressView);
 		
 				 
 submit.addEventListener('click',function(){
@@ -267,18 +321,15 @@ submit.addEventListener('click',function(){
 	                         }
 	    
 	                  thisWin.add(afterSubmitView);
-	                  
-	                 thisWin.leftNavButton = close_modal;
-						
-				   var randomInt = randNum();	
+	          
 				
 			var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
 				f.write(image);
 				
-		        var net = require('lib/network');
+		       // var net = require('lib/network');
 			    var result = net.sendticket(_sender_id,f.read());
-			    
- 					
+			   
+	
 // 				
 				}); 
 // 		        		
@@ -287,7 +338,16 @@ submit.addEventListener('click',function(){
 		   		// 		    		//db.addPhoto(_bounty.id,f.nativePath);
        },
         
-        	 cancel:function() {},
+        	 cancel:function() {
+        	 	
+        for(var i=0; i<thisWin.getChildren().length;i++){
+	    	thisWin.remove(thisWin.children[i]);
+	    	thisWin.children[i]=null;
+	    }
+	    
+                thisWin.close();
+        	 	
+        	 },
 			 error:function(error) {
 			 var a = Ti.UI.createAlertDialog({title:L('camera_error')});
 			 if (error.code == Ti.Media.NO_CAMERA) {
@@ -305,13 +365,13 @@ submit.addEventListener('click',function(){
    }
 	 
 	 		
-	 	});
-	 	// take pic ends here
-	 	
-	
 
 
+	 		
+	 });	
 
+
+//#############################################################// 
 
 reTake.addEventListener('click',function(){
 
@@ -321,41 +381,37 @@ for(var i=0; i<thisWin.getChildren().length;i++){
 	    	thisWin.children[i]=null;
 	    }
 	    
-	     thisWin.add(thisView);
+	    //ticketID = captureImage();
 
 	
    });
-
-	 	
+   
+  //#############################################################// 
+   
+// send msg here 
+	 sendmsg.addEventListener('click',function(){
+	    var _sendWin = require('ui/common/sendWin');
+	    new _sendWin('tktsnap'+randomInt+'.png');   
+ 	
+      });
+		
+	//#############################################################// 	
+			
 // Handle close_modal event
-close_modal.addEventListener('click', function() {
+closeWin.addEventListener('click', function() {
 	
 	for(var i=0; i<thisWin.getChildren().length;i++){
 	    	thisWin.remove(thisWin.children[i]);
 	    	thisWin.children[i]=null;
 	    }
 	    
-	     thisWin.add(thisView);
-	
                 thisWin.close();
-
-});
-
-	 	
-	 	cancelBtn.addEventListener('click',function(){
-	 		
-	 		thisWin.close();
-	 		thisWin = null;
-	 	});
-		
-	 	
-	 	thisWin.add(thisView); //first view
-	 	
-		
+      
+         });
+	//#############################################################// 	
          return thisWin;
+
         };
-	 	
-	 	
 	 	
 
 module.exports  = newTicketWin;

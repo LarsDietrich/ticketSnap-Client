@@ -8,7 +8,7 @@ var view2 = Ti.UI.createView({
 	// color:'red',	
 });
 
-
+/*
 var sbmit = Titanium.UI.createImageView({
   image:'images/sbt.png', 
   font: {fontSize: 16, fontWeight: 'bold',color:'#494a4a',},
@@ -21,18 +21,19 @@ var sbmit = Titanium.UI.createImageView({
   
 });
 
-view2.add(sbmit);
+view2.add(sbmit);*/
 
      var coverFlowView = Titanium.UI.iOS.createCoverFlowView({
            //backgroundColor:'#000',
            backgroundColor:'transparent',
            height:325,
-           top:40,
+           top:20,
            images:[],
         
 		});
   
  // this is the function to get tickets
+ //#############################################################// 
  
     net.mytickets(user_id,'tickets',function(_data){
     	if (_data.length === 0){
@@ -42,22 +43,23 @@ view2.add(sbmit);
         var images = [];
         for (var c = 0; c < _data.length; c++){
         	// Ti.API.info ('image:'+_data[c].image+'\nsender_id:'+_data[c].sender_id+'\nstatus:'+_data[c].status);
-          images[c] = {image:_data[c].image,width:225, height:275,id:_data[c].sender_id,imgname:_data[c].imgname,status:_data[c].status};// width:225, height:275
+          images[c] = {image:_data[c].image,width:230, height:325,id:_data[c].sender_id,imgname:_data[c].imgname,status:_data[c].status};// width:225, height:275
         }
         
         coverFlowView.images = images;
     });
+  //#############################################################// 
   
   // change image if submitted or in process
-   coverFlowView .addEventListener('change',function(e) {
+ /*  coverFlowView .addEventListener('change',function(e) {
    
    	var state = coverFlowView.images[e.index].status;
    		//alert(state);
    	sbmit.image = (state == 1)?'images/inprocess.png':'images/sbt.png';
    	
    }); //change image if submitted or in process ends 
-   
-   
+   */
+   //#############################################################// 
    
     // click listener - when image is clicked
     coverFlowView .addEventListener('click',function(e) {
@@ -70,7 +72,7 @@ var imgWindow = Ti.UI.createWindow({
     backgroundColor: '#050505' 
 });
 
-
+//#############################################################// 
 
 var scrollView = Ti.UI.createScrollView({
 	contentWidth:320,
@@ -107,6 +109,7 @@ var detailView = Titanium.UI.createView({
 
 });
 
+//#############################################################// 
 
 // this call get the msgs and replies related to it.
 var imgname = coverFlowView.images[e.index].imgname; 
@@ -195,7 +198,7 @@ net.msgs (imgname,user_id,'msg',function(array_resp){
 	
 	
 });
-
+//#############################################################// 
 			
 			// Create a button to close the modal window
 			var close_modal = Titanium.UI.createButton({title:'Close'});
