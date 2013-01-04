@@ -17,6 +17,10 @@ function myticketView (user_id){
 	// color:'red',	
 });
 
+<<<<<<< HEAD
+=======
+//<<<<<<< HEAD
+>>>>>>> d7369f0f284b321fd5a61274e126a96f81743a80
 /*
 var sbmit = Titanium.UI.createImageView({
   image:'images/sbt.png', 
@@ -41,11 +45,24 @@ view2.add(sbmit);*/
         
 		});
   
+  
+  var actInd = Titanium.UI.createActivityIndicator({
+    top:100, 
+    height:50,
+    width:50,
+    message:'Loading....',
+    style:Titanium.UI.iPhone.ActivityIndicatorStyle.BIG
+    });
+ this.view2.add(actInd);
+ 
+ //if(user_id !=''){
+   actInd.show();
+   
  // this is the function to get tickets
  //#############################################################// 
  
-    net.mytickets(user_id,'tickets',function(_data){
-    	if (_data.length === 0){
+   net.mytickets(user_id,'tickets',actInd,function(_data){
+   	    	if (_data.length === 0){
             return;
         }
         
@@ -59,7 +76,11 @@ view2.add(sbmit);*/
     });
   //#############################################################// 
   
+<<<<<<< HEAD
 
+=======
+//=======
+>>>>>>> d7369f0f284b321fd5a61274e126a96f81743a80
 var sbmitView = Ti.UI.createView({
 	top:0,
 	height: 65,
@@ -112,7 +133,11 @@ sbmitView.add(sbmitBG);
 this.view2.add(sbmitView);
 
  populateCF(user_id);
+<<<<<<< HEAD
 
+=======
+//>>>>>>> made app login dynamic and added dynamic status view for each ticket
+>>>>>>> d7369f0f284b321fd5a61274e126a96f81743a80
   // change image if submitted or in process
  /*  coverFlowView .addEventListener('change',function(e) {
    
@@ -124,7 +149,14 @@ this.view2.add(sbmitView);
 <<<<<<< HEAD
    */
    //#############################################################// 
+<<<<<<< HEAD
 
+=======
+//=======
+   
+  
+//>>>>>>> made app login dynamic and added dynamic status view for each ticket
+>>>>>>> d7369f0f284b321fd5a61274e126a96f81743a80
    
     // click listener - when image is clicked
     coverFlowView .addEventListener('click',function(e) {
