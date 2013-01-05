@@ -17,6 +17,21 @@ function logInView(args){
 	});
 	
 	thisView.add(scrollView);
+	
+    var actInd = Titanium.UI.createActivityIndicator({
+    top:5, 
+    height:Ti.UI.SIZE,
+    //left:50,
+    width:50,
+    color:'black',
+    font:{fontFamily:'Helvetica Neue', fontSize:15,fontWeight:'bold'},
+	message:'Loading...',
+    style:Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
+    
+    });
+ 
+    scrollView.add(actInd);
+	
 	scrollView.add(Ti.UI.createImageView({
 		image: '/images/TICKETSNAP_bar_tr.png',
 		top: 35
@@ -73,12 +88,7 @@ function logInView(args){
     
     loginBG.add(password);
     
-    var actInd = Titanium.UI.createActivityIndicator({
-	top:5, 
-	height:50,
-	width:10,
-	style:Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN
-});
+  
     
     
 
@@ -104,21 +114,15 @@ function logInView(args){
     button.addEventListener('click', function(){
 	// here will be login work
 	
-	actInd.style = Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN;
-	actInd.font = {fontFamily:'Helvetica Neue', fontSize:15,fontWeight:'bold'};
-	actInd.color = 'black';
-	actInd.message = 'Loading...';
-	actInd.width = 210;
-	actInd.show();
-	
-	
-	
+	 
 	var email = user_email.value;
 	var pwd  =  password.value;	
 		
 	if (email != '' && pwd != '')  
 	{	
-		Ti.App.fireEvent('GLOBALEVENT',{func: 'handleLogin', email: email, pwd: pwd});
+		 actInd.show(); // activity indicator
+		 
+		Ti.App.fireEvent('GLOBALEVENT',{func: 'handleLogin', email: email, pwd: pwd,actInd:actInd});
 	}
 	else
 	{

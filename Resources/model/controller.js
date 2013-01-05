@@ -237,7 +237,7 @@ function handleLogin(args){
 	{ 
 		var net = require('lib/network');
    	
-   		net.login('login',args.email,args.pwd,function(response){
+   		net.login('login',args.email,args.pwd,args.actInd,function(response){
    	
 	       	if(response.loggedIn == true){
 	       		
@@ -294,7 +294,7 @@ Ti.App.addEventListener('GLOBALEVENT', function(e){
 			openCamScreen(newTixTab);
 			break;
 		case 'handleLogin':
-			handleLogin({email: e.email, pwd: e.pwd});
+			handleLogin({email: e.email, pwd: e.pwd,actInd:e.actInd});
 			break;
 		default:
 			break;

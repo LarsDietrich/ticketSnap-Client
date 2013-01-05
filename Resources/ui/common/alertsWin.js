@@ -9,10 +9,10 @@ var view2 = Ti.UI.createView({
 });
 
 // populate 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 // populate 
-=======
->>>>>>> made app login dynamic and added dynamic status view for each ticket
+//=======
+//>>>>>>> made app login dynamic and added dynamic status view for each ticket
 var data = []; //empty data array
    //declare the http client object
   
@@ -25,11 +25,11 @@ var data = []; //empty data array
    });
 
    
-<<<<<<< HEAD
+//<<<<<<< HEAD
    ///settingsWin.containingTab.open();
-=======
+//======
    ///alertsWin.containingTab.open();
->>>>>>> made app login dynamic and added dynamic status view for each ticket
+//>>>>>>> made app login dynamic and added dynamic status view for each ticket
 
    
    //Terminating in response to SpringBoard's termination.
@@ -145,12 +145,12 @@ var takePic = Ti.UI.createButton({
    
   // alert(e.row.children[1].height); 
   // e.Height = 200;
-   /* 
-<<<<<<< HEAD
-    var detailWin = new _settingsWin();
-=======
+   
+//<<<<<<< HEAD
+  //  var detailWin = new _settingsWin();
+//=======
     var detailWin = new _alertsWin();
->>>>>>> made app login dynamic and added dynamic status view for each ticket
+//>>>>>>> made app login dynamic and added dynamic status view for each ticket
         detailWin.title = 'Action Alert';
 	    
 	    var dView = Ti.UI.createView({
@@ -174,11 +174,11 @@ var     titleLabel = Titanium.UI.createLabel({
 
       dView.add(titleLabel);
       
-<<<<<<< HEAD
-settingsWin.containingTab.open(detailWin);  	*/
-=======
-alertsWin.containingTab.open(detailWin);  	*/
->>>>>>> made app login dynamic and added dynamic status view for each ticket
+//<<<<<<< HEAD
+//settingsWin.containingTab.open(detailWin);  	*/
+//=======
+//alertsWin.containingTab.open(detailWin);  //	*/
+//>>>>>>> made app login dynamic and added dynamic status view for each ticket
 
   
 

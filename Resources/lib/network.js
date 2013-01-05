@@ -1,6 +1,10 @@
-var loginUrl = "http://www.goticketsnap.xpertogo.com/myticket_login.php"; 
+var loginUrl = "http://goticketsnap.xpertogo.com/myticket_login.php"; 
 
-exports.userRegistration = function (_case,_fname,_lname,_email,_pwd,callback){
+//http://mobile.goticketsnap.com/
+
+
+//#############################################################// 
+exports.userRegistration = function (_case,_fname,_lname,_email,_pwd,_actInd,callback){
 	  
 	  
 	 //var isRegistered;
@@ -10,6 +14,7 @@ exports.userRegistration = function (_case,_fname,_lname,_email,_pwd,callback){
 		    Ti.API.info('RAW RESPONSE: '+json); 
 		    var response = JSON.parse(json);
 		        callback(response);
+		        _actInd.hide();
 		    
 		    
 		   // alert('Message:'+response.message);
@@ -17,9 +22,7 @@ exports.userRegistration = function (_case,_fname,_lname,_email,_pwd,callback){
 		 // if(response.message == true){isRegistered = true}else{isRegistered =false}
 		}; // end onload
 		
-		loginRequest.error =function(e){
-			alert('Registration :'+e.error)
-		}
+		loginRequest.onerror = fail();
 		
 		loginRequest.open("POST",loginUrl);
 			
@@ -34,15 +37,22 @@ exports.userRegistration = function (_case,_fname,_lname,_email,_pwd,callback){
         		
     		};
     		
+    			if (checkInternetConnection()) {
+    			
     		loginRequest.send(params);
+    		
+    		} else {
+    			
+             alert('Please check your cellular connection ');
+            }
     		
     		
     		//return isRegistered;
    			
 };
+//#############################################################// 
 
-
-exports.login = function(_case,_email,_password,callback){
+exports.login = function(_case,_email,_password,_actInd,callback){
 			
     var loginRequest = Titanium.Network.createHTTPClient();
 		loginRequest.onload = function()  
@@ -51,12 +61,14 @@ exports.login = function(_case,_email,_password,callback){
 		    Ti.API.info('RAW RESPONSE: '+json); 
 		    var response = JSON.parse(json);
 		    callback(response);
+		    _actInd.hide();
 		    Ti.API.info('RESPONSE:  '+response);  
 		    
 		    
 		    
-		} // end onload
+		}; // end onload
 		
+		loginRequest.onerror = fail();
 		
 			loginRequest.open("POST",loginUrl);
 			
@@ -66,11 +78,18 @@ exports.login = function(_case,_email,_password,callback){
         		condition:_case,  
     		};
     		
+    			if (checkInternetConnection()) {
+    			
     		loginRequest.send(params);
+    		
+    		} else {
+    			
+             alert('Please check your cellular connection ');
+    }
 
    	};
   
-	
+//#############################################################// 	
 exports.sendticket = function(_sender_id,_ticketimage){
 			
     var loginRequest = Titanium.Network.createHTTPClient();
@@ -84,20 +103,30 @@ exports.sendticket = function(_sender_id,_ticketimage){
 		       //callback(response);
 		    Ti.API.info('RESPONSE:  '+response);  
 		    return response.result;
-		} // end onload
+		}; // end onload
 		
-			loginRequest.open("POST","http://www.goticketsnap.xpertogo.com/mt_insert_ticket.php");
+		loginRequest.onerror = fail();
+		
+			loginRequest.open("POST","http://goticketsnap.xpertogo.com/mt_insert_ticket.php");
 			
 			var params = {  
    				sender_id:_sender_id,
    				ticketimage:_ticketimage
     		};
     		
+    			if (checkInternetConnection()) {
+    			
     		loginRequest.send(params);
+    		
+    		} else {
+    			
+             alert('Please check your cellular connection ');
+    }
 
    	};
+  //#############################################################// 
   
-	exports.sendemail = function(_subject,_desc,_reciepentEmail,_sender_id,_imgname){
+	exports.sendemail = function(_msg,_reciepentEmail,_sender_id,_imgname){
 			
     var loginRequest = Titanium.Network.createHTTPClient();
     
@@ -109,30 +138,53 @@ exports.sendticket = function(_sender_id,_ticketimage){
 		       //callback(response);
 		    Ti.API.info('RESPONSE:  '+response);  
 		    
-		} // end onload
+		}; // end onload
 		
-			loginRequest.open("POST","http://www.goticketsnap.xpertogo.com/mt_sendmail.php");
+		loginRequest.onerror = fail();
+		
+			loginRequest.open("POST","http://goticketsnap.xpertogo.com/mt_sendmail.php");
 			
 			var params = {  
    				sender_id:_sender_id,
-   				subject:_subject,
-   				desc:_desc,
+   				msg:_msg,
    				reciepent:_reciepentEmail,
    				img:_imgname,
    				
     		};
     		
+    			if (checkInternetConnection()) {
+    			
     		loginRequest.send(params);
+    		
+    		} else {
+    			
+             alert('Please check your cellular connection ');
+    }
 
    	};
   
 	
 
-	
+//#############################################################// 	
 
-exports.mytickets = function(_user_id,_req,callback){
+exports.mytickets = function(_user_id,_req,_actInd,callback){
 			
     var loginRequest = Titanium.Network.createHTTPClient();
+//<<<<<<< HEAD
+		loginRequest.onload = function()  
+		{  
+	var json = this.responseText;
+		    Ti.API.info('RAW RESPONSE: '+json); 
+		    var response = JSON.parse(json);
+		     Ti.API.info('RESPONSE:  '+response);  
+		    callback(response);
+			_actInd.hide();	   
+				    
+		}; // end onload
+		loginRequest.onerror = fail();
+		
+		/*	loginRequest.open("POST",'http://goticketsnap.xpertogo.com/ticketView.php');
+//=======
 	loginRequest.onload = function()  
 	{  
 		var json = this.responseText;
@@ -141,16 +193,35 @@ exports.mytickets = function(_user_id,_req,callback){
 		Ti.API.info('RESPONSE:  '+response);  
 		callback(response);   
 	} // end onload
-		
-	loginRequest.open("POST",'http://www.goticketsnap.xpertogo.com/ticketView.php');
+		*/
+	loginRequest.open("POST",'http://goticketsnap.xpertogo.com/ticketView.php');
+	
+	
+//>>>>>>> 8feb4fe3ec3108a9e178ada65be339d76009bfa9
 			
 	var params = {  
 		user_id: _user_id,  
 	    request:_req,  
 	};
     		
+//<<<<<<< HEAD
+    			if (checkInternetConnection()) {
+    			
+    		loginRequest.send(params);
+    		
+    		} else {
+    			
+             alert('Please check your cellular connection ');
+    }
+
+   //	};
+//=======
     loginRequest.send(params);
 };
+
+//>>>>>>> 8feb4fe3ec3108a9e178ada65be339d76009bfa9
+   	
+   	//#############################################################// 
    	
    	exports.msgs = function(_imgname,_user_id,_req,callback){
 			
@@ -164,10 +235,11 @@ exports.mytickets = function(_user_id,_req,callback){
 		    Ti.API.info('RESPONSE MSG:  '+response);  
 		    callback(response);  
 		    
-		} // end onload
+		}; // end onload
 		
+		 loginRequest.onerror = fail();
 		
-			loginRequest.open("POST",'http://www.goticketsnap.xpertogo.com/ticketView.php');
+			loginRequest.open("POST",'http://goticketsnap.xpertogo.com/ticketView.php');
 			
 			var params = {  
 				imgname:_imgname,
@@ -175,14 +247,30 @@ exports.mytickets = function(_user_id,_req,callback){
         	    request:_req,  
     		};
     		
+    		if (checkInternetConnection()) {
+    			
     		loginRequest.send(params);
+    		
+    		} else {
+    			
+             alert('Please check your cellular connection ');
+    }
 
    	};
   
 
-  
+  //#############################################################// 
 
-
+function checkInternetConnection() {
+    return Ti.Network.online;
+}
+ 
+/* ------------- [ Callbacks ] ----------------- */
+// Fail Callback
+function fail() {
+    alert('Something went wrong!')
+}
+ 
 
 
 

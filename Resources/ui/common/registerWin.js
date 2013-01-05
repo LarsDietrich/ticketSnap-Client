@@ -31,9 +31,23 @@ var navBtn = Ti.UI.createButton({
 });
 
 
+ var actInd = Titanium.UI.createActivityIndicator({
+    top:30, 
+    height:Ti.UI.SIZE,
+    //left:50,
+    width:50,
+    color:'black',
+    font:{fontFamily:'Helvetica Neue', fontSize:15,fontWeight:'bold'},
+	message:'Loading...',
+    style:Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
+    
+    });
+ 
+    view.add(actInd);
+
     var fname = Ti.UI.createTextField({
         hintText: 'Firstname',
-        top:40,
+        top:70,
         height: 40,
         width:200,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
@@ -44,7 +58,7 @@ var navBtn = Ti.UI.createButton({
     
      var lname = Ti.UI.createTextField({
         hintText: 'Lastname',
-        top:90,
+        top:120,
         width:200,
         height: 40,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
@@ -57,7 +71,7 @@ var navBtn = Ti.UI.createButton({
 var email = Ti.UI.createTextField({
         hintText: 'email',
         width:200,
-        top:140,
+        top:170,
         height: 40,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
@@ -68,7 +82,7 @@ var email = Ti.UI.createTextField({
  
     var password = Ti.UI.createTextField({
         hintText: 'Password',
-        top:190,
+        top:220,
         width:200,
         height: 40,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
@@ -78,7 +92,7 @@ var email = Ti.UI.createTextField({
     
      var c_password = Ti.UI.createTextField({
         hintText: 'Confirm Password',
-        top:260,
+        top:280,
         width:200,
         height: 40,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
@@ -88,12 +102,13 @@ var email = Ti.UI.createTextField({
 
     var button = Ti.UI.createButton({
         title: 'Sign Up!',
-        top: 310,
+        top: 330,
         height: 40,
     });
      view.add(button);
       
     button.addEventListener('click',function(){
+    
  	var firstname = fname.value;
  	var lastname  = lname.value;
  	//var phonenumber = phone.value;
@@ -104,11 +119,12 @@ var email = Ti.UI.createTextField({
  	
  	if(firstname!='' && lastname!='' && emailadress!='' ){
  		if(pwdval!='' && c_pwdval!='' && c_pwdval == pwdval){
- 			
+ 				
+ 				actInd.show();
  			// code here 
  			
  		var net = require('lib/network');	
- 	    net.userRegistration('register',firstname,lastname,emailadress,pwdval,function(response){
+ 	    net.userRegistration('register',firstname,lastname,emailadress,pwdval,actInd,function(response){
  	    	
  	    	 if(response.message == true){
  	    	 	
