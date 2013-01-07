@@ -22,7 +22,9 @@ exports.userRegistration = function (_case,_fname,_lname,_email,_pwd,_actInd,cal
 		 // if(response.message == true){isRegistered = true}else{isRegistered =false}
 		}; // end onload
 		
-		loginRequest.onerror = fail();
+		loginRequest.onerror = function(e){
+			fail();
+		} 
 		
 		loginRequest.open("POST",loginUrl);
 			
@@ -68,7 +70,9 @@ exports.login = function(_case,_email,_password,_actInd,callback){
 		    
 		}; // end onload
 		
-		loginRequest.onerror = fail();
+		loginRequest.onerror = function(e){
+			fail();
+		}
 		
 			loginRequest.open("POST",loginUrl);
 			
@@ -105,7 +109,9 @@ exports.sendticket = function(_sender_id,_ticketimage){
 		    return response.result;
 		}; // end onload
 		
-		loginRequest.onerror = fail();
+		loginRequest.onerror = function(e){
+			fail();
+		}
 		
 			loginRequest.open("POST","http://goticketsnap.xpertogo.com/mt_insert_ticket.php");
 			
@@ -140,48 +146,62 @@ exports.sendticket = function(_sender_id,_ticketimage){
 		    
 		}; // end onload
 		
-		loginRequest.onerror = fail();
+		loginRequest.onerror = function(e){
+			fail();
+		}
 		
-			loginRequest.open("POST","http://goticketsnap.xpertogo.com/mt_sendmail.php");
+		loginRequest.open("POST","http://goticketsnap.xpertogo.com/mt_sendmail.php");
 			
-			var params = {  
-   				sender_id:_sender_id,
-   				msg:_msg,
-   				reciepent:_reciepentEmail,
-   				img:_imgname,
-   				
-    		};
+		var params = {  
+			sender_id:_sender_id,
+			msg:_msg,
+			reciepent:_reciepentEmail,
+			img:_imgname
+		};
     		
-    			if (checkInternetConnection()) {
+		if (checkInternetConnection()) {
     			
     		loginRequest.send(params);
     		
-    		} else {
-    			
-             alert('Please check your cellular connection ');
-    }
+    	} 
+    	else {		
+        	alert('Please check your cellular connection ');
+    	}
 
-   	};
+ };
   
 	
 
 //#############################################################// 	
 
-exports.mytickets = function(_user_id,_req,_actInd,callback){
+exports.mytickets = function(_user_id,_req,callback){
 			
-    var loginRequest = Titanium.Network.createHTTPClient();
-//<<<<<<< HEAD
-		loginRequest.onload = function()  
+    var loginRequest = Titanium.Network.createHTTPClient({
+    	onload: function(e)  
 		{  
-	var json = this.responseText;
-		    Ti.API.info('RAW RESPONSE: '+json); 
-		    var response = JSON.parse(json);
-		     Ti.API.info('RESPONSE:  '+response);  
-		    callback(response);
-			_actInd.hide();	   
-				    
-		}; // end onload
-		loginRequest.onerror = fail();
+			var json = this.responseText;
+			Ti.API.info('RAW RESPONSE: '+json); 
+			var response = JSON.parse(json);
+			Ti.API.info('RESPONSE:  '+JSON.stringify(response));  
+			callback(response);
+			//_actInd.hide();	   
+		}, // end onload
+		onerror: function(e){
+			fail();
+		}
+    });
+// //<<<<<<< HEAD
+	// loginRequest.onload = function()  
+	// {  
+		// var json = this.responseText;
+		// Ti.API.info('RAW RESPONSE: '+json); 
+		// var response = JSON.parse(json);
+		// Ti.API.info('RESPONSE:  '+response);  
+		// callback(response);
+		// _actInd.hide();	   
+	// }; // end onload
+	
+	//loginRequest.onerror = fail();
 		
 		/*	loginRequest.open("POST",'http://goticketsnap.xpertogo.com/ticketView.php');
 //=======
@@ -216,7 +236,7 @@ exports.mytickets = function(_user_id,_req,_actInd,callback){
 
    //	};
 //=======
-    loginRequest.send(params);
+    //loginRequest.send(params);
 };
 
 //>>>>>>> 8feb4fe3ec3108a9e178ada65be339d76009bfa9
@@ -237,8 +257,9 @@ exports.mytickets = function(_user_id,_req,_actInd,callback){
 		    
 		}; // end onload
 		
-		 loginRequest.onerror = fail();
-		
+		 loginRequest.onerror = function(e){
+		 	fail();
+		}
 			loginRequest.open("POST",'http://goticketsnap.xpertogo.com/ticketView.php');
 			
 			var params = {  
