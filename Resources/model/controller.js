@@ -211,7 +211,7 @@ function closeMenu(){
 
 function openCamScreen(currentTab){
 	
-	alert('Cam Button Pressed!');
+	//alert('Cam Button Pressed!');
 	
 	newTicketWin.open({modal:false});
 	
