@@ -339,13 +339,13 @@ submit.addEventListener('click',function(){
        },
         
         	 cancel:function() {
-        	 	
+//         	 	
         for(var i=0; i<thisWin.getChildren().length;i++){
 	    	thisWin.remove(thisWin.children[i]);
 	    	thisWin.children[i]=null;
 	    }
-	    
-                thisWin.close();
+// 	    
+             thisWin.close();
         	 	
         	 },
 			 error:function(error) {
