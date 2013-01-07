@@ -13,7 +13,7 @@ function loggedInView(args){
 	
 	scrollView.add(Ti.UI.createImageView({
 		image: '/images/TICKETSNAP_bar_tr.png',
-		top: 35
+		top: 40
 	}));
 	
 	scrollView.add(Ti.UI.createLabel({
@@ -23,29 +23,29 @@ function loggedInView(args){
 		top: 35
 	}));
 	
-	var changeEmailBtn = Ti.UI.createButton({
-		title: 'Change Email',
-		width: 210,
-		height: 45,
-		top: 30
-	});
-	
-	scrollView.add(changeEmailBtn);
-	
-	var changePasswordBtn = Ti.UI.createButton({
-		title: 'Change Password',
-		width: 210,
-		height: 45,
-		top: 20
-	});
-	
-	scrollView.add(changePasswordBtn);
+	// var changeEmailBtn = Ti.UI.createButton({
+		// title: 'Change Email',
+		// width: 210,
+		// height: 45,
+		// top: 30
+	// });
+// 	
+	// scrollView.add(changeEmailBtn);
+// 	
+	// var changePasswordBtn = Ti.UI.createButton({
+		// title: 'Change Password',
+		// width: 210,
+		// height: 45,
+		// top: 20
+	// });
+// 	
+	// scrollView.add(changePasswordBtn);
 	
 	var logoutBtn = Ti.UI.createButton({
 		title: 'Logout',
 		width: 210,
 		height: 45,
-		top: 20
+		top: 30
 	});
 	
 	scrollView.add(logoutBtn);

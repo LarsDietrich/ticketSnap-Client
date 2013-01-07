@@ -19,26 +19,26 @@ function logInView(args){
 	thisView.add(scrollView);
 	
     var actInd = Titanium.UI.createActivityIndicator({
-    top:5, 
     height:Ti.UI.SIZE,
     //left:50,
     width:50,
     color:'black',
     font:{fontFamily:'Helvetica Neue', fontSize:15,fontWeight:'bold'},
-	message:'Loading...',
+	message:'Loading',
     style:Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
-    
+    indicatorColor: 'white',
+    zIndex: 20
     });
- 
-    scrollView.add(actInd);
+ 	
+    //scrollView.add(actInd);
 	
 	scrollView.add(Ti.UI.createImageView({
 		image: '/images/TICKETSNAP_bar_tr.png',
-		top: 35
+		top: 40,
 	}));
 	
 	var _fbLoginBtn = require('ui/common/fbook');
-	var fbLoginBtn = new _fbLoginBtn({top:35, width: 210, height: 45, callback: args.callback});
+	var fbLoginBtn = new _fbLoginBtn({top:30, width: 210, height: 45, callback: args.callback});
 	scrollView.add(fbLoginBtn);
 	
 	scrollView.add(Ti.UI.createLabel({
@@ -88,10 +88,6 @@ function logInView(args){
     
     loginBG.add(password);
     
-  
-    
-    
-
     var button = Ti.UI.createButton({
         title: 'Login User',
          color:'#494a4a',
@@ -120,7 +116,7 @@ function logInView(args){
 		
 	if (email != '' && pwd != '')  
 	{	
-		 actInd.show(); // activity indicator
+		//actInd.show(); // activity indicator
 		 
 		Ti.App.fireEvent('GLOBALEVENT',{func: 'handleLogin', email: email, pwd: pwd,actInd:actInd});
 	}
@@ -132,7 +128,7 @@ function logInView(args){
 	});
 	
 	registerLink.addEventListener('click', function(e){
-		alert('register clicked');
+		//alert('register clicked');
 		var _registerWin = require('/ui/common/registerWin');
 		var registerWin = new _registerWin();
 		//registerWin.open({animated: true});
