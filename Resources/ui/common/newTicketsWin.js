@@ -3,8 +3,8 @@ var loggedIn   = globals.isLoggedIn();
 var _sender_id = globals.getCurrentUserID();
 var ticketID;
 var net = require ('lib/network');
+
 //var imgView ;
-  
  //#############################################################// 
 // random function starts
 function randNum (){        				
@@ -40,6 +40,7 @@ function newTicketWin (){
 		var _win = require('/ui/handheld/ApplicationWindow');
 		var thisWin = new _win();
 		    thisWin.zIndex=10;
+		    //thisWin.modal = true;
 		    
 	//#############################################################// 
 	
@@ -88,7 +89,8 @@ function newTicketWin (){
 	 	// this below code starts working after pressing camera 
 	 var afterPressView = Ti.UI.createView({
 			 backgroundImage:'images/otis_redding.png',
-			 layout: 'vertical'	
+			 layout: 'vertical',
+			 bottom:40,
 		});	
 	
 	var   imgView = Titanium.UI.createImageView({
@@ -127,18 +129,43 @@ function newTicketWin (){
 	systemButton:Titanium.UI.iPhone.SystemButton.FLEXIBLE_SPACE
 });
 
+var tf = Titanium.UI.createTextArea({
+	height:32,
+	backgroundImage:'images/inputfield.png',
+	width:200,
+	font:{fontSize:13},
+	borderRadius:15,
+	color:'#777',
+	paddingLeft:10,
+	borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,	
+	//keyboardToolbar:toolbar,
+	
+});
 		
 var toolbar = Titanium.UI.iOS.createToolbar({
-	items:[submit,flexSpace,reTake],
+	items:[flexSpace,submit,flexSpace,tf,flexSpace,reTake,flexSpace],
 	bottom:10,
 	borderTop:false,
 	borderBottom:false,
 	translucent : true,
 	barColor :'#000',
+	zIndex:10,
 	//barColor:'#336699'
 });
-    afterPressView.add(toolbar);
 
+    //afterPressView.add(toolbar);
+
+tf.addEventListener('focus',function(){
+	
+	toolbar.bottom =210;
+	
+});
+
+tf.addEventListener('blur',function(){
+	
+	toolbar.bottom =0 ;
+	
+});
 
 //#############################################################// 
 // this code work after submit ticket
@@ -170,7 +197,7 @@ var toolbar = Titanium.UI.iOS.createToolbar({
 		afterSubmitView.add(thanks);
   
   var forsbt  =  Titanium.UI.createLabel({
-				  text:'      for submitting your ticket.\n\n The next available attorney will review your information. You will be contacted for more info if needed. Check on the status of your ticket by clicking the My Tickets tab below ',
+				  text:'for submitting your ticket.\n\n The next available attorney will review your information. You will be contacted for more info if needed. Check on the status of your ticket by clicking the My Tickets tab below\n',
 				  font: {fontSize: 16, fontWeight: 'normal'},
 				  //left:50,
 				  //backgroundImage:'images/chat.png',
@@ -181,7 +208,7 @@ var toolbar = Titanium.UI.iOS.createToolbar({
 
 afterSubmitView.add(forsbt);
 
-  var sendmsg = Ti.UI.createButton({
+ /* var sendmsg = Ti.UI.createButton({
 			backgroundColor:'black',
 			left:20,
 			style:Titanium.UI.iPhone.SystemButtonStyle.BORDERED,	
@@ -190,22 +217,22 @@ afterSubmitView.add(forsbt);
 			bottom:5,
 			opacity:1,
 			title: 'Message',
-		});
+		});*/
 	 	
 	 	var closeWin = Ti.UI.createButton({
 			backgroundColor:'black',
-			right:20,
+		    left:120,
 			//image:'images/btn-back@2x.png',
-			style:Titanium.UI.iPhone.SystemButtonStyle.DONE,		
+			//style:Titanium.UI.iPhone.SystemButtonStyle.ROUNDED,		
 			color:'#6d0a0c',
 			bottom: 5,
 			opacity:1,
-			title: 'Close'
+			title: 'Done'
 		});
 		
-
+afterSubmitView.add(closeWin);
 		
-var tbar = Titanium.UI.iOS.createToolbar({
+/*var tbar = Titanium.UI.iOS.createToolbar({
 	items:[sendmsg,flexSpace,closeWin],
 	bottom:0,
 	borderTop:false,
@@ -215,7 +242,7 @@ var tbar = Titanium.UI.iOS.createToolbar({
 	//barColor:'#336699'
 });
 afterSubmitView.add(tbar);
-
+*/
 //#############################################################// 
 
 
@@ -233,7 +260,9 @@ afterSubmitView.add(tbar);
 
   // here is camera function called
   var randomInt = randNum(); // this will generate random name for tickets	
-	thisWin.addEventListener('open',function(){
+  
+  
+	///thisWin.addEventListener('open',function(){
 	 		
   
 	
@@ -247,27 +276,94 @@ afterSubmitView.add(tbar);
 				// // function is called here
 	
 	     thisWin.add(afterPressView);
-		
+		 thisWin.add(toolbar);
+		thisWin.open({modal:true});
 				 
 submit.addEventListener('click',function(){
-					
-		for(var i=0; i<thisWin.getChildren().length;i++){
-	    	thisWin.remove(thisWin.children[i]);
-	    	thisWin.children[i]=null;
-	    }
-	    
-	           thisWin.add(afterSubmitView);
-		      // thisWin.leftNavButton = close_modal;
-        
-       
-				
-			var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
-				f.write(image);
-				
-		       // var net = require('lib/network');
-			    var result = net.sendticket(_sender_id,f.read());
+	if(_sender_id){
+						
+	var message = tf.value;
+	if( message ==''){
+	
+	var conform = Titanium.UI.createAlertDialog({ title: 'send mail',
+   	  message:'Are you sure sending no msg with Ticket',
+      buttonNames: ['yes', 'No'], cancel: 1});
 
-			 
+      conform.addEventListener('click', function(e) { 
+      	Titanium.API.info('e = ' + JSON.stringify(e));
+
+   //Clicked cancel, first check is for iphone, second for android
+    if (e.cancel === e.index || e.cancel === true) {
+      return;
+     }
+
+    //now you can use parameter e to switch/case
+
+   switch (e.index) {
+      case 0:
+      // press code 
+      
+		for(var i=0; i<thisWin.getChildren().length;i++){
+	    	    thisWin.remove(thisWin.children[i]);
+	    	    thisWin.children[i]=null;
+	                         }
+	    
+	            thisWin.add(afterSubmitView);
+	          var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
+				  f.write(image);
+				// var net = require('lib/network');
+			    var result = net.sendticket(_sender_id,f.read());
+			        net.sendemail(message,'hbm_b@yahoo.com',_sender_id,'tktsnap'+randomInt+'.png');	
+                    tf.value = '';
+                    thisWin.remove(toolbar);	
+	
+      
+      break;
+
+      //This will never be reached, if you specified cancel for index 1
+      case 1: //alert('Clicked button 1 (NO)');
+      break;
+
+      default:
+      break;
+
+  }
+
+});
+
+conform.show();
+// conform box ended
+
+ //dbpop.populatetbl_riderpro();	
+	
+}else{
+	
+for(var i=0; i<thisWin.getChildren().length;i++){
+	    	    thisWin.remove(thisWin.children[i]);
+	    	    thisWin.children[i]=null;
+	                         }
+	    
+	              thisWin.add(afterSubmitView);
+	              
+	          var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
+				  f.write(image);
+				  
+				// var net = require('lib/network');
+			  var result = net.sendticket(_sender_id,f.read());
+			   net.sendemail(message,'hbm_b@yahoo.com',_sender_id,'tktsnap'+randomInt+'.png');	
+               tf.value = '';
+               thisWin.remove(toolbar);	
+	
+} // if condition
+
+	
+ } else{
+
+         alert('please login before you send');
+
+} // if login condition ends  
+	
+// 				
 // 				
 				}); 
 // 		        			
@@ -311,25 +407,89 @@ submit.addEventListener('click',function(){
 				imgView.image = image;
 			
 	    thisWin.add(afterPressView);
-		
+		 thisWin.add(toolbar);
+		  thisWin.open({modal:true});
 				 
 submit.addEventListener('click',function(){
-				
-					for(var i=0; i<thisWin.getChildren().length;i++){
-	    	             thisWin.remove(thisWin.children[i]);
-	    	           thisWin.children[i]=null;
+	if(_sender_id){
+		
+	var message = tf.value;
+	if( message ==''){
+	
+	var conform = Titanium.UI.createAlertDialog({ title: 'send mail',
+   	  message:'Are you sure sending no msg',
+      buttonNames: ['yes', 'No'], cancel: 1});
+
+      conform.addEventListener('click', function(e) { 
+      	Titanium.API.info('e = ' + JSON.stringify(e));
+
+   //Clicked cancel, first check is for iphone, second for android
+    if (e.cancel === e.index || e.cancel === true) {
+      return;
+     }
+
+    //now you can use parameter e to switch/case
+
+   switch (e.index) {
+      case 0:
+      // press code 
+      
+		for(var i=0; i<thisWin.getChildren().length;i++){
+	    	    thisWin.remove(thisWin.children[i]);
+	    	    thisWin.children[i]=null;
 	                         }
 	    
-	                  thisWin.add(afterSubmitView);
-	          
-				
-			var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
-				f.write(image);
-				
-		       // var net = require('lib/network');
+	            thisWin.add(afterSubmitView);
+	          var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
+				  f.write(image);
+				// var net = require('lib/network');
 			    var result = net.sendticket(_sender_id,f.read());
-			   
+			        net.sendemail(message,'hbm_b@yahoo.com',_sender_id,'tktsnap'+randomInt+'.png');	
+                    tf.value = '';
+                    thisWin.remove(toolbar);	
 	
+      
+      break;
+
+      //This will never be reached, if you specified cancel for index 1
+      case 1: //alert('Clicked button 1 (NO)');
+      break;
+
+      default:
+      break;
+
+  }
+
+});
+
+conform.show();
+// conform box ended
+ //dbpop.populatetbl_riderpro();	
+	
+}else{
+	
+for(var i=0; i<thisWin.getChildren().length;i++){
+	    	    thisWin.remove(thisWin.children[i]);
+	    	    thisWin.children[i]=null;
+	                         }
+	              thisWin.add(afterSubmitView);
+	          var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
+				  f.write(image);
+				// var net = require('lib/network');
+			  var result = net.sendticket(_sender_id,f.read());
+			      net.sendemail(message,'hbm_b@yahoo.com',_sender_id,'tktsnap'+randomInt+'.png');	
+				  tf.value = '';
+                  thisWin.remove(toolbar);	
+	
+} // if condition
+
+	
+} else{
+
+alert('please login before you send');
+
+} // if login
+				
 // 				
 				}); 
 // 		        		
@@ -368,7 +528,7 @@ submit.addEventListener('click',function(){
 
 
 	 		
-	 });	
+	////////////////////// });	
 
 
 //#############################################################// 
@@ -389,11 +549,11 @@ for(var i=0; i<thisWin.getChildren().length;i++){
   //#############################################################// 
    
 // send msg here 
-	 sendmsg.addEventListener('click',function(){
-	    var _sendWin = require('ui/common/sendWin');
-	    new _sendWin('tktsnap'+randomInt+'.png');   
+	// sendmsg.addEventListener('click',function(){
+	  //  var _sendWin = require('ui/common/sendWin');
+	    //new _sendWin('tktsnap'+randomInt+'.png');   
  	
-      });
+     // });
 		
 	//#############################################################// 	
 			

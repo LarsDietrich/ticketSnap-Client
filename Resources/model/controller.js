@@ -81,8 +81,7 @@ function startApp(){
 	alertsWin = new _alertsWin();
 	alertsWin.zIndex = 10;
 	
-	newTicketWin = new _newTicketWin();
-	newTicketWin.zIndex = 10;
+	
 	
 	
 	
@@ -166,7 +165,6 @@ badge:10
 	appTabGroup.setActiveTab(myTixTab);
 	
 	appTabGroup.open();
-	
 	openCamScreen();
 	
 };
@@ -210,10 +208,11 @@ function closeMenu(){
 }
 
 function openCamScreen(currentTab){
-	
 	//alert('Cam Button Pressed!');
 	
-	newTicketWin.open({modal:false});
+	 newTicketWin = new _newTicketWin();
+	newTicketWin.zIndex = 10;
+	newTicketWin();
 	
 	//callback();
 }

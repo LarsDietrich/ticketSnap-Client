@@ -1,4 +1,4 @@
-var loginUrl = "http://goticketsnap.xpertogo.com/myticket_login.php"; 
+var loginUrl = "http://mobile.goticketsnap.com/myticket_login.php"; 
 
 //http://mobile.goticketsnap.com/
 
@@ -113,7 +113,7 @@ exports.sendticket = function(_sender_id,_ticketimage){
 			fail();
 		}
 		
-			loginRequest.open("POST","http://goticketsnap.xpertogo.com/mt_insert_ticket.php");
+			loginRequest.open("POST","http://mobile.goticketsnap.com/mt_insert_ticket.php");
 			
 			var params = {  
    				sender_id:_sender_id,
@@ -150,7 +150,7 @@ exports.sendticket = function(_sender_id,_ticketimage){
 			fail();
 		}
 		
-		loginRequest.open("POST","http://goticketsnap.xpertogo.com/mt_sendmail.php");
+		loginRequest.open("POST","http://mobile.goticketsnap.com/mt_sendmail.php");
 			
 		var params = {  
 			sender_id:_sender_id,
@@ -214,7 +214,7 @@ exports.mytickets = function(_user_id,_req,callback){
 		callback(response);   
 	} // end onload
 		*/
-	loginRequest.open("POST",'http://goticketsnap.xpertogo.com/ticketView.php');
+	loginRequest.open("POST",'http://mobile.goticketsnap.com/ticketView.php');
 	
 	
 //>>>>>>> 8feb4fe3ec3108a9e178ada65be339d76009bfa9
@@ -260,7 +260,7 @@ exports.mytickets = function(_user_id,_req,callback){
 		 loginRequest.onerror = function(e){
 		 	fail();
 		}
-			loginRequest.open("POST",'http://goticketsnap.xpertogo.com/ticketView.php');
+			loginRequest.open("POST",'http://mobile.goticketsnap.com/ticketView.php');
 			
 			var params = {  
 				imgname:_imgname,
@@ -292,36 +292,3 @@ function fail() {
     alert('Something went wrong!')
 }
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
