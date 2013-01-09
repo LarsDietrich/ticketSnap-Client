@@ -1,7 +1,7 @@
 var globals    = require('/lib/AppProperties');
 var loggedIn   = globals.isLoggedIn();
 var _sender_id = globals.getCurrentUserID();
-var ticketID;
+////////////////////////////////////////////var ticketID;
 var net = require ('lib/network');
 
 //var imgView ;
@@ -99,7 +99,7 @@ function newTicketWin (){
 		 width:300,
 		 borderWidth:10,
 		 borderColor:'black',
-		 height:360,
+		 height:300,
 		});
 	
 	afterPressView.add(imgView); 	
@@ -144,7 +144,7 @@ var tf = Titanium.UI.createTextArea({
 		
 var toolbar = Titanium.UI.iOS.createToolbar({
 	items:[flexSpace,submit,flexSpace,tf,flexSpace,reTake,flexSpace],
-	bottom:10,
+	bottom:5,
 	borderTop:false,
 	borderBottom:false,
 	translucent : true,
@@ -163,7 +163,7 @@ tf.addEventListener('focus',function(){
 
 tf.addEventListener('blur',function(){
 	
-	toolbar.bottom =0 ;
+	toolbar.bottom = 0 ;
 	
 });
 
@@ -262,7 +262,7 @@ afterSubmitView.add(tbar);
   var randomInt = randNum(); // this will generate random name for tickets	
   
   
-	///thisWin.addEventListener('open',function(){
+	//thisWin.addEventListener('open',function(){
 	 		
   
 	
@@ -277,10 +277,12 @@ afterSubmitView.add(tbar);
 	
 	     thisWin.add(afterPressView);
 		 thisWin.add(toolbar);
+		////Titanium.UI.currentTab.open(thisWin,{animated:true});
 		thisWin.open({modal:true});
+		//alert(Titanium.UI.currentTab);
 				 
 submit.addEventListener('click',function(){
-	if(_sender_id){
+	if(globals.isLoggedIn()){
 						
 	var message = tf.value;
 	if( message ==''){
@@ -312,8 +314,8 @@ submit.addEventListener('click',function(){
 	          var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
 				  f.write(image);
 				// var net = require('lib/network');
-			    var result = net.sendticket(_sender_id,f.read());
-			        net.sendemail(message,'hbm_b@yahoo.com',_sender_id,'tktsnap'+randomInt+'.png');	
+			    var result = net.sendticket(globals.getCurrentUserID(),f.read());
+			        net.sendemail('No Message','hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
                     tf.value = '';
                     thisWin.remove(toolbar);	
 	
@@ -349,8 +351,8 @@ for(var i=0; i<thisWin.getChildren().length;i++){
 				  f.write(image);
 				  
 				// var net = require('lib/network');
-			  var result = net.sendticket(_sender_id,f.read());
-			   net.sendemail(message,'hbm_b@yahoo.com',_sender_id,'tktsnap'+randomInt+'.png');	
+			  var result = net.sendticket(globals.getCurrentUserID(),f.read());
+			   net.sendemail(message,'hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
                tf.value = '';
                thisWin.remove(toolbar);	
 	
@@ -406,12 +408,14 @@ for(var i=0; i<thisWin.getChildren().length;i++){
 			   var image = event.media;
 				imgView.image = image;
 			
-	    thisWin.add(afterPressView);
-		 thisWin.add(toolbar);
-		  thisWin.open({modal:true});
+	thisWin.add(afterPressView);
+    thisWin.add(toolbar);
+	//Titanium.UI.currentTab.open(thisWin,{animated:true});
+	thisWin.open({modal:true});
+	//alert(Titanium.UI.currentTab);
 				 
 submit.addEventListener('click',function(){
-	if(_sender_id){
+	if(globals.isLoggedIn()){
 		
 	var message = tf.value;
 	if( message ==''){
@@ -443,8 +447,8 @@ submit.addEventListener('click',function(){
 	          var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
 				  f.write(image);
 				// var net = require('lib/network');
-			    var result = net.sendticket(_sender_id,f.read());
-			        net.sendemail(message,'hbm_b@yahoo.com',_sender_id,'tktsnap'+randomInt+'.png');	
+			    var result = net.sendticket(globals.getCurrentUserID(),f.read());
+			        net.sendemail('No Message','hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
                     tf.value = '';
                     thisWin.remove(toolbar);	
 	
@@ -476,8 +480,8 @@ for(var i=0; i<thisWin.getChildren().length;i++){
 	          var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
 				  f.write(image);
 				// var net = require('lib/network');
-			  var result = net.sendticket(_sender_id,f.read());
-			      net.sendemail(message,'hbm_b@yahoo.com',_sender_id,'tktsnap'+randomInt+'.png');	
+			  var result = net.sendticket(globals.getCurrentUserID(),f.read());
+			      net.sendemail(message,'hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
 				  tf.value = '';
                   thisWin.remove(toolbar);	
 	
@@ -528,7 +532,7 @@ alert('please login before you send');
 
 
 	 		
-	////////////////////// });	
+    ////////////////////////////   });	
 
 
 //#############################################################// 
@@ -565,8 +569,8 @@ closeWin.addEventListener('click', function() {
 	    	thisWin.children[i]=null;
 	    }
 	    
-                thisWin.close();
-      
+               /////////Ti.UI.currentTab.close(thisWin);//.close();
+      thisWin.close();
          });
 	//#############################################################// 	
          return thisWin;

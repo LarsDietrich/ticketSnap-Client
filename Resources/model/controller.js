@@ -135,13 +135,23 @@ function startApp(){
 		
 	});
 	
-	   newTixTab = Ti.UI.createTab({
-		//icon: '/images/KS_nav_ui.png',
-		window: newTicketWin,
-		//title: '',
-		
-	});
 	
+	
+
+	/*
+	   newTixTab = Ti.UI.createTab({
+		icon: 'images/btn-camera.png',
+		window: newTicketWin,
+		title: 'NEW',
+		zIndex:50,
+		
+	});*/
+	
+	HighlightTab.setHighlightTab({
+		tabgroup: appTabGroup,
+		//window:newTicketWin,title:'New Ticket',
+		icon: 'images/btn-camera.png'
+	});
 /*	
 	￼// Sets the app's icon badge to 23 Ti.UI.iPhone.appBadge = 23;
 var tabGroup = Titanium.UI.createTabGroup(); var win1 = Titanium.UI.createWindow({
@@ -153,11 +163,7 @@ badge:10
 });
 	*/
 	
-	HighlightTab.setHighlightTab({
-		tabgroup: appTabGroup,
-		//window:newTicketWin,title:'New Ticket',
-		icon: 'images/btn-camera.png'
-	});
+	
 	
 	appTabGroup.addTab(alertsTab);
 	appTabGroup.addTab(Ti.UI.createTab({backgroundImage : 'images/camTab.png',}));
@@ -165,6 +171,7 @@ badge:10
 	appTabGroup.setActiveTab(myTixTab);
 	
 	appTabGroup.open();
+	
 	openCamScreen();
 	
 };
@@ -209,8 +216,7 @@ function closeMenu(){
 
 function openCamScreen(currentTab){
 	//alert('Cam Button Pressed!');
-	
-	 newTicketWin = new _newTicketWin();
+	newTicketWin = new _newTicketWin();
 	newTicketWin.zIndex = 10;
 	newTicketWin();
 	

@@ -49,6 +49,7 @@ exports.setHighlightTab = function(_params) {
 		//var win = new Camera();
 		//Ti.include('ui/common/FilterCamera.js');
 		//alert('Middle Tab Clicked');
+		
 		Ti.App.fireEvent('GLOBALEVENT',{func: 'openCamScreen'});
 
 	});
