@@ -116,13 +116,9 @@ function startApp(){
 	alertsWin.containingTab = alertsTab;
 	
 //alertsTab.addEventListener('focus',function(e){
-	
-	//alert('good');
+    //alert('good');
 	//setInterval(function(e){
-  
   //alertsTab.badge +=1;
-		
-		
 	///},1000);
 	//alertsTab.badge.hide();
  	
@@ -135,9 +131,6 @@ function startApp(){
 		
 	});
 	
-	
-	
-
 	/*
 	   newTixTab = Ti.UI.createTab({
 		icon: 'images/btn-camera.png',

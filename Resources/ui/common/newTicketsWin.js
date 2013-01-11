@@ -4,7 +4,16 @@ var _sender_id = globals.getCurrentUserID();
 ////////////////////////////////////////////var ticketID;
 var net = require ('lib/network');
 
-//var imgView ;
+var afterPressView  = null;
+var afterSubmitView = null;
+var imgView =  null ;
+var thisWin = null ;
+var toolbar = null;
+var submit  = null ;
+var tf = null;
+//var message;
+
+
  //#############################################################// 
 // random function starts
 function randNum (){        				
@@ -29,7 +38,334 @@ function randNum (){
 };// random ends
 
 //#############################################################// 
+function capture_func(/*Identifier*/){
+  
+  var randomInt = randNum(); // this will generate random name for tickets	
+  
+        
+	
+		 if(Ti.Media.isCameraSupported){
+		 Ti.Media.showCamera({
+	    	 success:function(event){
+				var image = event.media;
+				imgView.image =image;
+				
+				// save for future
+				// // function is called here
+	
+	     thisWin.add(afterPressView);
+		 thisWin.add(toolbar);
+		////Titanium.UI.currentTab.open(thisWin,{animated:true});
+		thisWin.open({modal:true});
+		//alert(Titanium.UI.currentTab);
+				 
+submit.addEventListener('click',function(){
+	if(globals.isLoggedIn()){
+						
+	var message = tf.value;
+	if( message ==''){
+	
+	var conform = Titanium.UI.createAlertDialog({ title: 'send mail',
+   	  message:'Are you sure sending no msg with Ticket',
+      buttonNames: ['yes', 'No'], cancel: 1});
 
+      conform.addEventListener('click', function(e) { 
+      	Titanium.API.info('e = ' + JSON.stringify(e));
+
+   //Clicked cancel, first check is for iphone, second for android
+    if (e.cancel === e.index || e.cancel === true) {
+      return;
+     }
+
+    //now you can use parameter e to switch/case
+
+   switch (e.index) {
+      case 0:
+      // press code 
+      
+		for(var i=0; i<thisWin.getChildren().length;i++){
+	    	    thisWin.remove(thisWin.children[i]);
+	    	    thisWin.children[i]=null;
+	                         }
+	    
+	            thisWin.add(afterSubmitView);
+	          var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
+				  f.write(image);
+				// var net = require('lib/network');
+			   
+			   //var result =
+			
+			  net.sendticket(globals.getCurrentUserID(),f.read(),function(){
+			  	
+			  	alert('fooooooooooooooo1');
+			  	
+			  });
+			    	
+			   	net.sendemail('No Message','hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
+                tf.value = '';
+                   
+			       
+                    thisWin.remove(toolbar);	
+	  
+      break;
+
+      //This will never be reached, if you specified cancel for index 1
+      case 1: //alert('Clicked button 1 (NO)');
+      break;
+
+      default:
+      break;
+
+  }
+
+});
+
+conform.show();
+// conform box ended
+
+ //dbpop.populatetbl_riderpro();	
+	
+}else{
+	
+for(var i=0; i<thisWin.getChildren().length;i++){
+	    	    thisWin.remove(thisWin.children[i]);
+	    	    thisWin.children[i]=null;
+	                         }
+	    
+	              thisWin.add(afterSubmitView);
+	              
+	          var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
+				  f.write(image);
+				  
+				// var net = require('lib/network');
+			  //var result = net.sendticket(globals.getCurrentUserID(),f.read());
+			
+			    //var result =
+			
+			  net.sendticket(globals.getCurrentUserID(),f.read(),function(){
+			  	
+			  	alert('fooooooooooooooo1');
+			  	
+			  });
+			    	
+			   	net.sendemail(message,'hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
+                tf.value = '';
+                   
+               thisWin.remove(toolbar);	
+	
+} // if condition
+
+	
+ } else{
+
+         alert('please login before you send');
+
+} // if login condition ends  
+	
+// 				
+// 				
+				}); 
+// 		        			
+			        //db.addPhoto(_bounty.id,f.nativePath);
+			         //sendButton.enabled = true;
+			},
+	         cancel:function(){
+	         	
+	         	
+	         		for(var i=0; i<thisWin.getChildren().length;i++){
+	    	thisWin.remove(thisWin.children[i]);
+	    	thisWin.children[i]=null;
+	    }
+	    
+                thisWin.close();
+                
+                
+	         },
+	         error:function(){
+	         var a = Ti.UI.createAlertDialogue({title:'camera Error'});
+	          if(error.code==Ti.Media.NO_CAMERA){
+	          a.setMessage('camera_error_details');
+	          }else{	 	
+	          a.setMessage('Unexpected Error :'+error.code);
+	        	 } 
+	        	 a.show();
+	         },
+// 	        
+	         saveToPhotoGallery:true,
+	         allowEditing:true,
+	         mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO]
+// 	        			
+	     });
+	 } 
+	 
+	 else{
+		 Ti.Media.openPhotoGallery({
+// 		
+			 success:function(event){
+// 		
+			var image = event.media;
+				imgView.image = image;			
+             	thisWin.add(afterPressView);
+                thisWin.add(toolbar);
+	//Titanium.UI.currentTab.open(thisWin,{animated:true});
+	thisWin.open({modal:true});
+	//alert(Titanium.UI.currentTab);
+				 
+submit.addEventListener('click',function(){
+	if(globals.isLoggedIn()){
+		
+	var message = tf.value;
+	if( message ==''){
+	
+	var conform = Titanium.UI.createAlertDialog({ title: 'send mail',
+   	  message:'Are you sure sending no msg',
+      buttonNames: ['yes', 'No'], cancel: 1});
+
+      conform.addEventListener('click', function(e) { 
+      	Titanium.API.info('e = ' + JSON.stringify(e));
+
+   //Clicked cancel, first check is for iphone, second for android
+    if (e.cancel === e.index || e.cancel === true) {
+      return;
+     }
+
+    //now you can use parameter e to switch/case
+
+   switch (e.index) {
+      case 0:
+      // press code 
+      
+		for(var i=0; i<thisWin.getChildren().length;i++){
+	    	    thisWin.remove(thisWin.children[i]);
+	    	    thisWin.children[i]=null;
+	                         }
+	    
+	            thisWin.add(afterSubmitView);
+	          var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
+				  f.write(image);
+				  
+			// var net = require('lib/network');
+			// here i am having a problem the blow call back function does not work .
+			//if it works i have to use net.sendmail function in it so that firstly tickets will be added in db and then the message 
+			//var result =
+			
+			  net.sendticket(globals.getCurrentUserID(),f.read(),function(){
+			  	
+			  	alert('fooooooooooooooo1');
+			  	
+			  });
+			    	
+			   	net.sendemail('No Message','hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
+                tf.value = '';
+                   
+			   
+			       // if(result){
+			    	//   alert(result);
+			  
+			     //  }
+			     
+                    thisWin.remove(toolbar);	
+	
+      
+      break;
+
+      //This will never be reached, if you specified cancel for index 1
+      case 1: //alert('Clicked button 1 (NO)');
+      break;
+
+      default:
+      break;
+
+  }
+
+});
+
+conform.show();
+// conform box ended
+ //dbpop.populatetbl_riderpro();	
+	
+}else{
+	
+for(var i=0; i<thisWin.getChildren().length;i++){
+	    	    thisWin.remove(thisWin.children[i]);
+	    	    thisWin.children[i]=null;
+	                         }
+	                         
+	              thisWin.add(afterSubmitView);
+	          var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
+				  f.write(image);
+				  
+				// var net = require('lib/network');
+				
+			    //var result =
+			    net.sendticket(globals.getCurrentUserID(),f.read(),function(){
+			  	
+			  	alert('fooooooooooooooo2');
+			  	
+			    });
+			     
+			   	 net.sendemail(message,'hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
+                 tf.value = '';
+			   	
+			   /////////});
+			     
+			  // if(result){
+			   	//	alert(result);
+			    	
+                	
+			         //   }
+			    
+                  thisWin.remove(toolbar);	
+	
+} // if condition
+
+	
+} else{
+
+alert('please login before you send');
+
+} // if login
+				
+// 				
+				}); 
+// 		        		
+		   				
+		        		
+		   		// 		    		//db.addPhoto(_bounty.id,f.nativePath);
+       },
+        
+        	 cancel:function() {
+//         	 	
+        for(var i=0; i<thisWin.getChildren().length;i++){
+	    	thisWin.remove(thisWin.children[i]);
+	    	thisWin.children[i]=null;
+	    }
+// 	    
+             thisWin.close();
+        	 	
+        	 },
+			 error:function(error) {
+			 var a = Ti.UI.createAlertDialog({title:L('camera_error')});
+			 if (error.code == Ti.Media.NO_CAMERA) {
+			 a.setMessage(L('camera_error_details'));
+			 }
+			 else {
+			 a.setMessage('Unexpected error: ' + error.code);
+			 }
+			 a.show();
+			 },	
+        	saveToPhotoGallery:true,
+       		 allowEditing:true,
+        	 mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO]	
+        });
+   }
+
+      	
+	
+	
+};
+
+// capture_func ends
 
 //#############################################################// 
 function newTicketWin (){
@@ -38,7 +374,7 @@ function newTicketWin (){
 	//#############################################################// 
 	
 		var _win = require('/ui/handheld/ApplicationWindow');
-		var thisWin = new _win();
+		     thisWin = new _win();
 		    thisWin.zIndex=10;
 		    //thisWin.modal = true;
 		    
@@ -87,13 +423,13 @@ function newTicketWin (){
 	 
 //#############################################################// 
 	 	// this below code starts working after pressing camera 
-	 var afterPressView = Ti.UI.createView({
+	afterPressView = Ti.UI.createView({
 			 backgroundImage:'images/otis_redding.png',
 			 layout: 'vertical',
 			 bottom:40,
 		});	
 	
-	var   imgView = Titanium.UI.createImageView({
+     imgView = Titanium.UI.createImageView({
 	     //image:image,
 		 top:10,
 		 width:300,
@@ -104,7 +440,7 @@ function newTicketWin (){
 	
 	afterPressView.add(imgView); 	
 	 	
-	   var submit = Ti.UI.createButton({
+	 submit = Ti.UI.createButton({
 			backgroundColor:'black',
 			left:20,
 			style:Titanium.UI.iPhone.SystemButtonStyle.BORDERED,	
@@ -129,7 +465,7 @@ function newTicketWin (){
 	systemButton:Titanium.UI.iPhone.SystemButton.FLEXIBLE_SPACE
 });
 
-var tf = Titanium.UI.createTextArea({
+ tf = Titanium.UI.createTextArea({
 	height:32,
 	backgroundImage:'images/inputfield.png',
 	width:200,
@@ -142,7 +478,7 @@ var tf = Titanium.UI.createTextArea({
 	
 });
 		
-var toolbar = Titanium.UI.iOS.createToolbar({
+    toolbar = Titanium.UI.iOS.createToolbar({
 	items:[flexSpace,submit,flexSpace,tf,flexSpace,reTake,flexSpace],
 	bottom:5,
 	borderTop:false,
@@ -170,7 +506,7 @@ tf.addEventListener('blur',function(){
 //#############################################################// 
 // this code work after submit ticket
   
-   var afterSubmitView = Ti.UI.createView({
+   afterSubmitView = Ti.UI.createView({
 			 backgroundImage:'images/otis_redding.png',
 			 layout: 'vertical'	
 		});	   
@@ -256,296 +592,26 @@ afterSubmitView.add(tbar);
 
 	
 //#############################################################// 
-// here goes the entire code to take pic
-
-  // here is camera function called
-  var randomInt = randNum(); // this will generate random name for tickets	
+//*
+// here is camera function called
+       
+       capture_func(); 
   
-  
-	//thisWin.addEventListener('open',function(){
-	 		
-  
-	
-		 if(Ti.Media.isCameraSupported){
-		 Ti.Media.showCamera({
-	    	 success:function(event){
-				var image = event.media;
-				imgView.image =image;
-				
-				// save for future
-				// // function is called here
-	
-	     thisWin.add(afterPressView);
-		 thisWin.add(toolbar);
-		////Titanium.UI.currentTab.open(thisWin,{animated:true});
-		thisWin.open({modal:true});
-		//alert(Titanium.UI.currentTab);
-				 
-submit.addEventListener('click',function(){
-	if(globals.isLoggedIn()){
-						
-	var message = tf.value;
-	if( message ==''){
-	
-	var conform = Titanium.UI.createAlertDialog({ title: 'send mail',
-   	  message:'Are you sure sending no msg with Ticket',
-      buttonNames: ['yes', 'No'], cancel: 1});
-
-      conform.addEventListener('click', function(e) { 
-      	Titanium.API.info('e = ' + JSON.stringify(e));
-
-   //Clicked cancel, first check is for iphone, second for android
-    if (e.cancel === e.index || e.cancel === true) {
-      return;
-     }
-
-    //now you can use parameter e to switch/case
-
-   switch (e.index) {
-      case 0:
-      // press code 
-      
-		for(var i=0; i<thisWin.getChildren().length;i++){
-	    	    thisWin.remove(thisWin.children[i]);
-	    	    thisWin.children[i]=null;
-	                         }
-	    
-	            thisWin.add(afterSubmitView);
-	          var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
-				  f.write(image);
-				// var net = require('lib/network');
-			    var result = net.sendticket(globals.getCurrentUserID(),f.read());
-			        net.sendemail('No Message','hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
-                    tf.value = '';
-                    thisWin.remove(toolbar);	
-	
-      
-      break;
-
-      //This will never be reached, if you specified cancel for index 1
-      case 1: //alert('Clicked button 1 (NO)');
-      break;
-
-      default:
-      break;
-
-  }
-
-});
-
-conform.show();
-// conform box ended
-
- //dbpop.populatetbl_riderpro();	
-	
-}else{
-	
-for(var i=0; i<thisWin.getChildren().length;i++){
-	    	    thisWin.remove(thisWin.children[i]);
-	    	    thisWin.children[i]=null;
-	                         }
-	    
-	              thisWin.add(afterSubmitView);
-	              
-	          var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
-				  f.write(image);
-				  
-				// var net = require('lib/network');
-			  var result = net.sendticket(globals.getCurrentUserID(),f.read());
-			   net.sendemail(message,'hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
-               tf.value = '';
-               thisWin.remove(toolbar);	
-	
-} // if condition
-
-	
- } else{
-
-         alert('please login before you send');
-
-} // if login condition ends  
-	
-// 				
-// 				
-				}); 
-// 		        			
-			        //db.addPhoto(_bounty.id,f.nativePath);
-			         //sendButton.enabled = true;
-			},
-	         cancel:function(){
-	         	
-	         	
-	         		for(var i=0; i<thisWin.getChildren().length;i++){
-	    	thisWin.remove(thisWin.children[i]);
-	    	thisWin.children[i]=null;
-	    }
-	    
-                thisWin.close();
-                
-                
-	         },
-	         error:function(){
-	         var a = Ti.UI.createAlertDialogue({title:'camera Error'});
-	          if(error.code==Ti.Media.NO_CAMERA){
-	          a.setMessage('camera_error_details');
-	          }else{	 	
-	          a.setMessage('Unexpected Error :'+error.code);
-	        	 } 
-	        	 a.show();
-	         },
-// 	        
-	         saveToPhotoGallery:true,
-	         allowEditing:true,
-	         mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO]
-// 	        			
-	     });
-	 } 
-	 else{
-		 Ti.Media.openPhotoGallery({
-// 		
-			 success:function(event){
-// 		
-			   var image = event.media;
-				imgView.image = image;
-			
-	thisWin.add(afterPressView);
-    thisWin.add(toolbar);
-	//Titanium.UI.currentTab.open(thisWin,{animated:true});
-	thisWin.open({modal:true});
-	//alert(Titanium.UI.currentTab);
-				 
-submit.addEventListener('click',function(){
-	if(globals.isLoggedIn()){
-		
-	var message = tf.value;
-	if( message ==''){
-	
-	var conform = Titanium.UI.createAlertDialog({ title: 'send mail',
-   	  message:'Are you sure sending no msg',
-      buttonNames: ['yes', 'No'], cancel: 1});
-
-      conform.addEventListener('click', function(e) { 
-      	Titanium.API.info('e = ' + JSON.stringify(e));
-
-   //Clicked cancel, first check is for iphone, second for android
-    if (e.cancel === e.index || e.cancel === true) {
-      return;
-     }
-
-    //now you can use parameter e to switch/case
-
-   switch (e.index) {
-      case 0:
-      // press code 
-      
-		for(var i=0; i<thisWin.getChildren().length;i++){
-	    	    thisWin.remove(thisWin.children[i]);
-	    	    thisWin.children[i]=null;
-	                         }
-	    
-	            thisWin.add(afterSubmitView);
-	          var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
-				  f.write(image);
-				// var net = require('lib/network');
-			    var result = net.sendticket(globals.getCurrentUserID(),f.read());
-			        net.sendemail('No Message','hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
-                    tf.value = '';
-                    thisWin.remove(toolbar);	
-	
-      
-      break;
-
-      //This will never be reached, if you specified cancel for index 1
-      case 1: //alert('Clicked button 1 (NO)');
-      break;
-
-      default:
-      break;
-
-  }
-
-});
-
-conform.show();
-// conform box ended
- //dbpop.populatetbl_riderpro();	
-	
-}else{
-	
-for(var i=0; i<thisWin.getChildren().length;i++){
-	    	    thisWin.remove(thisWin.children[i]);
-	    	    thisWin.children[i]=null;
-	                         }
-	              thisWin.add(afterSubmitView);
-	          var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
-				  f.write(image);
-				// var net = require('lib/network');
-			  var result = net.sendticket(globals.getCurrentUserID(),f.read());
-			      net.sendemail(message,'hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
-				  tf.value = '';
-                  thisWin.remove(toolbar);	
-	
-} // if condition
-
-	
-} else{
-
-alert('please login before you send');
-
-} // if login
-				
-// 				
-				}); 
-// 		        		
-		   				
-		        		
-		   		// 		    		//db.addPhoto(_bounty.id,f.nativePath);
-       },
-        
-        	 cancel:function() {
-//         	 	
-        for(var i=0; i<thisWin.getChildren().length;i++){
-	    	thisWin.remove(thisWin.children[i]);
-	    	thisWin.children[i]=null;
-	    }
-// 	    
-             thisWin.close();
-        	 	
-        	 },
-			 error:function(error) {
-			 var a = Ti.UI.createAlertDialog({title:L('camera_error')});
-			 if (error.code == Ti.Media.NO_CAMERA) {
-			 a.setMessage(L('camera_error_details'));
-			 }
-			 else {
-			 a.setMessage('Unexpected error: ' + error.code);
-			 }
-			 a.show();
-			 },	
-        	saveToPhotoGallery:true,
-       		 allowEditing:true,
-        	 mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO]	
-        });
-   }
-	 
-	 		
-
-
-	 		
-    ////////////////////////////   });	
-
-
 //#############################################################// 
+// i have same problem with retake when i click it and take pic again and submit it stores 2 images
 
 reTake.addEventListener('click',function(){
-
+	
+// camera function is here
+      capture_func();
 
 for(var i=0; i<thisWin.getChildren().length;i++){
-	    	thisWin.remove(thisWin.children[i]);
-	    	thisWin.children[i]=null;
-	    }
+    thisWin.remove(thisWin.children[i]);
+    thisWin.children[i]=null;
+    }
+	    ///submit.removeEventListener('click');
 	    
-	    //ticketID = captureImage();
+	   //ticketID = captureImage();
 
 	
    });
@@ -579,3 +645,9 @@ closeWin.addEventListener('click', function() {
 	 	
 
 module.exports  = newTicketWin;
+
+
+
+
+
+

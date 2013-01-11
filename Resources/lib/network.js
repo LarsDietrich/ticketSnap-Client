@@ -94,19 +94,21 @@ exports.login = function(_case,_email,_password,_actInd,callback){
    	};
   
 //#############################################################// 	
-exports.sendticket = function(_sender_id,_ticketimage){
-			
+exports.sendticket = function(_sender_id,_ticketimage,callback){
+	////	var result;	
     var loginRequest = Titanium.Network.createHTTPClient();
         loginRequest.setRequestHeader("enctype", "multipart/form-data");
         loginRequest.setRequestHeader("Content-Type", "image/png");
 		loginRequest.onload = function()  
 		{  
 	    var json = this.responseText;
+	    
 		    Ti.API.info('RAW RESPONSE: '+json); 
-		    var response = JSON.parse(json);
-		       //callback(response);
+		    
+		   var response = JSON.parse(json);
+		       callback(response);
 		    Ti.API.info('RESPONSE:  '+response);  
-		    return response.result;
+		//   (response.result == true)?result = true:result = false;
 		}; // end onload
 		
 		loginRequest.onerror = function(e){
@@ -129,13 +131,14 @@ exports.sendticket = function(_sender_id,_ticketimage){
              alert('Please check your cellular connection ');
     }
 
+      //return result;
+
    	};
   //#############################################################// 
   
 	exports.sendemail = function(_msg,_reciepentEmail,_sender_id,_imgname){
 			
     var loginRequest = Titanium.Network.createHTTPClient();
-    
 		loginRequest.onload = function()  
 		{  
 	    var json = this.responseText;
@@ -148,7 +151,7 @@ exports.sendticket = function(_sender_id,_ticketimage){
 		
 		loginRequest.onerror = function(e){
 			fail();
-		}
+		};
 		
 		loginRequest.open("POST","http://mobile.goticketsnap.com/mt_sendmail.php");
 			
