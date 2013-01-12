@@ -199,10 +199,10 @@ for(var i=0; i<thisWin.getChildren().length;i++){
 	 } 
 	 
 	 else{
+	 	
 		 Ti.Media.openPhotoGallery({
-// 		
-			 success:function(event){
-// 		
+ 			 success:function(event){
+//
 			var image = event.media;
 				imgView.image = image;			
              	thisWin.add(afterPressView);
@@ -249,11 +249,7 @@ submit.addEventListener('click',function(){
 			//if it works i have to use net.sendmail function in it so that firstly tickets will be added in db and then the message 
 			//var result =
 			
-			  net.sendticket(globals.getCurrentUserID(),f.read(),function(){
-			  	
-			  	alert('fooooooooooooooo1');
-			  	
-			  });
+			  net.sendticket(globals.getCurrentUserID(),f.read());
 			    	
 			   	net.sendemail('No Message','hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
                 tf.value = '';
@@ -298,13 +294,8 @@ for(var i=0; i<thisWin.getChildren().length;i++){
 				// var net = require('lib/network');
 				
 			    //var result =
-			    net.sendticket(globals.getCurrentUserID(),f.read(),function(){
-			  	
-			  	alert('fooooooooooooooo2');
-			  	
-			    });
-			     
-			   	 net.sendemail(message,'hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
+			     net.sendticket(globals.getCurrentUserID(),f.read());
+			     net.sendemail(message,'hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
                  tf.value = '';
 			   	
 			   /////////});
