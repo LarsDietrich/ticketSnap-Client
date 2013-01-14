@@ -161,13 +161,9 @@ function startApp(){
 	alertsWin.containingTab = alertsTab;
 	
 //alertsTab.addEventListener('focus',function(e){
-	
-	//alert('good');
+    //alert('good');
 	//setInterval(function(e){
-  
   //alertsTab.badge +=1;
-		
-		
 	///},1000);
 	//alertsTab.badge.hide();
  	
@@ -180,13 +176,20 @@ function startApp(){
 		
 	});
 	
+	/*
 	   newTixTab = Ti.UI.createTab({
-		//icon: '/images/KS_nav_ui.png',
+		icon: 'images/btn-camera.png',
 		window: newTicketWin,
-		//title: '',
+		title: 'NEW',
+		zIndex:50,
 		
-	});
+	});*/
 	
+	HighlightTab.setHighlightTab({
+		tabgroup: appTabGroup,
+		//window:newTicketWin,title:'New Ticket',
+		icon: 'images/btn-camera.png'
+	});
 /*	
 	￼// Sets the app's icon badge to 23 Ti.UI.iPhone.appBadge = 23;
 var tabGroup = Titanium.UI.createTabGroup(); var win1 = Titanium.UI.createWindow({
@@ -198,11 +201,7 @@ badge:10
 });
 	*/
 	
-	HighlightTab.setHighlightTab({
-		tabgroup: appTabGroup,
-		//window:newTicketWin,title:'New Ticket',
-		icon: 'images/btn-camera.png'
-	});
+	
 	
 	appTabGroup.addTab(alertsTab);
 	appTabGroup.addTab(Ti.UI.createTab({backgroundImage : 'images/camTab.png',}));
@@ -210,6 +209,7 @@ badge:10
 	appTabGroup.setActiveTab(myTixTab);
 	
 	appTabGroup.open();
+	
 	openCamScreen();
 	
 };
@@ -254,7 +254,10 @@ function closeMenu(){
 
 function openCamScreen(currentTab){
 	//alert('Cam Button Pressed!');
+<<<<<<< HEAD
 	
+=======
+>>>>>>> 5378264a3d63d1543413ce0cebd8277013387232
 	newTicketWin = new _newTicketWin();
 	newTicketWin.zIndex = 10;
 	newTicketWin.open();

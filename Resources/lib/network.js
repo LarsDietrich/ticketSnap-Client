@@ -4,12 +4,13 @@ var loginUrl = "http://mobile.goticketsnap.com/myticket_login.php";
 
 
 //#############################################################// 
+
 exports.userRegistration = function (_case,_fname,_lname,_email,_pwd,_actInd,callback){
 	  
 	  
 	 //var isRegistered;
-	  var loginRequest = Titanium.Network.createHTTPClient();
-	     loginRequest.onload = function(){  
+	  var RegisterationRequest = Titanium.Network.createHTTPClient();
+	     RegisterationRequest.onload = function(){  
 	  var json = this.responseText;
 		    Ti.API.info('RAW RESPONSE: '+json); 
 		    var response = JSON.parse(json);
@@ -22,11 +23,11 @@ exports.userRegistration = function (_case,_fname,_lname,_email,_pwd,_actInd,cal
 		 // if(response.message == true){isRegistered = true}else{isRegistered =false}
 		}; // end onload
 		
-		loginRequest.onerror = function(e){
+		RegisterationRequest.onerror = function(e){
 			fail();
 		} 
 		
-		loginRequest.open("POST",loginUrl);
+		RegisterationRequest.open("POST",loginUrl);
 			
 			var params = {  
    				fname:_fname,
@@ -41,7 +42,7 @@ exports.userRegistration = function (_case,_fname,_lname,_email,_pwd,_actInd,cal
     		
     			if (checkInternetConnection()) {
     			
-    		loginRequest.send(params);
+    		RegisterationRequest.send(params);
     		
     		} else {
     			
@@ -95,26 +96,33 @@ exports.login = function(_case,_email,_password,_actInd,callback){
   
 //#############################################################// 	
 exports.sendticket = function(_sender_id,_ticketimage){
-			
-    var loginRequest = Titanium.Network.createHTTPClient();
-        loginRequest.setRequestHeader("enctype", "multipart/form-data");
-        loginRequest.setRequestHeader("Content-Type", "image/png");
-		loginRequest.onload = function()  
+	////	var result;	
+    var sendTicketRequest = Titanium.Network.createHTTPClient({
+    	
+    	onload : function()  
 		{  
 	    var json = this.responseText;
+	    
 		    Ti.API.info('RAW RESPONSE: '+json); 
-		    var response = JSON.parse(json);
-		       //callback(response);
-		    Ti.API.info('RESPONSE:  '+response);  
-		    return response.result;
-		}; // end onload
+		    
+		   var response = JSON.parse(json);
+		       callback(response);
+		    Ti.API.info('RESPONSE:  '+response); 
+		    alert("Result:"+response.result); 
+		//   (response.result == true)?result = true:result = false;
+		}, // end onload
 		
-		loginRequest.onerror = function(e){
+		onerror : function(e){
 			fail();
-		}
-		
-			loginRequest.open("POST","http://mobile.goticketsnap.com/mt_insert_ticket.php");
-			
+		},
+    	
+    });
+       
+				
+		    sendTicketRequest.setRequestHeader("enctype", "multipart/form-data");
+            sendTicketRequest.setRequestHeader("Content-Type", "image/png");
+			sendTicketRequest.open("POST","http://mobile.goticketsnap.com/mt_insert_ticket.php");
+			 
 			var params = {  
    				sender_id:_sender_id,
    				ticketimage:_ticketimage
@@ -122,21 +130,22 @@ exports.sendticket = function(_sender_id,_ticketimage){
     		
     			if (checkInternetConnection()) {
     			
-    		loginRequest.send(params);
+    		sendTicketRequest.send(params);
     		
     		} else {
     			
              alert('Please check your cellular connection ');
     }
 
+      //return result;
+
    	};
   //#############################################################// 
   
 	exports.sendemail = function(_msg,_reciepentEmail,_sender_id,_imgname){
 			
-    var loginRequest = Titanium.Network.createHTTPClient();
-    
-		loginRequest.onload = function()  
+    var sendEmailRequest = Titanium.Network.createHTTPClient();
+		sendEmailRequest.onload = function()  
 		{  
 	    var json = this.responseText;
 		    Ti.API.info('RAW RESPONSE: '+json); 
@@ -146,11 +155,11 @@ exports.sendticket = function(_sender_id,_ticketimage){
 		    
 		}; // end onload
 		
-		loginRequest.onerror = function(e){
+		sendEmailRequest.onerror = function(e){
 			fail();
-		}
+		};
 		
-		loginRequest.open("POST","http://mobile.goticketsnap.com/mt_sendmail.php");
+		sendEmailRequest.open("POST","http://mobile.goticketsnap.com/mt_sendmail.php");
 			
 		var params = {  
 			sender_id:_sender_id,
@@ -161,7 +170,7 @@ exports.sendticket = function(_sender_id,_ticketimage){
     		
 		if (checkInternetConnection()) {
     			
-    		loginRequest.send(params);
+    		sendEmailRequest.send(params);
     		
     	} 
     	else {		
@@ -169,14 +178,12 @@ exports.sendticket = function(_sender_id,_ticketimage){
     	}
 
  };
-  
-	
 
 //#############################################################// 	
 
 exports.mytickets = function(_user_id,_req,callback){
 			
-    var loginRequest = Titanium.Network.createHTTPClient({
+    var myTicketsRequest = Titanium.Network.createHTTPClient({
     	onload: function(e)  
 		{  
 			var json = this.responseText;
@@ -214,7 +221,7 @@ exports.mytickets = function(_user_id,_req,callback){
 		callback(response);   
 	} // end onload
 		*/
-	loginRequest.open("POST",'http://mobile.goticketsnap.com/ticketView.php');
+	myTicketsRequest.open("POST",'http://mobile.goticketsnap.com/ticketView.php');
 	
 	
 //>>>>>>> 8feb4fe3ec3108a9e178ada65be339d76009bfa9
@@ -227,7 +234,7 @@ exports.mytickets = function(_user_id,_req,callback){
 //<<<<<<< HEAD
     			if (checkInternetConnection()) {
     			
-    		loginRequest.send(params);
+    		myTicketsRequest.send(params);
     		
     		} else {
     			
@@ -245,8 +252,8 @@ exports.mytickets = function(_user_id,_req,callback){
    	
    	exports.msgs = function(_imgname,_user_id,_req,callback){
 			
-    var loginRequest = Titanium.Network.createHTTPClient();
-		loginRequest.onload = function()  
+    var msgsRequest = Titanium.Network.createHTTPClient();
+	     msgsRequest.onload = function()  
 		{  
 			
 	var  json = this.responseText;
@@ -257,10 +264,12 @@ exports.mytickets = function(_user_id,_req,callback){
 		    
 		}; // end onload
 		
-		 loginRequest.onerror = function(e){
+		 msgsRequest.onerror = function(e){
+		 	
 		 	fail();
 		}
-			loginRequest.open("POST",'http://mobile.goticketsnap.com/ticketView.php');
+		
+			msgsRequest.open("POST",'http://mobile.goticketsnap.com/ticketView.php');
 			
 			var params = {  
 				imgname:_imgname,
@@ -270,7 +279,7 @@ exports.mytickets = function(_user_id,_req,callback){
     		
     		if (checkInternetConnection()) {
     			
-    		loginRequest.send(params);
+    		msgsRequest.send(params);
     		
     		} else {
     			

@@ -177,7 +177,7 @@ var     titleLabel = Titanium.UI.createLabel({
       dView.add(titleLabel);
       
 
-settingsWin.containingTab.open(detailWin);  	
+///settingsWin.containingTab.open(detailWin);  	
 
 //<<<<<<< HEAD
 //settingsWin.containingTab.open(detailWin);  	*/
@@ -186,7 +186,7 @@ settingsWin.containingTab.open(detailWin);
 //>>>>>>> made app login dynamic and added dynamic status view for each ticket
 
 
-alertsWin.containingTab.open(detailWin);  	
+//alertsWin.containingTab.open(detailWin);  	
 
  });  
  
