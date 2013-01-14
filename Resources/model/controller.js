@@ -1,3 +1,4 @@
+var Cloud = require('ti.cloud');
 var globals = require('/lib/AppProperties');  // reference to global vars
 var screenWidth = globals.screenWidth;
 var _newTicketWin = require('ui/common/newTicketsWin');  // load newTicketWindow. App will start with this screen.
@@ -14,7 +15,7 @@ var loginWin = null;
 var HighlightTab = require('ui/common/HighlightTab');
 var _alertsWin   = require('/ui/common/alertsWin');
 var alertsWin = null;
-
+var deviceToken = null;
 // var _settingsWin = require('/ui/common/settingsWin');
 // create alerts screen
 
@@ -71,6 +72,50 @@ function logout(){
 
 
 function startApp(){
+	
+	Cloud.Users.login({
+    	login: 'pushUser',
+    	password: '12345'}, 
+    	function (e) {
+			if (e.success) {
+				var user = e.users[0];
+ 				alert("Loggin successfully");
+    		} else {
+        		alert("Error :"+e.message);
+    		}
+	});
+	
+	// register for push notifications
+	Ti.Network.registerForPushNotifications({
+		types: [
+    		Ti.Network.NOTIFICATION_TYPE_BADGE,
+     		Ti.Network.NOTIFICATION_TYPE_ALERT,
+     		Ti.Network.NOTIFICATION_TYPE_SOUND
+		],
+ 		success:function(e) {
+    		Ti.API.info('Device Token :  '+e.deviceToken);
+    		deviceToken=e.deviceToken;
+		},
+ 		error:function(e) {
+    		Ti.API.info("push notifications failed: "+e);
+    		alert("push notifications failed: "+e.error);
+		},
+ 		callback:function(e) {
+    	 alert('Push received');
+		}	
+	});
+	
+	Cloud.PushNotifications.subscribe({
+    channel: 'demo_alert',
+    type:'ios',
+    device_token: deviceToken
+}, function (e) {
+    if (e.success) {
+        alert('Success :'+((e.error && e.message) || JSON.stringify(e)));
+    } else {
+        alert('Error:' + ((e.error && e.message) || JSON.stringify(e)));
+    }
+});
 	
 	// instantiate the windows
 	myTixView = new _myTixView(globals.getCurrentUserID());
@@ -210,9 +255,9 @@ function closeMenu(){
 function openCamScreen(currentTab){
 	//alert('Cam Button Pressed!');
 	
-	 newTicketWin = new _newTicketWin();
+	newTicketWin = new _newTicketWin();
 	newTicketWin.zIndex = 10;
-	newTicketWin();
+	newTicketWin.open();
 	
 	//callback();
 }
