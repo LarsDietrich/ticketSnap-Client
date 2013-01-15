@@ -1,4 +1,5 @@
-var Cloud = require('ti.cloud');
+//var Cloud = require('ti.cloud');
+var UrbanAirship = require('ti.urbanairship');
 var globals = require('/lib/AppProperties');  // reference to global vars
 var screenWidth = globals.screenWidth;
 var _newTicketWin = require('ui/common/newTicketsWin');  // load newTicketWindow. App will start with this screen.
@@ -73,49 +74,96 @@ function logout(){
 
 function startApp(){
 	
-	Cloud.Users.login({
-    	login: 'pushUser',
-    	password: '12345'}, 
-    	function (e) {
-			if (e.success) {
-				var user = e.users[0];
- 				alert("Loggin successfully");
-    		} else {
-        		alert("Error :"+e.message);
-    		}
-	});
+	// Cloud.Users.login({
+    	// login: 'pushUser',
+    	// password: '12345'}, 
+    	// function (e) {
+			// if (e.success) {
+				// var user = e.users[0];
+ 				// alert("Loggin successfully");
+    		// } else {
+        		// alert("Error :"+e.message);
+    		// }
+	// });
 	
-	// register for push notifications
-	Ti.Network.registerForPushNotifications({
-		types: [
-    		Ti.Network.NOTIFICATION_TYPE_BADGE,
-     		Ti.Network.NOTIFICATION_TYPE_ALERT,
-     		Ti.Network.NOTIFICATION_TYPE_SOUND
-		],
- 		success:function(e) {
-    		Ti.API.info('Device Token :  '+e.deviceToken);
-    		deviceToken=e.deviceToken;
-		},
- 		error:function(e) {
-    		Ti.API.info("push notifications failed: "+e);
-    		alert("push notifications failed: "+e.error);
-		},
- 		callback:function(e) {
-    	 alert('Push received');
-		}	
-	});
+	// Set UA options
+	UrbanAirship.tags = [ 'testingtesting', 'appcelerator', 'my-tags' ];
+	UrbanAirship.alias = 'testDevice';
+	UrbanAirship.autoBadge = true;
+	UrbanAirship.autoResetBadge = true;
 	
-	Cloud.PushNotifications.subscribe({
-    channel: 'demo_alert',
-    type:'ios',
-    device_token: deviceToken
-}, function (e) {
-    if (e.success) {
-        alert('Success :'+((e.error && e.message) || JSON.stringify(e)));
-    } else {
-        alert('Error:' + ((e.error && e.message) || JSON.stringify(e)));
-    }
+	function eventCallback(e) {
+	// Pass the notification to the module
+    UrbanAirship.handleNotification(e.data);
+    	
+  	Ti.API.info('Push message received');
+  	Ti.API.info('  Message: ' + e.data.alert);
+  	Ti.API.info('  Payload: ' + e.data.aps);
+    
+    labelMessage.text = e.data.alert;
+	labelPayload.text = JSON.stringify(e.data.aps);	
+}
+
+function eventSuccess(e) {
+	// *MUST* pass the received token to the module
+    UrbanAirship.registerDevice(e.deviceToken);  
+    
+    Ti.API.info('Received device token: ' + e.deviceToken);
+    labelID.text = e.deviceToken;
+    btnOpen.enabled = true;		
+}
+
+function eventError(e) {
+    Ti.API.info('Error:' + e.error);
+    var alert = Ti.UI.createAlertDialog({
+        title: 'Error',
+        message: e.error
+    });
+    alert.show();	
+}
+
+Ti.Network.registerForPushNotifications({
+    types:[
+        Ti.Network.NOTIFICATION_TYPE_BADGE,
+        Ti.Network.NOTIFICATION_TYPE_ALERT,
+        Ti.Network.NOTIFICATION_TYPE_SOUND
+    ],
+    success: eventSuccess,
+    error: eventError,
+    callback: eventCallback
 });
+	
+	// // register for push notifications
+	// Ti.Network.registerForPushNotifications({
+		// types: [
+    		// Ti.Network.NOTIFICATION_TYPE_BADGE,
+     		// Ti.Network.NOTIFICATION_TYPE_ALERT,
+     		// Ti.Network.NOTIFICATION_TYPE_SOUND
+		// ],
+ 		// success:function(e) {
+    		// Ti.API.info('Device Token :  '+e.deviceToken);
+    		// deviceToken=e.deviceToken;
+		// },
+ 		// error:function(e) {
+    		// Ti.API.info("push notifications failed: "+e);
+    		// alert("push notifications failed: "+e.error);
+		// },
+ 		// callback:function(e) {
+    	 // alert('Push received');
+		// }	
+	// });
+	
+	// Cloud.PushNotifications.subscribe({
+    // channel: 'demo_alert',
+    // type:'ios',
+    // device_token: deviceToken
+// }, function (e) {
+    // if (e.success) {
+        // alert('Success :'+((e.error && e.message) || JSON.stringify(e)));
+    // } else {
+        // alert('Error:' + ((e.error && e.message) || JSON.stringify(e)));
+    // }
+// });
 	
 	// instantiate the windows
 	myTixView = new _myTixView(globals.getCurrentUserID());
@@ -254,10 +302,7 @@ function closeMenu(){
 
 function openCamScreen(currentTab){
 	//alert('Cam Button Pressed!');
-<<<<<<< HEAD
-	
-=======
->>>>>>> 5378264a3d63d1543413ce0cebd8277013387232
+
 	newTicketWin = new _newTicketWin();
 	newTicketWin.zIndex = 10;
 	newTicketWin.open();
