@@ -97,11 +97,12 @@ function startApp(){
     UrbanAirship.handleNotification(e.data);
     	
   	Ti.API.info('Push message received');
-  	Ti.API.info('  Message: ' + e.data.alert);
-  	Ti.API.info('  Payload: ' + e.data.aps);
+  	alert('  Message: ' + e.data.alert+'\n' + '  Payload: ' + e.data.aps);
     
-    labelMessage.text = e.data.alert;
-	labelPayload.text = JSON.stringify(e.data.aps);	
+    appTabGroup.badge= e.data.badge;
+    appTabGroup.setActiveTab(alertsTab);
+    // labelMessage.text = e.data.alert;
+	// labelPayload.text = JSON.stringify(e.data.aps);	
 }
 
 function eventSuccess(e) {
@@ -109,8 +110,8 @@ function eventSuccess(e) {
     UrbanAirship.registerDevice(e.deviceToken);  
     
     Ti.API.info('Received device token: ' + e.deviceToken);
-    labelID.text = e.deviceToken;
-    btnOpen.enabled = true;		
+    deviceToken = e.deviceToken;
+    // btnOpen.enabled = true;		
 }
 
 function eventError(e) {
