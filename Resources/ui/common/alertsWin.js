@@ -8,12 +8,6 @@ var view2 = Ti.UI.createView({
 	 backgroundImage:'images/otis_redding.png',	
 });
 
-// populate 
-//<<<<<<< HEAD
-// populate 
-//=======
-//>>>>>>> made app login dynamic and added dynamic status view for each ticket
-
 var data = []; //empty data array
    //declare the http client object
   

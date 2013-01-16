@@ -97,7 +97,7 @@ function startApp(){
     UrbanAirship.handleNotification(e.data);
     	
   	Ti.API.info('Push message received');
-  	alert('  Message: ' + e.data.alert+'\n' + '  Payload: ' + e.data.aps);
+  	alert('  Message: ' + e.data+'\n' + '  Payload: ' + e.data.aps);
     
     appTabGroup.badge= e.data.badge;
     appTabGroup.setActiveTab(alertsTab);
@@ -111,6 +111,7 @@ function eventSuccess(e) {
     
     Ti.API.info('Received device token: ' + e.deviceToken);
     deviceToken = e.deviceToken;
+    require('/lib/notifications').handleNotification({data: e, tabgroup: appTabGroup);
     // btnOpen.enabled = true;		
 }
 
