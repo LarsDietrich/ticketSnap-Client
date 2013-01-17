@@ -111,7 +111,11 @@ function eventSuccess(e) {
     
     Ti.API.info('Received device token: ' + e.deviceToken);
     deviceToken = e.deviceToken;
-    require('/lib/notifications').handleNotification({data: e, tabgroup: appTabGroup);
+    // device token will be used during registration 
+    globals.setDeviceToken(e.deviceToken); 
+    alertsWin.refreshAlert(globals.getCurrentUserID());
+    
+   /// require('/lib/notifications').handleNotification({data: e, tabgroup: appTabGroup);
     // btnOpen.enabled = true;		
 }
 
@@ -174,7 +178,7 @@ Ti.Network.registerForPushNotifications({
 	myTixWin.zIndex = 10;
 	
 	alertsWin = new _alertsWin();
-	alertsWin.zIndex = 10;
+	alertsWin.getWin.zIndex = 10;
 	
 	
 	
@@ -204,11 +208,11 @@ Ti.Network.registerForPushNotifications({
 	
 	var alertsTab = Ti.UI.createTab({
 		icon: '/images/40-inbox.png',
-		window: alertsWin,
+		window:alertsWin.getWin(),
 		title: 'Alerts',
 		badge:5,
 	});
-	alertsWin.containingTab = alertsTab;
+	alertsWin.getWin().containingTab = alertsTab;
 	
 //alertsTab.addEventListener('focus',function(e){
     //alert('good');
@@ -326,6 +330,9 @@ function handleLogin(args){
 	    }
 		loginWin.add(loginView);
 		myTixView.refreshCF(null);
+		alertsWin.refreshAlert(null);
+		
+		
 	}
 	else
 	{ 
@@ -348,6 +355,7 @@ function handleLogin(args){
 	       		}
 	       		loginWin.add(loggedInView);
 	       		myTixView.refreshCF(response.uid);
+	       		alertsWin.refreshAlert(response.uid);
 	       		toggleMenu();
 	       		alert("Welcome " + response.name);
 	       	}

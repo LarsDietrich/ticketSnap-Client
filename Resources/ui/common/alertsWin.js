@@ -1,122 +1,37 @@
+//////<<<<<<<---- need to set the right url
+
+var globals    = require('/lib/AppProperties');
 function alerts (){
 
 var  _alertsWin   = require('/ui/handheld/ApplicationWindow');
-var  alertsWin    = new _alertsWin();
-     alertsWin.title  = 'alerts';	
+ this.alertsWin    = new _alertsWin();
+ this.alertsWin.title  = 'alerts';	
 
 var view2 = Ti.UI.createView({
 	 backgroundImage:'images/otis_redding.png',	
 });
 
-var data = []; //empty data array
-   //declare the http client object
-  
- var tblRecipes = Titanium.UI.createTableView({
+var tblRecipes = Titanium.UI.createTableView({
      height: 366,
      width: 320,
      top: 0,
      left: 0,
+    // data:data,
     // rowHeight: 70,
    });
-
-
-   
-//<<<<<<< HEAD
-   ///settingsWin.containingTab.open();
-//======
-   ///alertsWin.containingTab.open();
-//>>>>>>> made app login dynamic and added dynamic status view for each ticket
-
-   
+ 
    //Terminating in response to SpringBoard's termination.
-  view2.add(tblRecipes);
+ 
   
-     //loop each item in the xml
-     for (var i = 0; i < 5; i++) {//create a table row
-     	
-var row = Titanium.UI.createTableViewRow({
-   // hasChild: true,
-    className: 'recipe-row'
-});
+  /////alert(globals.getCurrentUserID());
+  //this.alertsWin.addEventListener('focus',function(){
 
-//title label
-var titleLabel = Titanium.UI.createLabel({
-  text:'2012/22    Ticket No.1  (On Hold)' ,
-  font: {fontSize: 14, fontWeight: 'bold'},
-  left: 70,
-  top: 5,
-  height: 20,
-  width: 280,
-});
-
-row.add(titleLabel);
-
-//description label
-var descriptionLabel = Titanium.UI.createLabel({
-  text:'Join the very first European Titanium Mobile Development Conference, that is entirely community-organized. Weve got a city - the beautiful Valencia in Spain, and a venue - the amazing Astoria Palace hotel, right in the heart of this historic quarter.',
-  font: {fontSize: 10, fontWeight: 'normal'},
-  left:20,
-  top: 25,
-  height:20,
-  width: 280,
-  //bottom:30,
-});
-
-if(descriptionLabel.text == '') {
-  descriptionLabel.text = 'No description is available.';
-}
-  row.add(descriptionLabel);
+  AlertPopulate(globals.getCurrentUserID(),tblRecipes);  /// populate alerts win 
+///  	
+ /// });
+ 
   
-var takePic = Ti.UI.createButton({
-			backgroundColor:'black',
-			left:20,	
-			color:'#6d0a0c',
-		    bottom:5,
-			opacity:1,
-			title: 'Take Pic', });
-			
-			
-   row.add(takePic);
-   
- takePic.addEventListener('click',function(){
- 	
- 	
- Ti.App.fireEvent('GLOBALEVENT',{func: 'openCamScreen'});
- 	
- });  
-  
-  var CallAtrn = Ti.UI.createButton({
-  	
-			backgroundColor:'black',
-			right:20,
-			color:'#6d0a0c',
-			bottom:5,
-			opacity:1,
-			title: 'Call Atty', });
-			
-	 row.add(CallAtrn);
-	    
-	    takePic.hide();
-	    CallAtrn.hide();
-			
-  //add our little icon to the left of the row
- /* var iconImage = Titanium.UI.createImageView({
-    image: 'images/screenCam.png',
-    width: 50,
-    height: 50,
-    left: 10,
-    top: 10 });
-  row.add(iconImage);*/
-  
-  //add the table row to our data[] object
-  data.push(row);
-}//finally, set the data property of the tableView to our
-     //data[] object
-     tblRecipes.data = data;
-//};
-
-
- var isViewed = false;  
+   var isViewed = false;  
  tblRecipes.addEventListener('click',function(e){
  	
  	if(!isViewed){
@@ -139,142 +54,167 @@ var takePic = Ti.UI.createButton({
   	
   }
    
-  // alert(e.row.children[1].height); 
-  // e.Height = 200;
+  
+ });  
+  
+
+ 
+
+
+view2.add(tblRecipes);  
+this.alertsWin.add(view2);
+
+this.getWin = function(){
+	 	return this.alertsWin;
+	 }
+
+
+this.refreshAlert = function(uid){
+	
+	AlertPopulate(uid,tblRecipes);
+	
+};
+
+
+
+
+
+	//#############################################################// 
+
+function AlertPopulate(uid,_tbl){
+	
+	 var data = []; //empty data array
+	
+	_tbl.setData = data;
+	
+	
+	if(uid == null){
+		
+	//tblRecipes.data = [
+    ///{title:'please log in first'},];	
+	alert('please log in to view alerts');	
+		
+	}else{
+		
+		
+	
+   //declare the http client object
    
-//<<<<<<< HEAD
-  //  var detailWin = new _settingsWin();
-//=======
-    var detailWin = new _alertsWin();
-//>>>>>>> made app login dynamic and added dynamic status view for each ticket
-        detailWin.title = 'Action Alert';
+   
+   alert('populatting alert view :'+uid);
+   
+    var net = require('/lib/network'); 
+   
+     net.repliesAlerts (uid,'reply', function(_data){
+  			/// here populate fiun
+			
+		//	if (_data.length === 0){
+	    			    	
+	         //   return;
+	      //  }
+	            //loop each item in the xml
+	            
+   for (var i = 0; i < 15; i++) {//create a table row
+   	alert('loop works');
+   	
+    ////s b++;	
+var row = Titanium.UI.createTableViewRow({
+   /// hasChild: true,
+    className: 'recipe-row',
+   /// id:_data[i].reply_id,
+});
+
+//title label
+var titleLabel = Titanium.UI.createLabel({
+  text:_data[i].date_time ,
+  font: {fontSize: 14, fontWeight: 'bold'},
+  left: 70,
+  top: 5,
+  height: 20,
+  width: 280,
+});
+
+row.add(titleLabel);
+
+//description label
+var descriptionLabel = Titanium.UI.createLabel({
+  text:'you have new message from Attorny ',
+  font: {fontSize: 10, fontWeight: 'normal'},
+  left:20,
+  top: 25,
+  height:20,
+  width: 280,
+  //bottom:30,
+});
+
+if(descriptionLabel.text == '') {
+  descriptionLabel.text = 'No description is available.';
+}
+  row.add(descriptionLabel);
+  var viewMessage = Ti.UI.createButton({
+			backgroundColor:'black',
+			left:20,	
+			color:'#6d0a0c',
+		    bottom:5,
+			opacity:1,
+			///id:_data[i].message_id,
+			title: 'View Message', });
+	row.add(viewMessage);
+  
+  var CallAtrn = Ti.UI.createButton({
+			backgroundColor:'black',
+			right:20,
+			color:'#6d0a0c',
+			bottom:5,
+			opacity:1,
+			title: 'Call Atty', });
+			
+	 row.add(CallAtrn);
 	    
-	    var dView = Ti.UI.createView({
-	                backgroundImage:'images/otis_redding.png',
-	                	
+	    takePic.hide();
+	    CallAtrn.hide();
+			
+ 
+  data.push(row);
+
+};//finally, set the data property of the tableView to our
+
+
+_tbl.setData = data;
+  
+   
+///tblRecipes.data = data;
+
+			viewMessage.addEventListener('click',function(){
+  var detailWin = new _alertsWin();
+      detailWin.title = 'Action Alert';
+  
+  var dView = Ti.UI.createView({
+	  backgroundImage:'images/otis_redding.png',
                });
 	        
 	    detailWin.add(dView);
-	        
-	        
-	//title label
-	
-var     titleLabel = Titanium.UI.createLabel({
-		  text:'2012/22 Ticket No.1(On Hold)' ,
-		  font: {fontSize: 14, fontWeight: 'bold'},
-		  left: 70,
-		  top: 5,
-		  height: 20,
-		  width: 210
-		  });
-
-      dView.add(titleLabel);
-      
-
-///settingsWin.containingTab.open(detailWin);  	
-
-//<<<<<<< HEAD
-//settingsWin.containingTab.open(detailWin);  	*/
-//=======
-//alertsWin.containingTab.open(detailWin);  //	*/
-//>>>>>>> made app login dynamic and added dynamic status view for each ticket
-
-
-//alertsWin.containingTab.open(detailWin);  	
-
+ 	  alertsWin.containingTab.open(detailWin);
  });  
+
+
+
+	     //data[] object
+   /////  tblRecipes.data = data;
+//};
+
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-alertsWin.add(view2);
-/*		
-var registerButton = Ti.UI.createButton({
-	title:'Register',
-	//color:'white',
-	top:90,
-	height:Ti.UI.SIZE,
-	 color:'#494a4a',
-	width:200,
-	//image:'images/btn-alerts.png',
-	//enabled:false,
-	});	
-
- registerButton.addEventListener('click',function(){
-	   	
-	var registerWin = require('ui/common/registerWin');
-	new registerWin();
-	});	
- 
-        var Edit_UserName_Button = Ti.UI.createButton({
-			title:'Edit Username',
-			//color:'white',
-			 color:'#494a4a',
-			top:140,
-			height:Ti.UI.SIZE,
-			width:200,
-			//image:'images/btn-alerts.png',
-			});
+  });// net.tickets
+ 		
 		
-		 var Edit_pwd_Button = Ti.UI.createButton({
-			title:'Edit Password',
-			//color:'white',
-			 color:'#494a4a',
-			top:190,
-			height:Ti.UI.SIZE,
-			width:200,
-			//image:'images/btn-alerts.png',
-			//enabled:false,
-			});
-				
-      // var closebutton = Ti.UI.createButton({
-      	// title:'Close Me',
-      	// width:200,
-      	// height:Ti.UI.SIZE,
-	    // color:'#494a4a',
-	    // top:240 });
-			
+	}
 	
-	view2.add(registerButton);
-		view2.add(Edit_UserName_Button);
-		view2.add(Edit_pwd_Button);
-		*/
-		
-	// closebutton.addEventListener('click',function()
-	// {
-		// alertsWin.animate({view:view,transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
-		// alertsWin.title ='My Tickets'
-	// });
-	// view2.add(closebutton);
-	
-		
-		// send ends here
-		// image tacking code ends here
-		
-/*
-    alertsWin.setLeftNavButton(navBtn);
-    navBtn.addEventListener('click',function(){
-	alertsWin.close();
-	alertsWin=null;
-	
-    });
-    */
-    // alertsWin.animate({view:view2, transition:Ti.UI.iPhone.AnimationStyle.CURL_DOWN});
-	    // alertsWin.add(view2); 
-        //alertsWin.open({modal:true});
+
+} // populate function is here
+
+  	//#############################################################//       
         
-        
-    return alertsWin;
+   ///// return alertsWin;
 };
 
 module.exports  = alerts;

@@ -5,8 +5,7 @@ var loginUrl = "http://mobile.goticketsnap.com/myticket_login.php";
 
 //#############################################################// 
 
-exports.userRegistration = function (_case,_fname,_lname,_email,_pwd,_actInd,callback){
-	  
+exports.userRegistration = function (_case,_fname,_lname,_email,_pwd,_deviceToken,_actInd,callback){
 	  
 	 //var isRegistered;
 	  var RegisterationRequest = Titanium.Network.createHTTPClient();
@@ -32,9 +31,8 @@ exports.userRegistration = function (_case,_fname,_lname,_email,_pwd,_actInd,cal
 			var params = {  
    				fname:_fname,
    				lname:_lname,
-   				//phone:_phone,
+   				token:_deviceToken,
    				email:_email,
-   				//adress:_adress,
    				password:_pwd,
    				condition:_case,  
         		
@@ -191,37 +189,16 @@ exports.mytickets = function(_user_id,_req,callback){
 			var response = JSON.parse(json);
 			Ti.API.info('RESPONSE:  '+JSON.stringify(response));  
 			callback(response);
+			///alert('it works');
+			
 			//_actInd.hide();	   
 		}, // end onload
 		onerror: function(e){
 			fail();
 		}
     });
-// //<<<<<<< HEAD
-	// loginRequest.onload = function()  
-	// {  
-		// var json = this.responseText;
-		// Ti.API.info('RAW RESPONSE: '+json); 
-		// var response = JSON.parse(json);
-		// Ti.API.info('RESPONSE:  '+response);  
-		// callback(response);
-		// _actInd.hide();	   
-	// }; // end onload
-	
-	//loginRequest.onerror = fail();
-		
-		/*	loginRequest.open("POST",'http://goticketsnap.xpertogo.com/ticketView.php');
-//=======
-	loginRequest.onload = function()  
-	{  
-		var json = this.responseText;
-		Ti.API.info('RAW RESPONSE: '+json); 
-		var response = JSON.parse(json);
-		Ti.API.info('RESPONSE:  '+response);  
-		callback(response);   
-	} // end onload
-		*/
-	myTicketsRequest.open("POST",'http://mobile.goticketsnap.com/ticketView.php');
+
+	myTicketsRequest.open("GET",'http://mobile.goticketsnap.com/ticketView.php');
 	
 	
 //>>>>>>> 8feb4fe3ec3108a9e178ada65be339d76009bfa9
@@ -241,10 +218,60 @@ exports.mytickets = function(_user_id,_req,callback){
              alert('Please check your cellular connection ');
     }
 
+  
+};
+
+
+
+
+
+exports.repliesAlerts = function(_user_id,_req,callback){
+			
+    var myTicketsRequest = Titanium.Network.createHTTPClient({
+    	onload: function(e)  
+		{  
+			var json = this.responseText;
+			Ti.API.info('RAW RESPONSE: '+json); 
+			var response = JSON.parse(json);
+			Ti.API.info('RESPONSE:  '+JSON.stringify(response));  
+			alert('it works');
+			callback(response);
+			
+			
+			//_actInd.hide();	   
+		}, // end onload
+		onerror: function(e){
+			fail();
+		}
+    });
+
+	myTicketsRequest.open("GET",'http://mobile.goticketsnap.com/ticketView.php');
+	
+	
+//>>>>>>> 8feb4fe3ec3108a9e178ada65be339d76009bfa9
+			
+	var params = {  
+		user_id: _user_id,  
+	    request:_req,  
+	};
+    		
+//<<<<<<< HEAD
+    			//if (checkInternetConnection()) {
+    			
+    		myTicketsRequest.send(params);
+    		
+    		//} else {
+    			
+            /// alert('Please check your cellular connection ');
+   // }
+
    //	};
 //=======
     //loginRequest.send(params);
 };
+
+
+
 
 //>>>>>>> 8feb4fe3ec3108a9e178ada65be339d76009bfa9
    	
