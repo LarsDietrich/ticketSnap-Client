@@ -18,7 +18,7 @@
         <target device="blackberry">false</target>
     </deployment-targets>
     <sdk-version>3.0.0.GA</sdk-version>
-    <id>com.xpertogo.mytickets</id>
+    <id>com.xpertogo.myticket</id>
     <name>tickeTSnap</name>
     <version>1.0</version>
     <publisher>admin</publisher>
