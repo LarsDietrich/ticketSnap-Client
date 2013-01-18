@@ -59,7 +59,7 @@ function facebookLogin(args){
 								var lname  = data.last_name;
 								//var adress = data.location.name;
 					 	
-			 					net.userRegistration('register',fname,lname,email,pwd,function(response){
+			 					net.userRegistration('register',fname,lname,email,pwd,globals.getDeviceToken(),function(response){
 				 
 									if(response.message == true){
 		              

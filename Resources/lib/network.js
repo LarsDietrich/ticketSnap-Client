@@ -234,7 +234,7 @@ exports.repliesAlerts = function(_user_id,_req,callback){
 			Ti.API.info('RAW RESPONSE: '+json); 
 			var response = JSON.parse(json);
 			Ti.API.info('RESPONSE:  '+JSON.stringify(response));  
-			alert('it works');
+			///alert('it works');
 			callback(response);
 			
 			

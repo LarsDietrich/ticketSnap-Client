@@ -1,8 +1,9 @@
 //////<<<<<<<---- need to set the right url
 
 var globals    = require('/lib/AppProperties');
+var user_id = globals.getCurrentUserID();
 function alerts (){
-
+ 
 var  _alertsWin   = require('/ui/handheld/ApplicationWindow');
  this.alertsWin    = new _alertsWin();
  this.alertsWin.title  = 'alerts';	
@@ -19,14 +20,133 @@ var tblRecipes = Titanium.UI.createTableView({
     // data:data,
     // rowHeight: 70,
    });
+   
+ view2.add(tblRecipes); 
  
    //Terminating in response to SpringBoard's termination.
  
   
   /////alert(globals.getCurrentUserID());
   //this.alertsWin.addEventListener('focus',function(){
+/*
+if(user_id == null){
+		
+	//tblRecipes.data = [
+    ///{title:'please log in first'},];	
+	alert('please log in to view alerts');	
+		
+	}else{
+		
+		
+	
+   //declare the http client object
+   
+   alert('populatting alert view :'+ user_id);
+   
+    var net = require('/lib/network'); 
+   
+     net.repliesAlerts (user_id,'reply', function(_data){
+  			/// here populate fiun
+			
+		if (_data.length === 0){
+	    			    	
+	            return;
+	       }
+	            //loop each item in the xml
+	            
+   for (var i = 0; i < _data.length; i++) {//create a table row
+   	
+  /// 	alert('loop works'+_data[0].message_id);
+   	
+    ////s b++;	
+var row = Titanium.UI.createTableViewRow({
+    hasChild: true,
+    className: 'recipe-row',
+    ///title:_data[0].date_time,
+   /// id:_data[i].reply_id,
+});
 
-  AlertPopulate(globals.getCurrentUserID(),tblRecipes);  /// populate alerts win 
+//title label
+var titleLabel = Titanium.UI.createLabel({
+  text:_data[i].date_time ,
+  font: {fontSize: 14, fontWeight: 'bold'},
+  left: 70,
+  top: 5,
+  height: 20,
+  width: 280,
+});
+
+row.add(titleLabel);
+
+//description label
+var descriptionLabel = Titanium.UI.createLabel({
+  text:'you have new message from Attorny ',
+  font: {fontSize: 10, fontWeight: 'normal'},
+  left:20,
+  top: 25,
+  height:20,
+  width: 280,
+  //bottom:30,
+});
+
+if(descriptionLabel.text == '') {
+  descriptionLabel.text = 'No description is available.';
+}
+  row.add(descriptionLabel);
+  
+  var viewMessage = Ti.UI.createButton({
+			backgroundColor:'black',
+			left:20,	
+			color:'#6d0a0c',
+		    bottom:5,
+			opacity:1,
+			///id:_data[i].message_id,
+			title: 'View Message', });
+	row.add(viewMessage);
+  
+  var CallAtrn = Ti.UI.createButton({
+			backgroundColor:'black',
+			right:20,
+			color:'#6d0a0c',
+			bottom:5,
+			opacity:1,
+			title: 'Call Atty', });
+			
+	 row.add(CallAtrn);
+	    
+	    viewMessage.hide();
+	    CallAtrn.hide();
+			
+ 
+  data.push(row);
+
+};//finally, set the data property of the tableView to our
+
+ 
+
+tblRecipes.data = data;
+  
+   
+///tblRecipes.data = data;
+
+			
+
+
+	     //data[] object
+   /////  tblRecipes.data = data;
+//};
+
+ 
+  });// net.tickets
+ 		
+		
+	}
+	
+
+*/
+
+
+ AlertPopulate(globals.getCurrentUserID(),tblRecipes);    /// populate alerts win 
 ///  	
  /// });
  
@@ -59,14 +179,18 @@ var tblRecipes = Titanium.UI.createTableView({
   
 
  
+ 
 
-
-view2.add(tblRecipes);  
 this.alertsWin.add(view2);
 
-this.getWin = function(){
+
+ ///this.getWin = getWindow(); // this will return 
+ 
+ this.getWin = function (){
 	 	return this.alertsWin;
 	 }
+
+  
 
 
 this.refreshAlert = function(uid){
@@ -77,21 +201,13 @@ this.refreshAlert = function(uid){
 
 
 
-
-
 	//#############################################################// 
 
 function AlertPopulate(uid,_tbl){
-	
-	 var data = []; //empty data array
-	
-	_tbl.setData = data;
-	
+	var data = []; //empty data array
 	
 	if(uid == null){
 		
-	//tblRecipes.data = [
-    ///{title:'please log in first'},];	
 	alert('please log in to view alerts');	
 		
 	}else{
@@ -101,34 +217,35 @@ function AlertPopulate(uid,_tbl){
    //declare the http client object
    
    
-   alert('populatting alert view :'+uid);
+  /// alert('populatting alert view :'+uid);
    
     var net = require('/lib/network'); 
    
      net.repliesAlerts (uid,'reply', function(_data){
   			/// here populate fiun
 			
-		//	if (_data.length === 0){
+		if (_data.length === 0){
 	    			    	
-	         //   return;
-	      //  }
+	            return;
+	       }
 	            //loop each item in the xml
 	            
-   for (var i = 0; i < 15; i++) {//create a table row
-   	alert('loop works');
+   for (var i = 0; i < _data.length; i++) {//create a table row
+   	
+  /// 	alert('loop works'+_data[0].message_id);
    	
     ////s b++;	
 var row = Titanium.UI.createTableViewRow({
-   /// hasChild: true,
+    //hasChild: true,
     className: 'recipe-row',
-   /// id:_data[i].reply_id,
+     id:_data.message_id,
 });
 
 //title label
 var titleLabel = Titanium.UI.createLabel({
   text:_data[i].date_time ,
   font: {fontSize: 14, fontWeight: 'bold'},
-  left: 70,
+  left: 50,
   top: 5,
   height: 20,
   width: 280,
@@ -138,9 +255,9 @@ row.add(titleLabel);
 
 //description label
 var descriptionLabel = Titanium.UI.createLabel({
-  text:'you have new message from Attorny ',
+  text:_data[i].reply,
   font: {fontSize: 10, fontWeight: 'normal'},
-  left:20,
+  left:50,
   top: 25,
   height:20,
   width: 280,
@@ -151,13 +268,16 @@ if(descriptionLabel.text == '') {
   descriptionLabel.text = 'No description is available.';
 }
   row.add(descriptionLabel);
+  
+
+  
   var viewMessage = Ti.UI.createButton({
 			backgroundColor:'black',
 			left:20,	
 			color:'#6d0a0c',
 		    bottom:5,
 			opacity:1,
-			///id:_data[i].message_id,
+			id:_data[i].message_id,
 			title: 'View Message', });
 	row.add(viewMessage);
   
@@ -171,39 +291,23 @@ if(descriptionLabel.text == '') {
 			
 	 row.add(CallAtrn);
 	    
-	    takePic.hide();
+	    viewMessage.hide();
 	    CallAtrn.hide();
-			
- 
+	    
+	viewMessage.addEventListener('click',function(e){
+		
+	var _msgWin   = require('/ui/common/alertDetailWin');	
+		new _msgWin(this.id);
+ 	
+ 	
+ });      
+	    
   data.push(row);
 
 };//finally, set the data property of the tableView to our
 
+_tbl.data = data;
 
-_tbl.setData = data;
-  
-   
-///tblRecipes.data = data;
-
-			viewMessage.addEventListener('click',function(){
-  var detailWin = new _alertsWin();
-      detailWin.title = 'Action Alert';
-  
-  var dView = Ti.UI.createView({
-	  backgroundImage:'images/otis_redding.png',
-               });
-	        
-	    detailWin.add(dView);
- 	  alertsWin.containingTab.open(detailWin);
- });  
-
-
-
-	     //data[] object
-   /////  tblRecipes.data = data;
-//};
-
- 
   });// net.tickets
  		
 		

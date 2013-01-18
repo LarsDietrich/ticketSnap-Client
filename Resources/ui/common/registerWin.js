@@ -1,3 +1,5 @@
+var globals = require('/lib/AppProperties');  // reference to global vars
+
 function register (){
 	
 var registerWin = Titanium.UI.createWindow({
@@ -124,7 +126,7 @@ var email = Ti.UI.createTextField({
  			// code here 
  			
  		var net = require('lib/network');	
- 	    net.userRegistration('register',firstname,lastname,emailadress,pwdval,actInd,function(response){
+ 	    net.userRegistration('register',firstname,lastname,emailadress,pwdval,globals.getDeviceToken(),actInd,function(response){
  	    	
  	    	 if(response.message == true){
  	    	 	
