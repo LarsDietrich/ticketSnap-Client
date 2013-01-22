@@ -27,12 +27,12 @@ var view = Ti.UI.createScrollView({
 	backgroundImage:'images/black-wood-bg.png',
 	//backgroundColor:'black',
 	 width: Ti.Platform.displayCaps.platformWidth,
-	 height:(Ti.Platform.displayCaps.platformHeight-40),
+	 height:(Ti.Platform.displayCaps.platformHeight),//-40
      scrollType:'horizontal',
      layout:'vertical',
      contentHeight : 'auto',
      scrolshowVerticalScrollIndicator:true,
-     bottom:40,
+    /// bottom:40,
       scrollsToTop:true,
     
 });
@@ -41,9 +41,7 @@ var view = Ti.UI.createScrollView({
   //#############################################################//  
    //here i start to populate the Scroll view by  msgs sent earlier
     var answers = [];
-    
-  
-    var top = 60;  
+    var top = 40;  
                  
    // if(user_id !=''){
     	
@@ -53,8 +51,9 @@ var view = Ti.UI.createScrollView({
  
               var iconImage = Titanium.UI.createImageView({
 				    image: 'http://mobile.goticketsnap.com/mytickets/'+array_resp[0].image,
-				    width: 200,
+				    width: 300,
 				    height:Ti.UI.SIZE,
+				    borderWidth:'2',
 				    //left: 10,
 				    top: top, });
 				  view.add(iconImage);
@@ -66,7 +65,7 @@ var view = Ti.UI.createScrollView({
 			
 				
 			var     descriptionLabel = Titanium.UI.createLabel({
-				    text:(type == 'msg')?'\n\n'+array_resp[i].Message+'\n\n'+array_resp[i].date_time :array_resp[i].Reply+'\n\n'+array_resp[i].date_time+'\n\n',
+				    text:(type == 'msg')?'\n\n'+array_resp[i].Message+'\n\n'+array_resp[i].date_time+'\n\n' :'\n\n'+array_resp[i].Reply+'\n\n'+array_resp[i].date_time+'\n\n',
 				    font: {fontSize: 12, fontWeight: 'normal'},
 				    backgroundImage:(type == 'msg')?'images/chat.png':'images/GrayBalloonRight.png',
 				    left:(type=='msg')?60:5,

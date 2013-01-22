@@ -93,28 +93,27 @@ exports.login = function(_case,_email,_password,_actInd,callback){
    	};
   
 //#############################################################// 	
-exports.sendticket = function(_sender_id,_ticketimage){
+exports.sendticket = function(_sender_id,_ticketimage,callback){
 	////	var result;	
-    var sendTicketRequest = Titanium.Network.createHTTPClient({
+    var sendTicketRequest = Titanium.Network.createHTTPClient({});
     	
-    	onload : function()  
+    	sendTicketRequest.onload = function(e)  
 		{  
 	    var json = this.responseText;
-	    
-		    Ti.API.info('RAW RESPONSE: '+json); 
+	        Ti.API.info('RAW RESPONSE: '+json); 
+		    var response = JSON.parse(json);
+		    Ti.API.info('RESPONSE:  '+response.result); 
 		    
-		   var response = JSON.parse(json);
-		       callback(response);
-		    Ti.API.info('RESPONSE:  '+response); 
-		    alert("Result:"+response.result); 
+		   ///// alert("Result:");
+		       callback(response); 
 		//   (response.result == true)?result = true:result = false;
-		}, // end onload
+		};// end onload
 		
-		onerror : function(e){
+		sendTicketRequest.onerror = function(e){
 			fail();
-		},
+		};
     	
-    });
+   
        
 				
 		    sendTicketRequest.setRequestHeader("enctype", "multipart/form-data");
@@ -123,7 +122,7 @@ exports.sendticket = function(_sender_id,_ticketimage){
 			 
 			var params = {  
    				sender_id:_sender_id,
-   				ticketimage:_ticketimage
+   				ticketimage:_ticketimage,
     		};
     		
     			if (checkInternetConnection()) {
@@ -140,7 +139,7 @@ exports.sendticket = function(_sender_id,_ticketimage){
    	};
   //#############################################################// 
   
-	exports.sendemail = function(_msg,_reciepentEmail,_sender_id,_imgname){
+	exports.sendemail = function(_msg,_sender_id,_imgname){
 			
     var sendEmailRequest = Titanium.Network.createHTTPClient();
 		sendEmailRequest.onload = function()  
@@ -162,7 +161,6 @@ exports.sendticket = function(_sender_id,_ticketimage){
 		var params = {  
 			sender_id:_sender_id,
 			msg:_msg,
-			reciepent:_reciepentEmail,
 			img:_imgname
 		};
     		

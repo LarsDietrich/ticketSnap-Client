@@ -189,21 +189,28 @@ function myticketView (user_id){
 		//#############################################################// 
 		
 		var scrollView = Ti.UI.createScrollView({
-			contentWidth:320,
-			contentHeight:'auto',
-			top:0,
-			showVerticalScrollIndicator:true,
-			//showHorizontalScrollIndicator:true,
-		    layout: 'vertical',
+			backgroundImage:'images/black-wood-bg.png',
+	//backgroundColor:'black',
+	 width: Ti.Platform.displayCaps.platformWidth,
+	 height:(Ti.Platform.displayCaps.platformHeight),//-40
+     scrollType:'horizontal',
+     layout:'vertical',
+     contentHeight : 'auto',
+     scrolshowVerticalScrollIndicator:true,
+    /// bottom:40,
+      scrollsToTop:true,
+    
+		}); 
 		
-		});  
+		var top =40; 
 
 		//alert('id:'+coverFlowView.images[e.index].id+'status :'+coverFlowView.images[e.index].status+'imagename :'+coverFlowView.images[e.index].imgname); 
 	 
 		var imgView = Titanium.UI.createImageView({
-		    top :1,
+		    top :top,
 		    image  :coverFlowView.images[e.index].image,
 		    zIndex :10,
+		    width:300,
 		    right  :10,
 		    height:230
 		});
@@ -230,32 +237,23 @@ function myticketView (user_id){
 	                var type = array_resp[i].type;
 	                    
 	                //create a table row
-					var row = Titanium.UI.createTableViewRow({
+				/*	var row = Titanium.UI.createTableViewRow({
 						backgroundImage:(type=='msg')?'images/chat.png':'images/GrayBalloonRight.png',
 						height:'auto',
 					  	//hasChild: true,
 					  	className: 'recipe-row'
 					});
 				
-					//title label
-					var titleLabel = Titanium.UI.createLabel({
-						text:(type == 'msg') ? 'Client Message':'Lawyer Reply',
-					  	font: {fontSize: 14, fontWeight: 'bold'},
-					  	left: 70,
-					  	top: 5,
-					  	height: 20,
-					  	width: 210
-					});
-				
-					row.add(titleLabel);
-					
+					*/
 					//description label
 					var descriptionLabel = Titanium.UI.createLabel({
-						text:(type=='msg')?array_resp[i].Message+'\n\n':array_resp[i].Reply+'\n\n'+array_resp[i].date_time+'\n\n',
+						text:(type=='msg')?'\n\n'+array_resp[i].Message+'\n\n'+array_resp[i].date_time+'\n\n':'\n\n'+array_resp[i].Reply+'\n\n'+array_resp[i].date_time+'\n\n',
 					    font: {fontSize: 12, fontWeight: 'normal'},
 					    left: 25,
+					    backgroundImage:(type=='msg')?'images/chat.png':'images/GrayBalloonRight.png',
 					    //backgroundImage:'images/chat.png',
-					    top: 25,
+					    textAlign:Ti.UI.TEXT_ALIGNMENT_CENTER,
+					    top:top,
 					    height:'auto',
 					    width: 250
 					});
@@ -263,19 +261,24 @@ function myticketView (user_id){
 					if(descriptionLabel.text == '') {
 						descriptionLabel.text = 'No description is available.';
 					}
-					
-					row.add(descriptionLabel);
+				//	scrollView.add(descriptionLabel);
+					///row.add(descriptionLabel);
 					//add our little icon to the left of the row
-					answers.push(row);				       
+					///answers.push(row);
+					
+					 top = top + descriptionLabel.height + 40; 
+				   
+				  
+				   scrollView.add(descriptionLabel);				       
 	            }  // end for loop
-                
+                /*
 	            var viewanswer = Titanium.UI.createTableView({
 		        	data:answers,
 		        	top:5,
 		        });
 	            
 	            detailView.add(viewanswer);     
-	                
+	            */    
 	        } // end if(array_resp.length > 0) 
 	        else {
         	
@@ -293,8 +296,14 @@ function myticketView (user_id){
                 
             	detailView.add(semofertas);
         	}
+        	
+        	
+        	
   
 		}); // end net.msgs
+		
+		
+		
 		//#############################################################// 
 		// Create a button to close the modal window
 		var close_modal = Titanium.UI.createButton({title:'Close'});
@@ -306,7 +315,7 @@ function myticketView (user_id){
 		});
 	
 		// Add the views to the window and open it				
-		scrollView.add(detailView);
+		///scrollView.add(detailView);
 		imgWindow.add(scrollView);
 		imgWindow.open();
 	}

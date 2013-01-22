@@ -1,6 +1,7 @@
 var globals    = require('/lib/AppProperties');
 var loggedIn   = globals.isLoggedIn();
 var _sender_id = globals.getCurrentUserID();
+
 ////////////////////////////////////////////var ticketID;
 var net = require ('lib/network');
 
@@ -13,7 +14,8 @@ var submit  = null ;
 var tf = null;
 //var message;
 
-
+///var randomInt; // this will generate random name for tickets	
+  
  //#############################################################// 
 // random function starts
 function randNum (){        				
@@ -27,9 +29,8 @@ function randNum (){
 			   'S8','T9','U0',
 			   'V1','W2','X3',
 			   'Y4','Z5'];
-	
 		
-	var  random =Math.floor(Math.random()*24);
+	var  random = Math.floor(Math.random()*24);
 	var   randomnumber=Math.floor(Math.random()*100);
 	Ti.API.info("random: " +data[random]+randomnumber);
 	
@@ -40,9 +41,8 @@ function randNum (){
 //#############################################################// 
 function capture_func(/*Identifier*/){
   
-  var randomInt = randNum(); // this will generate random name for tickets	
-  
-        
+  var  randomInt = randNum(); // this will generate random name for tickets	
+
 	
 		 if(Ti.Media.isCameraSupported){
 		 Ti.Media.showCamera({
@@ -60,6 +60,7 @@ function capture_func(/*Identifier*/){
 		//alert(Titanium.UI.currentTab);
 				 
 submit.addEventListener('click',function(){
+	
 	if(globals.isLoggedIn()){
 						
 	var message = tf.value;
@@ -95,15 +96,22 @@ submit.addEventListener('click',function(){
 			   
 			   //var result =
 			
-			  net.sendticket(globals.getCurrentUserID(),f.read(),function(){
-			  	
-			  	alert('fooooooooooooooo1');
-			  	
-			  });
-			    	
-			   	net.sendemail('No Message','hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
-                tf.value = '';
-                   
+			   net.sendticket(globals.getCurrentUserID(),f.read(),function(e){
+			     	 Ti.API.info('Callback RESPONSE:  '+ e.result); 
+			     	 var result = e.result;
+			     	 if(result == true){
+			     	 	
+			         net.sendemail('There is no message for you only ticket snap',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
+                     tf.value = '';
+			     	 	
+			     	 	
+			     	 }
+			     	 
+			     	 
+			    	///alert("callback:"+cb);
+			     	
+			     });
+			   
 			       
                     thisWin.remove(toolbar);	
 	  
@@ -137,19 +145,22 @@ for(var i=0; i<thisWin.getChildren().length;i++){
 	          var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
 				  f.write(image);
 				  
-				// var net = require('lib/network');
-			  //var result = net.sendticket(globals.getCurrentUserID(),f.read());
 			
-			    //var result =
-			
-			  net.sendticket(globals.getCurrentUserID(),f.read(),function(){
-			  	
-			  	alert('fooooooooooooooo1');
-			  	
-			  });
-			    	
-			   	net.sendemail(message,'hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
-                tf.value = '';
+			   net.sendticket(globals.getCurrentUserID(),f.read(),function(e){
+			     	 Ti.API.info('Callback RESPONSE:  '+ e.result); 
+			     	 var result = e.result;
+			     	 if(result == true){
+			     	 	
+			         net.sendemail(message,globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
+                     tf.value = '';
+			     	 	
+			     	 	
+			     	 }
+			     	 
+			    	///alert("callback:"+cb);
+			     	
+			     });
+			   
                    
                thisWin.remove(toolbar);	
 	
@@ -172,7 +183,7 @@ for(var i=0; i<thisWin.getChildren().length;i++){
 	         cancel:function(){
 	         	
 	         	
-	         		for(var i=0; i<thisWin.getChildren().length;i++){
+	       for(var i=0; i<thisWin.getChildren().length;i++){
 	    	thisWin.remove(thisWin.children[i]);
 	    	thisWin.children[i]=null;
 	    }
@@ -193,7 +204,7 @@ for(var i=0; i<thisWin.getChildren().length;i++){
 // 	        
 	         saveToPhotoGallery:true,
 	         allowEditing:true,
-	         mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO]
+	         mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO],
 // 	        			
 	     });
 	 } 
@@ -248,17 +259,25 @@ submit.addEventListener('click',function(){
 			// here i am having a problem the blow call back function does not work .
 			//if it works i have to use net.sendmail function in it so that firstly tickets will be added in db and then the message 
 			//var result =
-			
-			  net.sendticket(globals.getCurrentUserID(),f.read());
-			    	
-			   	net.sendemail('No Message','hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
-                tf.value = '';
-                   
+			    
+			    
+			     net.sendticket(globals.getCurrentUserID(),f.read(),function(e){
+			     	
+			     	 Ti.API.info('Callback RESPONSE:  '+ e.result); 
+			     	 var result = e.result;
+			     	 if(result == true){
+			     	 	
+			         net.sendemail('There is no message for you only ticketsnap.',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
+                     tf.value = '';
+			     	 	
+			     	 	
+			     	 }
+			     	 
+			     	 
+			    	///alert("callback:"+cb);
+			     	
+			     });
 			   
-			       // if(result){
-			    	//   alert(result);
-			  
-			     //  }
 			     
                     thisWin.remove(toolbar);	
 	
@@ -285,32 +304,34 @@ conform.show();
 for(var i=0; i<thisWin.getChildren().length;i++){
 	    	    thisWin.remove(thisWin.children[i]);
 	    	    thisWin.children[i]=null;
-	                         }
+	                        };
 	                         
 	              thisWin.add(afterSubmitView);
+	              
 	          var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
 				  f.write(image);
 				  
 				// var net = require('lib/network');
 				
 			    //var result =
-			     net.sendticket(globals.getCurrentUserID(),f.read());
-			     net.sendemail(message,'hbm_b@yahoo.com',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
-                 tf.value = '';
-			   	
-			   /////////});
+			     net.sendticket(globals.getCurrentUserID(),f.read(),function(e){
+			     	 Ti.API.info('Callback RESPONSE:  '+ e.result); 
+			     	 var result = e.result;
+			     	 if(result == true){
+			     	 	
+			         net.sendemail(message,globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
+                     tf.value = '';
+			     	 	
+			     	 	
+			     	 }
+			     	///alert("callback:"+cb);
+			     	
+			     });
 			     
-			  // if(result){
-			   	//	alert(result);
-			    	
-                	
-			         //   }
-			    
-                  thisWin.remove(toolbar);	
+			       thisWin.remove(toolbar);	
 	
 } // if condition
 
-	
 } else{
 
 alert('please login before you send');
@@ -320,12 +341,10 @@ alert('please login before you send');
 // 				
 				}); 
 // 		        		
-		   				
-		        		
-		   		// 		    		//db.addPhoto(_bounty.id,f.nativePath);
+		   		// 	//db.addPhoto(_bounty.id,f.nativePath);
        },
         
-        	 cancel:function() {
+        	 cancel:function(){  
 //         	 	
         for(var i=0; i<thisWin.getChildren().length;i++){
 	    	thisWin.remove(thisWin.children[i]);
@@ -503,9 +522,9 @@ tf.addEventListener('blur',function(){
 		});	   
        
    var logo  = Ti.UI.createImageView({
-			image: '/images/screenCam.png',
+			image:'/images/TICKETSNAP_bar_tr.png',
 			backgroundColor: 'transparent',
-			width:100,
+			width:200,
 			height: 100,
 			top:10
 		});
@@ -592,18 +611,19 @@ afterSubmitView.add(tbar);
 // i have same problem with retake when i click it and take pic again and submit it stores 2 images
 
 reTake.addEventListener('click',function(){
-	
-// camera function is here
-      capture_func();
+	// camera function is here
+	///randomInt ='';
+    
 
 for(var i=0; i<thisWin.getChildren().length;i++){
     thisWin.remove(thisWin.children[i]);
     thisWin.children[i]=null;
     }
+        thisWin.close();
+      capture_func();
+    
 	    ///submit.removeEventListener('click');
-	    
 	   //ticketID = captureImage();
-
 	
    });
    
@@ -627,14 +647,14 @@ closeWin.addEventListener('click', function() {
 	    }
 	    
                /////////Ti.UI.currentTab.close(thisWin);//.close();
-      thisWin.close();
+         thisWin.close();
+      
          });
 	//#############################################################// 	
          return thisWin;
 
         };
-	 	
-
+	 
 module.exports  = newTicketWin;
 
 
