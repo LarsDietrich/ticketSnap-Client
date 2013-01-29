@@ -148,7 +148,8 @@ exports.sendticket = function(_sender_id,_ticketimage,callback){
 		    Ti.API.info('RAW RESPONSE: '+json); 
 		    var response = JSON.parse(json);
 		       //callback(response);
-		    Ti.API.info('RESPONSE:  '+response);  
+		    Ti.API.info('RESPONSE:  '+response); 
+		    alert('RESPONSE FROM mt_sendmail.php: ' + response.toString() + ' ' +JSON.stringify(json)); 
 		    
 		}; // end onload
 		

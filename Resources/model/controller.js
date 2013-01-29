@@ -74,102 +74,59 @@ function logout(){
 
 function startApp(){
 	
-	// Cloud.Users.login({
-    	// login: 'pushUser',
-    	// password: '12345'}, 
-    	// function (e) {
-			// if (e.success) {
-				// var user = e.users[0];
- 				// alert("Loggin successfully");
-    		// } else {
-        		// alert("Error :"+e.message);
-    		// }
-	// });
-	
 	// Set UA options
-	UrbanAirship.tags = [ 'testingtesting', 'appcelerator', 'my-tags' ];
+	UrbanAirship.tags = ['testing'];
 	UrbanAirship.alias = 'testDevice';
 	UrbanAirship.autoBadge = true;
 	UrbanAirship.autoResetBadge = true;
 	
 	function eventCallback(e) {
-	// Pass the notification to the module
-    UrbanAirship.handleNotification(e.data);
+		// Pass the notification received to the module to handle alert on devic
+	    UrbanAirship.handleNotification(e.data);
     	
-  	Ti.API.info('Push message received');
-  	alert('  Message: ' + e.data+'\n' + '  Payload: ' + e.data.aps);
+	  	Ti.API.info('Push message received');
+	  	alert('  Message: ' + e.data+'\n' + '  Payload: ' + e.data.aps);
     
-    appTabGroup.badge= e.data.badge;
-    appTabGroup.setActiveTab(alertsTab);
-    // labelMessage.text = e.data.alert;
-	// labelPayload.text = JSON.stringify(e.data.aps);	
-}
+    	appTabGroup.badge= e.data.badge;
+    	appTabGroup.setActiveTab(alertsTab);
+    	// labelMessage.text = e.data.alert;
+		// labelPayload.text = JSON.stringify(e.data.aps);	
+	}
 
-function eventSuccess(e) {
-	// *MUST* pass the received token to the module
-    UrbanAirship.registerDevice(e.deviceToken);  
+	function eventSuccess(e) {
+		// *MUST* pass the received token to the module
+    	UrbanAirship.registerDevice(e.deviceToken);  
     
-    Ti.API.info('Received device token: ' + e.deviceToken);
-    deviceToken = e.deviceToken;
-    // device token will be used during registration 
-    globals.setDeviceToken(e.deviceToken); 
-    alertsWin.refreshAlert(globals.getCurrentUserID());
+    	Ti.API.info('Received device token: ' + e.deviceToken);
+    	deviceToken = e.deviceToken;
+    	
+    	// device token will be used during registration 
+    	globals.setDeviceToken(e.deviceToken); 
+    	alertsWin.refreshAlert(globals.getCurrentUserID());
     
-   /// require('/lib/notifications').handleNotification({data: e, tabgroup: appTabGroup);
+    // require('/lib/notifications').handleNotification({data: e, tabgroup: appTabGroup);
     // btnOpen.enabled = true;		
-}
+	}
 
-function eventError(e) {
-    Ti.API.info('Error:' + e.error);
-    var alert = Ti.UI.createAlertDialog({
-        title: 'Error',
-        message: e.error
-    });
-    alert.show();	
-}
+	function eventError(e) {
+	    Ti.API.info('Error:' + e.error);
+	    var alert = Ti.UI.createAlertDialog({
+	        title: 'Error',
+	        message: e.error
+	    });
+	    alert.show();	
+	}
 
-Ti.Network.registerForPushNotifications({
-    types:[
-        Ti.Network.NOTIFICATION_TYPE_BADGE,
-        Ti.Network.NOTIFICATION_TYPE_ALERT,
-        Ti.Network.NOTIFICATION_TYPE_SOUND
-    ],
-    success: eventSuccess,
-    error: eventError,
-    callback: eventCallback
-});
-	
-	// // register for push notifications
-	// Ti.Network.registerForPushNotifications({
-		// types: [
-    		// Ti.Network.NOTIFICATION_TYPE_BADGE,
-     		// Ti.Network.NOTIFICATION_TYPE_ALERT,
-     		// Ti.Network.NOTIFICATION_TYPE_SOUND
-		// ],
- 		// success:function(e) {
-    		// Ti.API.info('Device Token :  '+e.deviceToken);
-    		// deviceToken=e.deviceToken;
-		// },
- 		// error:function(e) {
-    		// Ti.API.info("push notifications failed: "+e);
-    		// alert("push notifications failed: "+e.error);
-		// },
- 		// callback:function(e) {
-    	 // alert('Push received');
-		// }	
-	// });
-	
-	// Cloud.PushNotifications.subscribe({
-    // channel: 'demo_alert',
-    // type:'ios',
-    // device_token: deviceToken
-// }, function (e) {
-    // if (e.success) {
-        // alert('Success :'+((e.error && e.message) || JSON.stringify(e)));
-    // } else {
-        // alert('Error:' + ((e.error && e.message) || JSON.stringify(e)));
-    // }
-// });
+	Ti.Network.registerForPushNotifications({
+	    types:[
+	        Ti.Network.NOTIFICATION_TYPE_BADGE,
+	        Ti.Network.NOTIFICATION_TYPE_ALERT,
+	        Ti.Network.NOTIFICATION_TYPE_SOUND
+	    ],
+	    success: eventSuccess,
+	    error: eventError,
+	    callback: eventCallback
+	});
 	
 	// instantiate the windows
 	myTixView = new _myTixView(globals.getCurrentUserID());
@@ -179,11 +136,7 @@ Ti.Network.registerForPushNotifications({
 	
 	alertsWin = new _alertsWin();
 	alertsWin.getWin.zIndex = 10;
-	
-	
-	
-	
-	
+		
 	loginWin = new _loginWin(/*here pass in callback function to loggedIn screen*/);
 	//loginWin.zIndex=1;
 	
@@ -213,49 +166,18 @@ Ti.Network.registerForPushNotifications({
 		badge:5,
 	});
 	alertsWin.getWin().containingTab = alertsTab;
-	
-//alertsTab.addEventListener('focus',function(e){
-    //alert('good');
-	//setInterval(function(e){
-  //alertsTab.badge +=1;
-	///},1000);
-	//alertsTab.badge.hide();
- 	
-//});	
-	
+		
 	var myTixTab = Ti.UI.createTab({
 		icon: '/images/KS_nav_ui.png',
 		window: myTixWin,
-		title: 'My Tickets',
-		
+		title: 'My Tickets',	
 	});
-	
-	/*
-	   newTixTab = Ti.UI.createTab({
-		icon: 'images/btn-camera.png',
-		window: newTicketWin,
-		title: 'NEW',
-		zIndex:50,
-		
-	});*/
 	
 	HighlightTab.setHighlightTab({
 		tabgroup: appTabGroup,
 		//window:newTicketWin,title:'New Ticket',
 		icon: 'images/btn-camera.png'
 	});
-/*	
-	￼// Sets the app's icon badge to 23 Ti.UI.iPhone.appBadge = 23;
-var tabGroup = Titanium.UI.createTabGroup(); var win1 = Titanium.UI.createWindow({
-title:'Window 1',
-backgroundColor:'#fff' });
-// Set the badge for this tab to 10 var tab1 = Titanium.UI.createTab({
-icon:'KS_nav_views.png', title:'Tab 1', window:win1,
-badge:10
-});
-	*/
-	
-	
 	
 	appTabGroup.addTab(alertsTab);
 	appTabGroup.addTab(Ti.UI.createTab({backgroundImage : 'images/camTab.png',}));
