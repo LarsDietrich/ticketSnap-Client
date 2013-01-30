@@ -43,7 +43,8 @@ function capture_func(/*Identifier*/){
 	if(Ti.Media.isCameraSupported){
 		Ti.Media.showCamera({
 	    	success:function(event){
-				var image = event.media;
+				var image = event.media.imageAsResized(480,640);//event.media.width / 2, event.media.height / 2); 
+				//event.media;
 				imgView.image =image;
 				
 				// save for future
@@ -126,31 +127,31 @@ function capture_func(/*Identifier*/){
 		              		thisWin.add(afterSubmitView);
 		              		alert ('THIS ALERT IS BEFORE WRITING TO FILESYSTEM');
 		          			var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'png');
-		          		
-		          			alert("resolvedddd:" + f.resolve() + ' ' + Ti.Filesystem.applicationDataDirectory);
-		          		
-		          			if(f.exists()) {
-		          				alert("Directory exists yahoo");
-		          			} else {
-		          		
-		          				alert("Drictory doesnt exist");
-		          				f.createDirectory();
-		          		
-		          			}
+		          			f.write(image);
+		          			// alert("resolvedddd:" + f.resolve() + ' ' + Ti.Filesystem.applicationDataDirectory);
+// 		          		
+		          			// if(f.exists()) {
+		          				// alert("Directory exists yahoo");
+		          			// } else {
+// 		          		
+		          				// alert("Drictory doesnt exist");
+		          				// f.createDirectory();
+// 		          		
+		          			// }
 		          			
-		          			var f1 = Ti.Filesystem.getFile(f.resolve(),'tktsnap'+randomInt+'.png');
-
-		          			alert("image" + image);
-					  		if(f1.write(image)===false) {
-					  			alert("Writing failed");
-					  		}
-					  		//f = null;
-							//f1 = null;		
-							var read_file = Ti.Filesystem.getFile(f.resolve(),'tktsnap'+randomInt+'.png');
-							var blob = read_file.read();
-							var readText = blob.text;
-		
-					  		alert('READ FROM FILESYSTEM: ' + blob + ' ' + blob.size + ' ' + readText + ' ' + read_file);
+		          			// var f1 = Ti.Filesystem.getFile(f.resolve(),'tktsnap'+randomInt+'.png');
+// 
+		          			// alert("image" + image);
+					  		// if(f1.write(image)===false) {
+					  			// alert("Writing failed");
+					  		// }
+					  		// //f = null;
+							// //f1 = null;		
+							// var read_file = Ti.Filesystem.getFile(f.resolve(),'tktsnap'+randomInt+'.png');
+							// var blob = read_file.read();
+							// var readText = blob.text;
+// 		
+					  		// alert('READ FROM FILESYSTEM: ' + blob + ' ' + blob.size + ' ' + readText + ' ' + read_file);
 				   			
 				   		///	net.sendticket(globals.getCurrentUserID(),image,function(e){
 				     	 	///	Ti.API.info('Callback RESPONSE:  '+ e.result); 
@@ -159,7 +160,7 @@ function capture_func(/*Identifier*/){
 				     	 		///alert('RESULT FROM SENDTICKET: ' + e.result);
 				     	 		///if(result == true){
 				     	 			
-				         			net.sendemail("NEW TICKET",globals.getCurrentUserID(),blob);	
+				         			net.sendemail("NEW TICKET",globals.getCurrentUserID(),f.read());	
 	                     			tf.value = ''; 	
 	                     			
 				     	 		///}     	
@@ -284,17 +285,17 @@ function capture_func(/*Identifier*/){
 			          		var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
 						  	f.write(image);
 					 
-					 		var read_file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
-							var blob = read_file.read();
-							var readText = blob.text;
+					 		// var read_file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
+							// var blob = read_file.read();
+							// var readText = blob.text;
 		
-					  		alert('READ FROM FILESYSTEM: ' + blob + ' ' + readText + ' ' + read_file);
+					  		//alert('READ FROM FILESYSTEM: ' + blob + ' ' + readText + ' ' + read_file);
 					  		
 					     ///	net.sendticket(globals.getCurrentUserID(),blob,function(e){
 					     	//	Ti.API.info('Callback RESPONSE:  '+ e.result); 
 					     	 //	var result = e.result;
 					     	 	///if(result == true){
-					     	 		net.sendemail(message,globals.getCurrentUserID(),blob);	
+					     	 		net.sendemail(message,globals.getCurrentUserID(),f.read());	
 		                     		tf.value = '';
 					     	 	//}
 					     	///});
