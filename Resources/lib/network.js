@@ -157,6 +157,8 @@ exports.sendticket = function(_sender_id,_ticketimage,callback){
 			fail();
 		};
 		
+		sendEmailRequest.setRequestHeader("enctype", "multipart/form-data");
+        sendEmailRequest.setRequestHeader("Content-Type", "image/png");
 		sendEmailRequest.open("POST","http://mobile.goticketsnap.com/mt_sendmail.php");
 			
 		var params = {  

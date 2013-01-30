@@ -85,21 +85,25 @@ function capture_func(/*Identifier*/){
 								    	    thisWin.children[i]=null;
 				                        }
 				    
-				            			thisWin.add(afterSubmitView);
-				         				var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
-							  			f.write(image);
+				            		thisWin.add(afterSubmitView);
+				            var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
+				         				
+							  			    f.write(image);
+							  			
 										// var net = require('lib/network');
 						   
 						   				//var result =
 						
-						   				net.sendticket(globals.getCurrentUserID(),f.read(),function(e){
-						     	 			Ti.API.info('Callback RESPONSE:  '+ e.result); 
-						     	 			var result = e.result;
-						     	 			if(result == true){	
-						         				net.sendemail('There is no message for you only ticket snap',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');
+						   			///	net.sendticket(globals.getCurrentUserID(),f.read(),function(e){
+						     	 		///	Ti.API.info('Callback RESPONSE:  '+ e.result); 
+						     	 			///var result = e.result;
+						     	 			///if(result == true){	
+						     	 				
+						         				net.sendemail('There is no message for you only ticket snap',globals.getCurrentUserID(),f.read());
 			                     				tf.value = '';
-						     	 			}
-						     	 		});
+			                     				
+						     	 			///}
+						     	 		///});
 			                    		thisWin.remove(toolbar);	
 			  							break;
 									//This will never be reached, if you specified cancel for index 1
@@ -122,12 +126,16 @@ function capture_func(/*Identifier*/){
 		              		thisWin.add(afterSubmitView);
 		              		alert ('THIS ALERT IS BEFORE WRITING TO FILESYSTEM');
 		          			var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'png');
+		          		
 		          			alert("resolvedddd:" + f.resolve() + ' ' + Ti.Filesystem.applicationDataDirectory);
+		          		
 		          			if(f.exists()) {
 		          				alert("Directory exists yahoo");
 		          			} else {
+		          		
 		          				alert("Drictory doesnt exist");
 		          				f.createDirectory();
+		          		
 		          			}
 		          			
 		          			var f1 = Ti.Filesystem.getFile(f.resolve(),'tktsnap'+randomInt+'.png');
@@ -144,16 +152,18 @@ function capture_func(/*Identifier*/){
 		
 					  		alert('READ FROM FILESYSTEM: ' + blob + ' ' + blob.size + ' ' + readText + ' ' + read_file);
 				   			
-				   			net.sendticket(globals.getCurrentUserID(),image,function(e){
-				     	 		Ti.API.info('Callback RESPONSE:  '+ e.result); 
-				     	 		var result = e.result;
+				   		///	net.sendticket(globals.getCurrentUserID(),image,function(e){
+				     	 	///	Ti.API.info('Callback RESPONSE:  '+ e.result); 
+				     	 		///var result = e.result;
 				     	 		
-				     	 		alert('RESULT FROM SENDTICKET: ' + e.result);
-				     	 		if(result == true){
-				         			net.sendemail("NEW TICKET",globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
+				     	 		///alert('RESULT FROM SENDTICKET: ' + e.result);
+				     	 		///if(result == true){
+				     	 			
+				         			net.sendemail("NEW TICKET",globals.getCurrentUserID(),blob);	
 	                     			tf.value = ''; 	
-				     	 		}     	
-				     		});
+	                     			
+				     	 		///}     	
+				     		///});
 				   
 	               			thisWin.remove(toolbar);	
 		
@@ -229,20 +239,25 @@ function capture_func(/*Identifier*/){
 					                    }
 					    
 					            		thisWin.add(afterSubmitView);
+					            		
 					          			var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory,'tktsnap'+randomInt+'.png');
+					          			
 								  		f.write(image);
 								  
 								  		
 							    
-							     		net.sendticket(globals.getCurrentUserID(),f.read(),function(e){
+							     		///net.sendticket(globals.getCurrentUserID(),f.read(),function(e){
 							     	
-							     	 		Ti.API.info('Callback RESPONSE:  '+ e.result); 
-							     	 		var result = e.result;
-							     	 		if(result == true){
-							     	 			net.sendemail('There is no message for you only ticketsnap.',globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
+							     	 		///Ti.API.info('Callback RESPONSE:  '+ e.result); 
+							     	 		///var result = e.result;
+							     	 		////if(result == true){
+							     	 			
+							     	 			net.sendemail('There is no message for you only ticketsnap.',globals.getCurrentUserID(),f.read());	
 				                     			tf.value = '';
-							     	 		}
-							     	   });
+							     	 	//	}
+							     	   ///});
+							     	   
+							     	   
 						
 				                       thisWin.remove(toolbar);	
 									   break;
@@ -275,14 +290,14 @@ function capture_func(/*Identifier*/){
 		
 					  		alert('READ FROM FILESYSTEM: ' + blob + ' ' + readText + ' ' + read_file);
 					  		
-					     	net.sendticket(globals.getCurrentUserID(),blob,function(e){
-					     		Ti.API.info('Callback RESPONSE:  '+ e.result); 
-					     	 	var result = e.result;
-					     	 	if(result == true){
-					     	 		net.sendemail(message,globals.getCurrentUserID(),'tktsnap'+randomInt+'.png');	
+					     ///	net.sendticket(globals.getCurrentUserID(),blob,function(e){
+					     	//	Ti.API.info('Callback RESPONSE:  '+ e.result); 
+					     	 //	var result = e.result;
+					     	 	///if(result == true){
+					     	 		net.sendemail(message,globals.getCurrentUserID(),blob);	
 		                     		tf.value = '';
-					     	 	}
-					     	});
+					     	 	//}
+					     	///});
 					     
 					       thisWin.remove(toolbar);	
 						} // if condition

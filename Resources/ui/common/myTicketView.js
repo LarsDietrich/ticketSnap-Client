@@ -1,3 +1,6 @@
+
+
+var globals    = require('/lib/AppProperties');
 var net = require('/lib/network'); //////<<<<<<<---- need to set the right url
 
 function myticketView (user_id){
@@ -147,7 +150,7 @@ function myticketView (user_id){
 	
 	this.view2.add(coverFlowView);
 	
-	populateCF(user_id, coverFlowView, function(e){
+	populateCF(globals.getCurrentUserID(), coverFlowView, function(e){
 		activityOverlay.hide();
 		actInd.hide();
 	});
@@ -228,7 +231,8 @@ function myticketView (user_id){
 	
 		// this call get the msgs and replies related to it.
 		var imgname = coverFlowView.images[e.index].imgname; 
-		net.msgs (imgname,user_id,'msg',function(array_resp){
+		alert("image name is" + imgname+"userID :"+ user_id);
+		net.msgs (imgname,globals.getCurrentUserID(),'msg',function(array_resp){
 		
 	    	if(array_resp.length > 0) {
 	        	var answers = [];
